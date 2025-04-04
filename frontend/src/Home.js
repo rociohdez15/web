@@ -30,18 +30,11 @@ const Home = () => {
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
         rel="stylesheet"
       />
-      <link
+            <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM6g0g5z5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5"
         crossorigin="anonymous"
-      />
-        <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        integrity="sha512-yU0G9AAXg1/ZoJzI/6jJgytpMStYZaFc0H0FJ7Y2GJmEOAdDG1Bd5DklYZ1x9kDmlYHqfdoBhEHKxkKDdh5j4g=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"
       />
       <link
         id="u-theme-google-font"
