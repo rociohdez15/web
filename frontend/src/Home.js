@@ -36,7 +36,13 @@ const Home = () => {
         integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM6g0g5z5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5"
         crossorigin="anonymous"
       />
-
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-yU0G9AAXg1/ZoJzI/6jJgytpMStYZaFc0H0FJ7Y2GJmEOAdDG1Bd5DklYZ1x9kDmlYHqfdoBhEHKxkKDdh5j4g=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      />
       <link
         id="u-theme-google-font"
         rel="stylesheet"
@@ -144,9 +150,9 @@ const Home = () => {
               <div className="row row-cols-1 row-cols-md-4 g-4">
                 {/* Repeater Items */}
                 <div className="col d-flex justify-content-center">
-                  <button className="btn botones-inicio btn-secondary py-3 px-6 rounded-3 border-4 border-white fs-4">
+                  <button className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4">
                     <span className="u-align-center u-file-icon u-icon u-text-white u-icon-1">
-                        <i className="fa-solid fa-users fa-2x"></i>
+                      <i className="fa-solid fa-users fa-2x"></i>
                     </span>
                     <a
                       className="u-align-center u-custom-font u-text u-text-font u-text-3"
@@ -157,9 +163,9 @@ const Home = () => {
                   </button>
                 </div>
                 <div className="col d-flex justify-content-center">
-                  <button className="btn botones-inicio btn-secondary py-3 px-6 rounded-3 border-4 border-white fs-4">
+                  <button className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4">
                     <span className="u-align-center u-file-icon u-icon u-text-white u-icon-2">
-                      <img src="images/7401471-4294aa1a.png" alt="" />
+                      <i class="fa-solid fa-earth-americas fa-2x"></i>
                     </span>
                     <a
                       className="u-align-center u-custom-font u-text u-text-font u-text-4"
@@ -170,9 +176,9 @@ const Home = () => {
                   </button>
                 </div>
                 <div className="col d-flex justify-content-center">
-                  <button className="btn botones-inicio btn-secondary py-3 px-6 rounded-3 border-4 border-white fs-4">
+                  <button className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4">
                     <span className="u-align-center u-file-icon u-icon u-text-white u-icon-3">
-                        <i class="fa-solid fa-square-rss fa-2x"></i>
+                      <i class="fa-solid fa-pencil fa-2x"></i>
                     </span>
                     <a
                       className="u-align-center u-custom-font u-text u-text-font u-text-5"
@@ -183,9 +189,9 @@ const Home = () => {
                   </button>
                 </div>
                 <div className="col d-flex justify-content-center">
-                  <button className="btn botones-inicio btn-secondary py-3 px-6 rounded-3 border-4 border-white fs-4">
+                  <button className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4">
                     <span className="u-align-center u-file-icon u-icon u-text-white u-icon-2">
-                        <i class="fa-solid fa-photo-film fa-2x"></i>
+                      <i class="fa-solid fa-photo-film fa-2x"></i>
                     </span>
                     <a
                       className="u-align-center u-custom-font u-text u-text-font u-text-4"
@@ -260,7 +266,7 @@ const Home = () => {
       >
         <div className="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-sheet-1">
           <h2
-            className="u-align-center u-text u-text-default u-text-1"
+            className="text-center u-text u-text-default u-text-1"
             data-animation-name="customAnimationIn"
             data-animation-duration={1500}
             data-animation-delay={0}
@@ -268,7 +274,7 @@ const Home = () => {
             Find your next getaway
           </h2>
           <p
-            className="u-align-center u-text u-text-2"
+            className="text-center u-text texto2"
             data-animation-name="customAnimationIn"
             data-animation-duration={1500}
             data-animation-delay={250}

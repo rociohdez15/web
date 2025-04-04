@@ -47,7 +47,7 @@
   height: 200px; /* Alto personalizado */
   background-color: #555; /* Gris oscuro */
   border: 4px solid white; /* Borde blanco de 4px */
-  border-radius: 10px; /* Bordes redondeados */
+  border-radius: 20px !important; /* Bordes redondeados */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7880,6 +7880,9 @@ ul.u-text li:last-child {
 }
 .u-text.u-indent-none {
   padding-left: 0 !important;
+}
+.texto2{
+  font-size: 1.125rem;
 }
 .u-text-default {
   display: table;
