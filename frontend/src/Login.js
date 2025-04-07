@@ -1,6 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Login = () => {
+  // Estado para almacenar los valores del formulario y los errores
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [rememberMe, setRememberMe] = useState(false);  // Estado para el checkbox
+
+  // Manejo de los cambios en los inputs
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleRememberChange = (e) => {
+    setRememberMe(e.target.checked);  // Actualizar el estado del checkbox
+  };
+
+  // Manejo del submit del formulario
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Evitar que la página se recargue
+    
+    const credentials = {
+      email: email,
+      password: password,
+    };
+  
+    try {
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+  
+      // Lee la respuesta una sola vez
+      const responseBody = await response.text();
+      console.log("Response Status:", response.status);
+      console.log("Response Text:", responseBody);
+      
+      if (!response.ok) {
+        throw new Error("Error en la autenticación");
+      }
+      
+      // Intenta parsear el responseBody a JSON
+      const data = JSON.parse(responseBody);
+      console.log("Token recibido:", data.token);
+  
+      // Guardamos el token en localStorage si el login es exitoso
+      localStorage.setItem("token", data.token);
+
+      // Si el usuario marca 'Recordarme', puedes almacenar el token a largo plazo
+      if (rememberMe) {
+        // Aquí, por ejemplo, podrías guardar en cookies o también en localStorage con un tiempo de expiración
+        localStorage.setItem("token", data.token);  // Este paso ya está hecho arriba
+      }
+
+      // Redirigir al usuario al dashboard
+      window.location.href = "/dashboard";  // O usa React Router para navegar
+    } catch (error) {
+      console.error("Error durante el login:", error);
+      setError("Credenciales incorrectas o error al iniciar sesión");
+    }
+  };
+
   return (
     <>
       {/* CDN de Font Awesome */}
@@ -31,7 +98,7 @@ const Login = () => {
           backgroundSize: "cover",
           backgroundPosition: "center center",
           backgroundRepeat: "no-repeat",
-          minHeight: "100vh", // Asegura que ocupe al menos toda la altura de la ventana
+          minHeight: "100vh",
         }}
       >
         {/* Contenedor principal */}
@@ -60,7 +127,8 @@ const Login = () => {
           {/* Formulario de login */}
           <div className="bg-white p-5 rounded-5 shadow-lg col-12 col-md-6 col-lg-4 mt-5 mt-md-0">
             <h2 className="h4 mb-4 text-center">Sign in</h2>
-            <form>
+            {error && <div className="alert alert-danger">{error}</div>}
+            <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label" htmlFor="email">
                   Email Address
@@ -69,6 +137,8 @@ const Login = () => {
                   className="form-control"
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={handleChangeEmail}
                   required
                 />
               </div>
@@ -77,9 +147,11 @@ const Login = () => {
                   Password
                 </label>
                 <input
-                  className="form-control "
+                  className="form-control"
                   id="password"
                   type="password"
+                  value={password}
+                  onChange={handleChangePassword}
                   required
                 />
               </div>
@@ -88,15 +160,14 @@ const Login = () => {
                   className="form-check-input border-dark"
                   id="remember"
                   type="checkbox"
+                  checked={rememberMe}
+                  onChange={handleRememberChange} // Agregar el manejador para el checkbox
                 />
                 <label className="form-check-label" htmlFor="remember">
                   Remember Me
                 </label>
               </div>
-              <button
-                className="btn btn-warning w-auto text-white"
-                type="submit"
-              >
+              <button className="btn btn-warning w-auto text-white" type="submit">
                 Sign in now
               </button>
             </form>
