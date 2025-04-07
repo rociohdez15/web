@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
+
 
 const Home = () => {
   const [isNavOpen, setIsNavOpen] = useState(false); // Estado para el menú
@@ -30,7 +32,7 @@ const Home = () => {
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
         rel="stylesheet"
       />
-            <link
+      <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
         integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM6g0g5z5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5"
@@ -105,10 +107,9 @@ const Home = () => {
             </div>
           </nav>
 
-          {/* Iniciar sesión button con más margen derecho */}
-          <a href="#" className="btn btn-primary me-5 rounded-pill">
+          <Link to="/login" className="btn btn-primary me-5 rounded-pill">
             Iniciar Sesión
-          </a>
+          </Link>
         </div>
       </header>
 
