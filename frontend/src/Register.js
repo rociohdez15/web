@@ -1,83 +1,145 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   const [isNavOpen, setIsNavOpen] = useState(false); // Estado para el menú
-
-  // Función para cambiar el estado del menú
-  const toggleMenu = () => {
-    setIsNavOpen(!isNavOpen);
-  };
-
-  // Función para cerrar el menú cuando se hace clic en un enlace
-  const closeMenu = () => {
-    setIsNavOpen(false); // Cierra el menú
-  };
+  const toggleMenu = () => setIsNavOpen(!isNavOpen); // Función para cambiar el estado del menú
+  const closeMenu = () => setIsNavOpen(false); // Función para cerrar el menú cuando se hace clic en un enlace
 
   // Estado para almacenar los valores del formulario y los errores
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [dni, setDni] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [birthdate, setBirthdate] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
-  const [rememberMe, setRememberMe] = useState(false); // Estado para el checkbox
 
   // Manejo de los cambios en los inputs
-  const handleChangeEmail = (e) => {
-    setEmail(e.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case "name":
+        setName(value);
+        break;
+      case "lastName":
+        setLastName(value);
+        break;
+      case "dni":
+        setDni(value);
+        break;
+      case "address":
+        setAddress(value);
+        break;
+      case "phone":
+        setPhone(value);
+        break;
+      case "birthdate":
+        setBirthdate(value);
+        break;
+      case "email":
+        setEmail(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      case "confirmPassword":
+        setConfirmPassword(value);
+        break;
+      default:
+        break;
+    }
   };
 
-  const handleChangePassword = (e) => {
-    setPassword(e.target.value);
+  // Validaciones
+  const validateForm = () => {
+    // Validar DNI (asumimos formato de 8 dígitos seguidos de una letra)
+    const dniPattern = /^\d{8}[A-Za-z]$/;
+    if (!dniPattern.test(dni)) {
+      setError("DNI inválido");
+      return false;
+    }
+
+    // Validar correo electrónico
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(email)) {
+      setError("Correo electrónico inválido");
+      return false;
+    }
+
+    // Validar contraseña (mínimo 8 caracteres, una mayúscula, una minúscula y un número)
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordPattern.test(password)) {
+      setError(
+        "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número"
+      );
+      return false;
+    }
+
+    // Validar que las contraseñas coincidan
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden");
+      return false;
+    }
+
+    // Validar fecha de nacimiento (que sea mayor de 18 años)
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (age < 18 || (age === 18 && month < 0)) {
+      setError("Debes ser mayor de 18 años");
+      return false;
+    }
+
+    setError(null); // Si no hay errores, se limpia el mensaje
+    return true;
   };
 
-  const handleRememberChange = (e) => {
-    setRememberMe(e.target.checked); // Actualizar el estado del checkbox
-  };
-
-  // Manejo del submit del formulario
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Evitar que la página se recargue
+    e.preventDefault();
 
-    const credentials = {
-      email: email,
-      password: password,
+    // Validar formulario
+    if (!validateForm()) {
+      return;
+    }
+
+    const userDetails = {
+      name,
+      lastName,
+      dni,
+      address,
+      phone,
+      birthdate,
+      email,
+      password,
     };
 
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("http://localhost:8080/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(credentials),
+        body: JSON.stringify(userDetails),
       });
 
-      // Lee la respuesta una sola vez
       const responseBody = await response.text();
       console.log("Response Status:", response.status);
       console.log("Response Text:", responseBody);
 
       if (!response.ok) {
-        throw new Error("Error en la autenticación");
+        throw new Error("Error al registrar usuario");
       }
 
-      // Intenta parsear el responseBody a JSON
-      const data = JSON.parse(responseBody);
-      console.log("Token recibido:", data.token);
-
-      // Guardamos el token en localStorage si el login es exitoso
-      localStorage.setItem("token", data.token);
-
-      // Si el usuario marca 'Recordarme', puedes almacenar el token a largo plazo
-      if (rememberMe) {
-        // Aquí, por ejemplo, podrías guardar en cookies o también en localStorage con un tiempo de expiración
-        localStorage.setItem("token", data.token); // Este paso ya está hecho arriba
-      }
-
-      // Redirigir al usuario al dashboard
-      window.location.href = "/dashboard"; // O usa React Router para navegar
+      // Si el registro es exitoso, redirigir al login
+      window.location.href = "/login"; // O usa React Router para navegar
     } catch (error) {
-      console.error("Error durante el login:", error);
-      setError("Credenciales incorrectas o error al iniciar sesión");
+      console.error("Error durante el registro:", error);
+      setError("Hubo un error al registrar el usuario");
     }
   };
 
@@ -134,9 +196,9 @@ const Login = () => {
       <meta property="og:type" content="website" />
       <meta data-intl-tel-input-cdn-path="intlTelInput/" />
 
+      {/* Header */}
       <header className="u-header">
         <div className="container-fluid d-flex justify-content-between align-items-center py-3">
-          {/* Logo con más margen izquierdo */}
           <a href="#" className="u-image u-logo ms-5">
             <img
               src="images/default-logo.png"
@@ -145,8 +207,7 @@ const Login = () => {
             />
           </a>
 
-          {/* Navbar */}
-          <nav className="navbar navbar-expand-lg navbar-light w-200">
+          <nav className="navbar navbar-expand-lg navbar-light">
             <button
               className="navbar-toggler"
               type="button"
@@ -164,8 +225,6 @@ const Login = () => {
               id="navbarNav"
             >
               <ul className="navbar-nav w-100 d-flex justify-content-center">
-                {" "}
-                {/* Centrado del menú */}
                 <li className="nav-item">
                   <a className="nav-link" href="./" onClick={closeMenu}>
                     Inicio
@@ -199,6 +258,7 @@ const Login = () => {
         </div>
       </header>
 
+      {/* Contenedor principal */}
       <div
         className="container-fluid p-0"
         style={{
@@ -210,34 +270,103 @@ const Login = () => {
           minHeight: "100vh",
         }}
       >
-        {/* Contenedor principal */}
         <div className="position-relative d-flex flex-column flex-md-row justify-content-between align-items-center w-100 h-100 p-5">
           <div className="text-white col-md-6 text-center text-md-start">
-            <h1 className="display-4 fw-bold mb-4">Welcome Back</h1>
+            <h1 className="display-4 fw-bold mb-4">Join Us Today</h1>
             <p className="lead mb-4">
-              It's great to see you again! Please sign in to continue.
+              Sign up to enjoy our amazing services and start your journey.
             </p>
-            <div className="d-flex justify-content-center justify-content-md-start">
-              <a className="text-white me-3 fs-3" href="#">
-                <i className="fab fa-facebook"></i>
-              </a>
-              <a className="text-white me-3 fs-3" href="#">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a className="text-white me-3 fs-3" href="#">
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a className="text-white me-3 fs-3" href="#">
-                <i className="fab fa-whatsapp"></i>
-              </a>
-            </div>
           </div>
 
-          {/* Formulario de login */}
-          <div className="bg-white p-5 rounded-5 shadow-lg col-12 col-md-6 col-lg-4 mt-5 mt-md-0">
-            <h4 className="h4 mb-4 text-center">Sign in</h4>
+          {/* Formulario de registro */}
+          <div className="bg-white p-4 rounded-5 shadow-lg col-12 col-md-8 col-lg-6 mt-5 mt-md-0">
+            <h4 className="h4 mb-4 text-center">Create an Account</h4>
             {error && <div className="alert alert-danger">{error}</div>}
             <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label className="form-label" htmlFor="name">
+                  First Name
+                </label>
+                <input
+                  className="form-control"
+                  id="name"
+                  name="name"
+                  type="text"
+                  value={name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label" htmlFor="lastName">
+                  Last Name
+                </label>
+                <input
+                  className="form-control"
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  value={lastName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label" htmlFor="dni">
+                  DNI
+                </label>
+                <input
+                  className="form-control"
+                  id="dni"
+                  name="dni"
+                  type="text"
+                  value={dni}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label" htmlFor="address">
+                  Address
+                </label>
+                <input
+                  className="form-control"
+                  id="address"
+                  name="address"
+                  type="text"
+                  value={address}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label" htmlFor="phone">
+                  Phone Number
+                </label>
+                <input
+                  className="form-control"
+                  id="phone"
+                  name="phone"
+                  type="text"
+                  value={phone}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label" htmlFor="birthdate">
+                  Date of Birth
+                </label>
+                <input
+                  className="form-control"
+                  id="birthdate"
+                  name="birthdate"
+                  type="date"
+                  value={birthdate}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
               <div className="mb-3">
                 <label className="form-label" htmlFor="email">
                   Email Address
@@ -245,9 +374,10 @@ const Login = () => {
                 <input
                   className="form-control"
                   id="email"
+                  name="email"
                   type="email"
                   value={email}
-                  onChange={handleChangeEmail}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -258,56 +388,49 @@ const Login = () => {
                 <input
                   className="form-control"
                   id="password"
+                  name="password"
                   type="password"
                   value={password}
-                  onChange={handleChangePassword}
+                  onChange={handleChange}
                   required
                 />
               </div>
-              <div className="form-check mb-4">
-                <input
-                  className="form-check-input border-dark"
-                  id="remember"
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={handleRememberChange} // Agregar el manejador para el checkbox
-                />
-                <label className="form-check-label" htmlFor="remember">
-                  Remember Me
+              <div className="mb-3">
+                <label className="form-label" htmlFor="confirmPassword">
+                  Confirm Password
                 </label>
+                <input
+                  className="form-control"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={handleChange}
+                  required
+                />
               </div>
               <div className="d-flex align-items-center">
                 <button
                   className="btn btn-warning w-auto text-white me-3"
                   type="submit"
                 >
-                  Sign in now
+                  Sign Up
                 </button>
-                <a href="/register">
+                <Link to="/login">
                   <button
                     className="btn btn-secondary w-auto text-white"
                     type="button"
                   >
-                    Register
+                    Already have an account?
                   </button>
-                </a>
+                </Link>
               </div>
             </form>
-
-            <div className="d-flex justify-content-start mt-3">
-              <a className="text-dark" href="#">
-                Lost your password?
-              </a>
-            </div>
-
-            <div className="text-center mt-4 small">
-              By clicking "Sign in now" you agree to our
-              <a href="#"> Terms of Service</a> and
-              <a href="#"> Privacy Policy</a>.
-            </div>
           </div>
         </div>
       </div>
+
+      {/* Footer */}
       <footer
         className="u-align-center u-clearfix u-container-align-center u-footer u-grey-80 u-footer"
         id="footer"
@@ -332,15 +455,8 @@ const Login = () => {
           </div>
         </section>
       </footer>
-
-      {/* CDN de Bootstrap JS (opcional, si necesitas interactividad como modales, dropdowns, etc.) */}
-      <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-KyZXEJ6Haq4fVXf7Xw7xvvczf8vcnfd8j5LfUAW5A3v5Xr8V1BvLMth82A1ZcYpG"
-        crossorigin="anonymous"
-      ></script>
     </>
   );
 };
 
-export default Login;
+export default Register;
