@@ -19,5 +19,7 @@ Contiene métodos como findByEmail() para buscar un usuario por su correo electr
 public interface UserRepository extends CrudRepository<User, Long> {
 
     User findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }
 

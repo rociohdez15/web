@@ -24,6 +24,7 @@ public class SecurityConfig {
                 // Permitir acceso a Swagger y API pública
                 .requestMatchers(
                     "/auth/login",
+                    "/auth/register",
                     "/swagger-ui/**", 
                     "/v3/api-docs/**", 
                     "/swagger-ui.html",

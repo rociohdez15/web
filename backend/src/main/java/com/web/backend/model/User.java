@@ -25,7 +25,7 @@ public class User {
     @Column(length = 191, unique = true)
     private String email;
     private String password_hash;
-    private String rol;
+    private String rol = "USER";
 
     public String getEmail() {
         return email;
