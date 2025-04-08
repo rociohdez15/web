@@ -10,6 +10,7 @@
   width: 100%; /* Asegura que ocupe todo el ancho */
 }
 
+
 /* En el caso del botón del menú (en pantallas pequeñas) */
 .navbar-toggler {
   z-index: 1; /* Hace que el botón se muestre por encima del contenido */
@@ -7884,6 +7885,7 @@ ul.u-text li:last-child {
 .texto2{
   font-size: 1.125rem;
 }
+
 .u-text-default {
   display: table;
   align-self: flex-start;
