@@ -108,12 +108,12 @@ const Register = () => {
     }
 
     const userDetails = {
-      name,
-      lastName,
+      nombre: name, // Cambiado 'name' a 'nombre'
+      apellidos: lastName, // Cambiado 'lastName' a 'apellidos'
       dni,
-      address,
-      phone,
-      birthdate,
+      direccion: address, // Cambiado 'address' a 'direccion'
+      telefono: phone, // Cambiado 'phone' a 'telefono'
+      fechaNacimiento: birthdate, // Cambiado 'birthdate' a 'fechaNacimiento'
       email,
       password,
     };
@@ -207,7 +207,8 @@ const Register = () => {
             />
           </a>
 
-          <nav className="navbar navbar-expand-lg navbar-light">
+          {/* Navbar */}
+          <nav className="navbar navbar-expand-lg navbar-light w-200">
             <button
               className="navbar-toggler"
               type="button"
@@ -225,28 +226,22 @@ const Register = () => {
               id="navbarNav"
             >
               <ul className="navbar-nav w-100 d-flex justify-content-center">
+                {" "}
+                {/* Centrado del menú */}
                 <li className="nav-item">
-                  <a className="nav-link" href="./" onClick={closeMenu}>
+                  <Link to="/" className="nav-link" onClick={closeMenu}>
                     Inicio
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="Acerca-de.html"
-                    onClick={closeMenu}
-                  >
+                  <Link to="/contacto" className="nav-link" onClick={closeMenu}>
                     Contacto
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="Contacto.html"
-                    onClick={closeMenu}
-                  >
+                  <Link to="/proyecto" className="nav-link" onClick={closeMenu}>
                     Proyecto
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -280,130 +275,142 @@ const Register = () => {
 
           {/* Formulario de registro */}
           <div className="bg-white p-4 rounded-5 shadow-lg col-12 col-md-8 col-lg-6 mt-5 mt-md-0">
-            <h4 className="h4 mb-4 text-center">Create an Account</h4>
-            {error && <div className="alert alert-danger">{error}</div>}
+            <h4 className="mb-4 text-center">Registrarse</h4>
+            {error && (
+              <div className="alert alert-danger" role="alert">
+                {error}
+              </div>
+            )}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label" htmlFor="name">
-                  First Name
+                <label htmlFor="name" className="form-label">
+                  Nombre
                 </label>
                 <input
+                  type="text"
                   className="form-control"
                   id="name"
                   name="name"
-                  type="text"
                   value={name}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <div className="mb-3">
-                <label className="form-label" htmlFor="lastName">
-                  Last Name
+                <label htmlFor="lastName" className="form-label">
+                  Apellidos
                 </label>
                 <input
+                  type="text"
                   className="form-control"
                   id="lastName"
                   name="lastName"
-                  type="text"
                   value={lastName}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <div className="mb-3">
-                <label className="form-label" htmlFor="dni">
+                <label htmlFor="dni" className="form-label">
                   DNI
                 </label>
                 <input
+                  type="text"
                   className="form-control"
                   id="dni"
                   name="dni"
-                  type="text"
                   value={dni}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <div className="mb-3">
-                <label className="form-label" htmlFor="address">
-                  Address
+                <label htmlFor="address" className="form-label">
+                  Dirección
                 </label>
                 <input
+                  type="text"
                   className="form-control"
                   id="address"
                   name="address"
-                  type="text"
                   value={address}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <div className="mb-3">
-                <label className="form-label" htmlFor="phone">
-                  Phone Number
+                <label htmlFor="phone" className="form-label">
+                  Teléfono
                 </label>
                 <input
+                  type="text"
                   className="form-control"
                   id="phone"
                   name="phone"
-                  type="text"
                   value={phone}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <div className="mb-3">
-                <label className="form-label" htmlFor="birthdate">
-                  Date of Birth
+                <label htmlFor="birthdate" className="form-label">
+                  Fecha de nacimiento
                 </label>
                 <input
+                  type="date"
                   className="form-control"
                   id="birthdate"
                   name="birthdate"
-                  type="date"
                   value={birthdate}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <div className="mb-3">
-                <label className="form-label" htmlFor="email">
-                  Email Address
+                <label htmlFor="email" className="form-label">
+                  Correo electrónico
                 </label>
                 <input
+                  type="email"
                   className="form-control"
                   id="email"
                   name="email"
-                  type="email"
                   value={email}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <div className="mb-3">
-                <label className="form-label" htmlFor="password">
-                  Password
+                <label htmlFor="password" className="form-label">
+                  Contraseña
                 </label>
                 <input
+                  type="password"
                   className="form-control"
                   id="password"
                   name="password"
-                  type="password"
                   value={password}
                   onChange={handleChange}
                   required
                 />
               </div>
+
               <div className="mb-3">
-                <label className="form-label" htmlFor="confirmPassword">
-                  Confirm Password
+                <label htmlFor="confirmPassword" className="form-label">
+                  Confirmar contraseña
                 </label>
                 <input
+                  type="password"
                   className="form-control"
                   id="confirmPassword"
                   name="confirmPassword"
-                  type="password"
                   value={confirmPassword}
                   onChange={handleChange}
                   required
@@ -411,26 +418,24 @@ const Register = () => {
               </div>
               <div className="d-flex align-items-center">
                 <button
-                  className="btn btn-warning w-auto text-white me-3"
+                  className="btn btn-primary w-auto text-white me-3"
                   type="submit"
                 >
-                  Sign Up
+                  Registrar
                 </button>
-                <Link to="/login">
+                <a href="/login">
                   <button
-                    className="btn btn-secondary w-auto text-white"
+                    className="btn btn-success w-auto text-white"
                     type="button"
                   >
-                    Already have an account?
+                    Ya tengo una cuenta
                   </button>
-                </Link>
+                </a>
               </div>
             </form>
           </div>
         </div>
       </div>
-
-      {/* Footer */}
       <footer
         className="u-align-center u-clearfix u-container-align-center u-footer u-grey-80 u-footer"
         id="footer"
