@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
-
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [isNavOpen, setIsNavOpen] = useState(false); // Estado para el menú
@@ -81,27 +80,25 @@ const Home = () => {
                 {" "}
                 {/* Centrado del menú */}
                 <li className="nav-item">
-                  <a className="nav-link" href="./" onClick={closeMenu}>
+                  <Link to="/" className="nav-link" onClick={closeMenu}>
                     Inicio
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a
+                  <Link to="/contacto"
                     className="nav-link"
-                    href="Acerca-de.html"
                     onClick={closeMenu}
                   >
                     Contacto
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a
+                  <Link to="/proyecto"
                     className="nav-link"
-                    href="Contacto.html"
                     onClick={closeMenu}
                   >
                     Proyecto
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -134,78 +131,82 @@ const Home = () => {
               data-animation-name="customAnimationIn"
               data-animation-duration={1500}
               data-animation-delay={250}
+              style={{ marginBottom: "0.2rem" }} // Reducido el margen inferior
             >
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit&nbsp;
+              Viaja con la seguridad de quienes conocen el camino&nbsp;
             </p>
+            <p
+              className="u-large-text u-text u-text-variant u-text-2"
+              data-animation-name="customAnimationIn"
+              data-animation-duration={1500}
+              data-animation-delay={250}
+              style={{ marginTop: "0.2rem" }} // Reducido el margen superior
+            >
+              Descúbrelo&nbsp;
+            </p>
+
             <br></br>
             <div className="d-flex justify-content-center">
               <div className="row row-cols-1 row-cols-md-4 g-4">
                 {/* Repeater Items */}
                 <div className="col d-flex justify-content-center">
-                  <button className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4">
-                    <span className="u-align-center u-file-icon u-icon u-text-white u-icon-1">
+                  <Link to="/nosotros" className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4 d-flex flex-column align-items-center">
+                    <span className="u-align-center u-file-icon u-icon u-text-white u-icon-3">
                       <i className="fa-solid fa-users fa-2x"></i>
                     </span>
                     <a
-                      className="u-align-center u-custom-font u-text u-text-font u-text-3"
-                      href="#"
+                      className="u-align-center u-custom-font u-text u-text-font u-text-5 mb-3"
                     >
                       Nosotros
                     </a>
-                  </button>
+                  </Link>
                 </div>
                 <div className="col d-flex justify-content-center">
-                  <button className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4">
-                    <span className="u-align-center u-file-icon u-icon u-text-white u-icon-2">
+                  <Link to="/experiencias" className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4 d-flex flex-column align-items-center">
+                    <span className="u-align-center u-file-icon u-icon u-text-white u-icon-3 mt-3">
                       <i class="fa-solid fa-earth-americas fa-2x"></i>
                     </span>
                     <a
-                      className="u-align-center u-custom-font u-text u-text-font u-text-4"
-                      href="#"
+                      className="u-align-center u-custom-font u-text u-text-font u-text-5 mb-3"
                     >
                       Experiencias
                     </a>
-                  </button>
+                  </Link>
                 </div>
-                <div className="col d-flex justify-content-center">
-                  <button className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4">
-                    <span className="u-align-center u-file-icon u-icon u-text-white u-icon-3">
+                <div className="col d-flex justify-content-center align-items-center text-center">
+                  <Link to="/blog" className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4 d-flex flex-column align-items-center">
+                    <span className="u-align-center u-file-icon u-icon u-text-white u-icon-3 mt-3">
                       <i class="fa-solid fa-pencil fa-2x"></i>
                     </span>
                     <a
-                      className="u-align-center u-custom-font u-text u-text-font u-text-5"
-                      href="#"
+                      className="u-align-center u-custom-font u-text u-text-font u-text-5 mb-3"
                     >
                       Blog
                     </a>
-                  </button>
+                  </Link>
                 </div>
                 <div className="col d-flex justify-content-center">
-                  <button className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4">
-                    <span className="u-align-center u-file-icon u-icon u-text-white u-icon-2">
-                      <i class="fa-solid fa-photo-film fa-2x"></i>
+                  <Link to="/galeria" className="btn botones-inicio btn-secondary py-3 px-6 border-4 border-white fs-4 d-flex flex-column align-items-center">
+                    <span className="u-align-center u-file-icon u-icon u-text-white u-icon-3 mt-3">
+                    <i class="fa-solid fa-photo-film fa-2x"></i>
                     </span>
                     <a
-                      className="u-align-center u-custom-font u-text u-text-font u-text-4"
-                      href="#"
+                      className="u-align-center u-custom-font u-text u-text-font u-text-5 mb-3"
                     >
                       Galería
                     </a>
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
 
             <div className="d-flex justify-content-center gap-3 mt-4">
               <div>
-                <a
-                  href="#"
+                <Link to="/experiencias"
                   className="u-active-white u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2"
                 >
                   Reservar Ahora
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -246,9 +247,9 @@ const Home = () => {
                 ATREVES A VIVIRLO?
               </p>
               <br></br>
-              <a href="#" className="btn btn-primary rounded-pill">
+              <Link to="/nosotros" className="btn btn-primary rounded-pill">
                 Saber Más
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -430,15 +431,14 @@ const Home = () => {
               Excepteur sint occaecat cupidatat
             </li>
           </ul>
-          <a
-            href="#"
+          <Link to="/experiencias"
             className="u-align-left u-border-2 u-border-palette-2-base u-btn u-btn-round u-button-style u-palette-2-base u-radius-50 u-btn-2"
             data-animation-name="customAnimationIn"
             data-animation-duration={1500}
             data-animation-delay={500}
           >
             Book now
-          </a>
+          </Link>
         </div>
       </section>
       <section

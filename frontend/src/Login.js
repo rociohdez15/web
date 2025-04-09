@@ -167,27 +167,19 @@ const Login = () => {
                 {" "}
                 {/* Centrado del menú */}
                 <li className="nav-item">
-                  <a className="nav-link" href="./" onClick={closeMenu}>
+                  <Link to="/" className="nav-link" onClick={closeMenu}>
                     Inicio
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="Acerca-de.html"
-                    onClick={closeMenu}
-                  >
+                  <Link to="/contacto" className="nav-link" onClick={closeMenu}>
                     Contacto
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="Contacto.html"
-                    onClick={closeMenu}
-                  >
+                  <Link to="/proyecto" className="nav-link" onClick={closeMenu}>
                     Proyecto
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -295,15 +287,15 @@ const Login = () => {
             </form>
 
             <div className="d-flex justify-content-start mt-3">
-              <a className="text-dark" href="#">
+              <Link to="/olvidaste" className="text-dark">
                 Lost your password?
-              </a>
+              </Link>
             </div>
 
             <div className="text-center mt-4 small">
               By clicking "Sign in now" you agree to our
-              <a href="#"> Terms of Service</a> and
-              <a href="#"> Privacy Policy</a>.
+              <Link to="/terminos"> Terms of Service</Link> and
+              <Link to="/privacidad"> Privacy Policy</Link>.
             </div>
           </div>
         </div>
