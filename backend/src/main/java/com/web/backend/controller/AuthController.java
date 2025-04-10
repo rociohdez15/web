@@ -30,21 +30,29 @@ public class AuthController {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private UserDetailsService userService;  // Asegúrate de tener un servicio de usuarios
+    private UserDetailsService userService; // Asegúrate de tener un servicio de usuarios
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
             Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-            String token = jwtUtils.generateToken(auth.getName());  // Usa el nombre de usuario para generar el token
+            String token = jwtUtils.generateToken(auth.getName());
 
-            return ResponseEntity.ok(Map.of("token", token));
+            // Obtener roles (solo uno o lista, según tu implementación)
+            String rol = auth.getAuthorities().stream()
+                    .findFirst()
+                    .map(grantedAuthority -> grantedAuthority.getAuthority())
+                    .orElse("ROL");
+
+            return ResponseEntity.ok(Map.of(
+                    "token", token,
+                    "rol", rol));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Usuario no autenticado"));
         }
     }
-}
 
+}
