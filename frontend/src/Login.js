@@ -74,7 +74,13 @@ const Login = () => {
       }
 
       // Redirigir al usuario al dashboard
-      window.location.href = "/dashboard"; // O usa React Router para navegar
+       // O usa React Router para navegar
+
+      if (data.rol === "USER") {
+        window.location.href = "/dashboard";
+      } else {
+        window.location.href = "/dashboard-admin";
+      }
     } catch (error) {
       console.error("Error durante el login:", error);
       setError("Credenciales incorrectas o error al iniciar sesión");
