@@ -12,6 +12,8 @@ import Olvidaste from './Olvidaste';
 import Privacidad from './Privacidad';
 import Proyecto from './Proyecto';
 import Terminos from './Terminos';
+import Dashboard from './DashboardAdmin';
+import DashboardAdmin from './DashboardAdmin';
 
 
 const App = () => {
@@ -30,6 +32,7 @@ const App = () => {
         <Route path="/privacidad" element={<Privacidad />} />
         <Route path="/proyecto" element={<Proyecto />} />
         <Route path="/terminos" element={<Terminos />} />
+        <Route path="/dashboard-admin" element={<DashboardAdmin />} />
       </Routes>
     </Router>
   );
