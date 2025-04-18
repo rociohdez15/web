@@ -1293,6 +1293,43 @@ a {
   margin-bottom: 0;
   flex-grow: 1;
 }
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columnas para los días de la semana */
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.day {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+}
+
+.day-header {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.events {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.evento {
+  background-color: #3bc0c3;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+
 .u-form-vertical {
   display: flex;
   flex-wrap: wrap;
