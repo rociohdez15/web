@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import ReactApexChart from "react-apexcharts";
+import ApexCharts from "react-apexcharts";
+import ReactApexChart2 from "react-apexcharts";
 
 const DashboardAdmin = () => {
   /* Hacer una solicitud a la API para saber el número total de proveedores. */
@@ -22,6 +23,52 @@ const DashboardAdmin = () => {
     fetchTotalProveedores();
   }, []);
 
+  /* Hacer una solicitud a la API para saber la cantidad de ingresos de esta semana. */
+  const [totalIngresosSemanaActual, setTotalIngresosSemanaActual] = useState(0);
+
+  useEffect(() => {
+    const fetchTotalIngresosSemanaActual = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/admin/ingresos-semana-actual"
+        );
+        setTotalIngresosSemanaActual(
+          response.data.totalIngresosSemanaActual ?? response.data
+        ); // Por si devuelves un JSON o solo el número
+      } catch (error) {
+        console.error(
+          "Error al obtener el total de ingresos de la semana actual:",
+          error
+        );
+      }
+    };
+
+    fetchTotalIngresosSemanaActual();
+  }, []);
+
+  /* Hacer una solicitud a la API para saber la cantidad de ingresos de esta semana. */
+  const [totalIngresosSemanaAnterior, setTotalIngresosSemanaAnterior] =
+    useState(0);
+
+  useEffect(() => {
+    const fetchTotalIngresosSemanaAnterior = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/admin/ingresos-semana-anterior"
+        );
+        setTotalIngresosSemanaAnterior(
+          response.data.totalIngresosSemanaAnterior ?? response.data
+        ); // Por si devuelves un JSON o solo el número
+      } catch (error) {
+        console.error(
+          "Error al obtener el total de ingresos de la semana anterior:",
+          error
+        );
+      }
+    };
+
+    fetchTotalIngresosSemanaAnterior();
+  }, []);
   /* Hacer una solicitud a la API para calcular el total de ingresos. */
   const [totalIngresos, setTotalIngresos] = useState(0);
 
@@ -58,6 +105,69 @@ const DashboardAdmin = () => {
     fecthTotalReservas();
   }, []);
 
+  /* Hacer una solicitud a la API para calcular los ingresos del primer trimestre. */
+  const [totalPrimerTrimestre, setTotalPrimerTrismestre] = useState(0);
+
+  useEffect(() => {
+    const fecthTotalPrimerTrismestre = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/admin/ingresos-primer-trimestre"
+        );
+        setTotalPrimerTrismestre(
+          response.data.totalPrimerTrismestre ?? response.data
+        ); // Por si devuelves un JSON o solo el número
+      } catch (error) {
+        console.error("Error al obtener el total de Primer Trismestre:", error);
+      }
+    };
+
+    fecthTotalPrimerTrismestre();
+  }, []);
+
+  /* Hacer una solicitud a la API para calcular los ingresos del segundo trimestre. */
+  const [totalSegundoTrimestre, setTotalSegundoTrismestre] = useState(0);
+
+  useEffect(() => {
+    const fecthTotalSegundoTrismestre = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/admin/ingresos-segundo-trimestre"
+        );
+        setTotalSegundoTrismestre(
+          response.data.totalSegundoTrimestre ?? response.data
+        ); // Por si devuelves un JSON o solo el número
+      } catch (error) {
+        console.error(
+          "Error al obtener el total de Segundo Trismestre:",
+          error
+        );
+      }
+    };
+
+    fecthTotalSegundoTrismestre();
+  }, []);
+
+  /* Hacer una solicitud a la API para calcular los ingresos del tercer trimestre. */
+  const [totalTercerTrimestre, setTotalTercerTrismestre] = useState(0);
+
+  useEffect(() => {
+    const fecthTotalTercerTrismestre = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/admin/ingresos-tercer-trimestre"
+        );
+        setTotalTercerTrismestre(
+          response.data.totalTercerTrimestre ?? response.data
+        ); // Por si devuelves un JSON o solo el número
+      } catch (error) {
+        console.error("Error al obtener el total de Tercer Trismestre:", error);
+      }
+    };
+
+    fecthTotalTercerTrismestre();
+  }, []);
+
   /* Hacer una solicitud a la API para calcular el número total de usuarios. */
   const [totalUsuarios, setTotalUsuarios] = useState(0);
 
@@ -77,59 +187,219 @@ const DashboardAdmin = () => {
   }, []);
 
   /*Gráfico de ingresos por semana.*/
-  const chartData = {
-    series: [
-      {
-        name: "Ingresos (€)",
-        data: [1200, 1900, 1000, 1500, 1700, 2500, 2040], // lunes a viernes
-      },
-      {
-        name: "Ventas",
-        data: [10, 15, 8, 13, 11, 14, 20], // lunes a viernes
-      },
-    ],
-    options: {
-      chart: {
-        type: "bar",
-        height: 350,
-        stacked: false,
-        toolbar: { show: false },
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: "40%",
-          endingShape: "rounded",
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      xaxis: {
-        categories: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"],
-      },
-      yaxis: [
-        {
-          title: {
-            text: "Ingresos (€)",
-          },
-        },
-        {
-          opposite: true,
-          title: {
-            text: "Ventas",
-          },
-        },
-      ],
-      colors: ["#3bc0c3", "#1a2942"],
-      tooltip: {
-        shared: true,
-        intersect: false,
-      },
-      legend: {
-        position: "top",
+  const [data, setData] = useState({ ingresos: [], ventas: [] });
+
+  useEffect(() => {
+    const fetchIngresosYReservas = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/admin/ingresos-y-ventas-semana"
+        );
+        console.log(response.data); // Verifica que los datos lleguen correctamente
+
+        // Convertir las ventas de cadenas a números
+        const ingresos = response.data.ingresos;
+        const ventas = response.data.ventas.map((venta) => Number(venta)); // Convertir ventas a números
+
+        setData({
+          ingresos,
+          ventas,
+        });
+      } catch (error) {
+        console.error(
+          "Error al obtener los ingresos y reservas de la semana:",
+          error
+        );
+      }
+    };
+
+    fetchIngresosYReservas();
+  }, []);
+
+  // Configuración de los gráficos
+  const opciones = {
+    chart: {
+      id: "grafico-semana",
+      type: "bar",
+      height: 350,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false, // Esto asegura que las barras sean verticales
+        columnWidth: "50%", // Ajusta el ancho de las barras
+        endingShape: "rounded", // Forma redondeada en los extremos
       },
     },
+    xaxis: {
+      categories: [
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado",
+        "Domingo",
+      ],
+    },
+    title: {
+      text: "Ingresos y Ventas por Día de la Semana",
+      align: "center",
+    },
+    yaxis: [
+      {
+        title: {
+          text: "Ingresos (€)",
+        },
+      },
+      {
+        opposite: true,
+        title: {
+          text: "Ventas",
+        },
+      },
+    ],
+    tooltip: {
+      shared: true, // Esto hace que el tooltip sea común para ambas barras
+      intersect: false,
+    },
+  };
+
+  const series = [
+    {
+      name: "Ingresos",
+      data: data.ingresos,
+    },
+    {
+      name: "Ventas",
+      data: data.ventas,
+    },
+  ];
+
+  const [ventas, setVentas] = useState([]);
+  const [meses, setMeses] = useState([]);
+
+  useEffect(() => {
+    const fetchVentas = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/admin/ventas-anuales"
+        );
+
+        const data = response.data;
+        const labels = Object.keys(data); // ["enero", "febrero", ...]
+        const valores = Object.values(data); // [10, 15, ...]
+
+        setMeses(labels);
+        setVentas(valores);
+      } catch (error) {
+        console.error("Error al obtener las ventas anuales:", error);
+      }
+    };
+
+    fetchVentas();
+  }, []);
+
+  const opciones2 = {
+    chart: {
+      type: "line",
+      height: 250,
+    },
+    xaxis: {
+      categories: meses,
+    },
+    stroke: {
+      curve: "smooth",
+    },
+    title: {
+      text: "Ventas Anuales",
+      align: "center",
+    },
+  };
+
+  const series2 = [
+    {
+      name: "Ventas",
+      data: ventas,
+    },
+  ];
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [daysInMonth, setDaysInMonth] = useState([]);
+  const [eventos, setEventos] = useState([]);
+
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
+
+  // Obtener eventos del backend
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/admin/obtener-eventos")
+      .then((response) => {
+        const data = response.data;
+
+        // Agrupar eventos por año-mes-dia
+        const grouped = {};
+
+        data.forEach((evento) => {
+          const [year, month, day] = evento.fecha;
+          const key = `${year}-${month}-${day}`;
+
+          if (!grouped[key]) {
+            grouped[key] = [];
+          }
+
+          grouped[key].push(evento.nombre);
+        });
+
+        setEventos(grouped); // esto será un objeto con claves tipo "2024-12-12": ["Evento1", "Evento2"]
+      })
+      .catch((error) => {
+        console.error("Error al obtener eventos", error);
+      });
+  }, []);
+
+  // Generar los días del mes para mostrar en el calendario
+  useEffect(() => {
+    const days = [];
+    const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+    const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
+
+    for (let i = 0; i < adjustedFirstDay; i++) {
+      days.push("");
+    }
+
+    for (let i = 1; i <= totalDays; i++) {
+      days.push(i);
+    }
+
+    setDaysInMonth(days);
+  }, [currentMonth, currentYear]);
+
+  // Manejar el cambio de mes
+  const handlePrevMonth = () => {
+    const newDate = new Date(currentYear, currentMonth - 1, 1);
+    setCurrentDate(newDate);
+  };
+
+  const handleNextMonth = () => {
+    const newDate = new Date(currentYear, currentMonth + 1, 1);
+    setCurrentDate(newDate);
+  };
+
+  // Función para obtener los eventos de un día específico
+  const getEventosDelDia = (day) => {
+    const eventosDelDia = eventos.filter((evento) => {
+      const fechaEvento = new Date(
+        evento.fecha[0],
+        evento.fecha[1] - 1,
+        evento.fecha[2]
+      );
+      return (
+        fechaEvento.getDate() === day && fechaEvento.getMonth() === currentMonth
+      );
+    });
+    return eventosDelDia;
   };
 
   return (
@@ -939,68 +1209,22 @@ const DashboardAdmin = () => {
                         <li className="side-nav-item">
                           <a
                             data-bs-toggle="collapse"
-                            href="https://techzaa.in/velonic/layouts/index.html#sidebarExtendedUI"
-                            aria-expanded="false"
-                            aria-controls="sidebarExtendedUI"
-                            className="side-nav-link"
-                          >
-                            <i className="ri-compasses-2-line" />
-                            <span> Extended UI </span>
-                            <span className="menu-arrow" />
-                          </a>
-                          <div className="collapse" id="sidebarExtendedUI">
-                            <ul className="side-nav-second-level">
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/extended-portlets.html">
-                                  Portlets
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/extended-scrollbar.html">
-                                  Scrollbar
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/extended-range-slider.html">
-                                  Range Slider
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/extended-scrollspy.html">
-                                  Scrollspy
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="side-nav-item">
-                          <a
-                            data-bs-toggle="collapse"
                             href="https://techzaa.in/velonic/layouts/index.html#sidebarIcons"
                             aria-expanded="false"
                             aria-controls="sidebarIcons"
                             className="side-nav-link"
                           >
                             <i className="ri-pencil-ruler-2-line" />
-                            <span> Icons </span>
+                            <span> Eventos </span>
                             <span className="menu-arrow" />
                           </a>
                           <div className="collapse" id="sidebarIcons">
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/icons-remixicons.html">
-                                  Remix Icons
-                                </a>
+                                <a href="#">Listado</a>
                               </li>
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/icons-bootstrap.html">
-                                  Bootstrap Icons
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/icons-mdi.html">
-                                  Material Design Icons
-                                </a>
+                                <a href="#">Agregar eventos</a>
                               </li>
                             </ul>
                           </div>
@@ -1427,11 +1651,11 @@ const DashboardAdmin = () => {
                             className="apex-charts"
                             style={{ minHeight: 377 }}
                           >
-                            <ReactApexChart
-                              options={chartData.options}
-                              series={chartData.series}
+                            <ApexCharts
+                              options={opciones}
+                              series={series}
                               type="bar"
-                              height={377}
+                              height={350}
                             />
                           </div>
                         </div>
@@ -1439,25 +1663,19 @@ const DashboardAdmin = () => {
                           <div className="col">
                             <p className="text-muted mt-3">Semana Actual</p>
                             <h3 className=" mb-0">
-                              <span>$506.54</span>
+                              <span>{totalIngresosSemanaActual} €</span>
                             </h3>
                           </div>
                           <div className="col">
                             <p className="text-muted mt-3">Semana Anterior</p>
                             <h3 className=" mb-0">
-                              <span>$305.25 </span>
-                            </h3>
-                          </div>
-                          <div className="col">
-                            <p className="text-muted mt-3">Porcentaje</p>
-                            <h3 className=" mb-0">
-                              <span>3.27%</span>
+                              <span>{totalIngresosSemanaAnterior} € </span>
                             </h3>
                           </div>
                           <div className="col">
                             <p className="text-muted mt-3">Clientes</p>
                             <h3 className=" mb-0">
-                              <span>3k</span>
+                              <span>{totalUsuarios}</span>
                             </h3>
                           </div>
                         </div>
@@ -1491,7 +1709,9 @@ const DashboardAdmin = () => {
                           <i className="ri-close-line" />
                         </a>
                       </div>
-                      <h5 className="header-title mb-0">Yearly Sales Report</h5>
+                      <h5 className="header-title mb-0">
+                        Informe de ventas anual
+                      </h5>
                       <div
                         id="yearly-sales-collapse"
                         className="collapse pt-3 show"
@@ -1500,118 +1720,35 @@ const DashboardAdmin = () => {
                           <div
                             id="yearly-sales-chart"
                             className="apex-charts"
-                            data-colors="#3bc0c3,#1a2942,#d1d7d973"
+                            data-colors="#3bc0c3"
                             style={{ minHeight: 250 }}
                           >
-                            <div
-                              id="apexchartsa9qzh9d4l"
-                              className="apexcharts-canvas apexchartsa9qzh9d4l apexcharts-theme-light"
-                              style={{ width: 520, height: 250 }}
-                            >
-                              <div
-                                className="apexcharts-legend"
-                                style={{ maxHeight: 125 }}
-                              />
-                              <div className="apexcharts-tooltip apexcharts-theme-light">
-                                <div
-                                  className="apexcharts-tooltip-title"
-                                  style={{
-                                    fontFamily: "Helvetica, Arial, sans-serif",
-                                    fontSize: 12,
-                                  }}
-                                />
-                                <div
-                                  className="apexcharts-tooltip-series-group"
-                                  style={{ order: 1 }}
-                                >
-                                  <span
-                                    className="apexcharts-tooltip-marker"
-                                    style={{
-                                      backgroundColor: "rgb(59, 192, 195)",
-                                    }}
-                                  />
-                                  <div
-                                    className="apexcharts-tooltip-text"
-                                    style={{
-                                      fontFamily:
-                                        "Helvetica, Arial, sans-serif",
-                                      fontSize: 12,
-                                    }}
-                                  >
-                                    <div className="apexcharts-tooltip-y-group">
-                                      <span className="apexcharts-tooltip-text-y-label" />
-                                      <span className="apexcharts-tooltip-text-y-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-goals-group">
-                                      <span className="apexcharts-tooltip-text-goals-label" />
-                                      <span className="apexcharts-tooltip-text-goals-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-z-group">
-                                      <span className="apexcharts-tooltip-text-z-label" />
-                                      <span className="apexcharts-tooltip-text-z-value" />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div
-                                  className="apexcharts-tooltip-series-group"
-                                  style={{ order: 2 }}
-                                >
-                                  <span
-                                    className="apexcharts-tooltip-marker"
-                                    style={{
-                                      backgroundColor: "rgb(26, 41, 66)",
-                                    }}
-                                  />
-                                  <div
-                                    className="apexcharts-tooltip-text"
-                                    style={{
-                                      fontFamily:
-                                        "Helvetica, Arial, sans-serif",
-                                      fontSize: 12,
-                                    }}
-                                  >
-                                    <div className="apexcharts-tooltip-y-group">
-                                      <span className="apexcharts-tooltip-text-y-label" />
-                                      <span className="apexcharts-tooltip-text-y-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-goals-group">
-                                      <span className="apexcharts-tooltip-text-goals-label" />
-                                      <span className="apexcharts-tooltip-text-goals-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-z-group">
-                                      <span className="apexcharts-tooltip-text-z-label" />
-                                      <span className="apexcharts-tooltip-text-z-value" />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="apexcharts-xaxistooltip apexcharts-xaxistooltip-bottom apexcharts-theme-light">
-                                <div
-                                  className="apexcharts-xaxistooltip-text"
-                                  style={{
-                                    fontFamily: "Helvetica, Arial, sans-serif",
-                                    fontSize: 12,
-                                  }}
-                                />
-                              </div>
-                              <div className="apexcharts-yaxistooltip apexcharts-yaxistooltip-0 apexcharts-yaxistooltip-left apexcharts-theme-light">
-                                <div className="apexcharts-yaxistooltip-text" />
-                              </div>
-                            </div>
+                            <ReactApexChart2
+                              options={opciones2}
+                              series={series2}
+                              type="line"
+                              height={250}
+                            />
                           </div>
                         </div>
                         <div className="row text-center">
                           <div className="col">
-                            <p className="text-muted mt-3 mb-2">Quarter 1</p>
-                            <h4 className="mb-0">$56.2k</h4>
+                            <p className="text-muted mt-3 mb-2">
+                              Cuatrimestre 1
+                            </p>
+                            <h4 className="mb-0">{totalPrimerTrimestre}€</h4>
                           </div>
                           <div className="col">
-                            <p className="text-muted mt-3 mb-2">Quarter 2</p>
-                            <h4 className="mb-0">$42.5k</h4>
+                            <p className="text-muted mt-3 mb-2">
+                              Cuatrimestre 2
+                            </p>
+                            <h4 className="mb-0">{totalSegundoTrimestre}€</h4>
                           </div>
                           <div className="col">
-                            <p className="text-muted mt-3 mb-2">All Time</p>
-                            <h4 className="mb-0">$102.03k</h4>
+                            <p className="text-muted mt-3 mb-2">
+                              Cuatrimestre 3
+                            </p>
+                            <h4 className="mb-0">{totalTercerTrimestre}€</h4>
                           </div>
                         </div>
                       </div>
@@ -1619,168 +1756,7 @@ const DashboardAdmin = () => {
                     {/* end card-body*/}
                   </div>{" "}
                   {/* end card*/}
-                  <div className="card">
-                    <div className="card-body">
-                      <div className="d-flex align-items-center">
-                        <div className="flex-grow-1 overflow-hidden">
-                          <h4 className="fs-22 fw-semibold">69.25%</h4>
-                          <p className="text-uppercase fw-medium text-muted text-truncate mb-0">
-                            {" "}
-                            US Dollar Share
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0">
-                          <div
-                            id="us-share-chart"
-                            className="apex-charts"
-                            dir="ltr"
-                            style={{ minHeight: "69.3667px" }}
-                          >
-                            <div
-                              id="apexchartsl52vnybm"
-                              className="apexcharts-canvas apexchartsl52vnybm apexcharts-theme-light"
-                              style={{ width: 80, height: "69.3667px" }}
-                            >
-                              <div className="apexcharts-legend" />
-                              <div className="apexcharts-tooltip apexcharts-theme-dark">
-                                <div
-                                  className="apexcharts-tooltip-series-group"
-                                  style={{ order: 1 }}
-                                >
-                                  <span
-                                    className="apexcharts-tooltip-marker"
-                                    style={{
-                                      backgroundColor: "rgb(26, 41, 66)",
-                                    }}
-                                  />
-                                  <div
-                                    className="apexcharts-tooltip-text"
-                                    style={{
-                                      fontFamily:
-                                        "Helvetica, Arial, sans-serif",
-                                      fontSize: 12,
-                                    }}
-                                  >
-                                    <div className="apexcharts-tooltip-y-group">
-                                      <span className="apexcharts-tooltip-text-y-label" />
-                                      <span className="apexcharts-tooltip-text-y-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-goals-group">
-                                      <span className="apexcharts-tooltip-text-goals-label" />
-                                      <span className="apexcharts-tooltip-text-goals-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-z-group">
-                                      <span className="apexcharts-tooltip-text-z-label" />
-                                      <span className="apexcharts-tooltip-text-z-value" />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div
-                                  className="apexcharts-tooltip-series-group"
-                                  style={{ order: 2 }}
-                                >
-                                  <span
-                                    className="apexcharts-tooltip-marker"
-                                    style={{
-                                      backgroundColor: "rgb(241, 60, 110)",
-                                    }}
-                                  />
-                                  <div
-                                    className="apexcharts-tooltip-text"
-                                    style={{
-                                      fontFamily:
-                                        "Helvetica, Arial, sans-serif",
-                                      fontSize: 12,
-                                    }}
-                                  >
-                                    <div className="apexcharts-tooltip-y-group">
-                                      <span className="apexcharts-tooltip-text-y-label" />
-                                      <span className="apexcharts-tooltip-text-y-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-goals-group">
-                                      <span className="apexcharts-tooltip-text-goals-label" />
-                                      <span className="apexcharts-tooltip-text-goals-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-z-group">
-                                      <span className="apexcharts-tooltip-text-z-label" />
-                                      <span className="apexcharts-tooltip-text-z-value" />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div
-                                  className="apexcharts-tooltip-series-group"
-                                  style={{ order: 3 }}
-                                >
-                                  <span
-                                    className="apexcharts-tooltip-marker"
-                                    style={{
-                                      backgroundColor: "rgb(59, 192, 195)",
-                                    }}
-                                  />
-                                  <div
-                                    className="apexcharts-tooltip-text"
-                                    style={{
-                                      fontFamily:
-                                        "Helvetica, Arial, sans-serif",
-                                      fontSize: 12,
-                                    }}
-                                  >
-                                    <div className="apexcharts-tooltip-y-group">
-                                      <span className="apexcharts-tooltip-text-y-label" />
-                                      <span className="apexcharts-tooltip-text-y-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-goals-group">
-                                      <span className="apexcharts-tooltip-text-goals-label" />
-                                      <span className="apexcharts-tooltip-text-goals-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-z-group">
-                                      <span className="apexcharts-tooltip-text-z-label" />
-                                      <span className="apexcharts-tooltip-text-z-value" />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div
-                                  className="apexcharts-tooltip-series-group"
-                                  style={{ order: 4 }}
-                                >
-                                  <span
-                                    className="apexcharts-tooltip-marker"
-                                    style={{
-                                      backgroundColor:
-                                        "rgba(209, 215, 217, 0.45)",
-                                    }}
-                                  />
-                                  <div
-                                    className="apexcharts-tooltip-text"
-                                    style={{
-                                      fontFamily:
-                                        "Helvetica, Arial, sans-serif",
-                                      fontSize: 12,
-                                    }}
-                                  >
-                                    <div className="apexcharts-tooltip-y-group">
-                                      <span className="apexcharts-tooltip-text-y-label" />
-                                      <span className="apexcharts-tooltip-text-y-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-goals-group">
-                                      <span className="apexcharts-tooltip-text-goals-label" />
-                                      <span className="apexcharts-tooltip-text-goals-value" />
-                                    </div>
-                                    <div className="apexcharts-tooltip-z-group">
-                                      <span className="apexcharts-tooltip-text-z-label" />
-                                      <span className="apexcharts-tooltip-text-z-value" />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/* end card body */}
-                  </div>{" "}
-                  {/* end card*/}
+                  <div className="card"></div> {/* end card*/}
                 </div>{" "}
                 {/* end col*/}
               </div>
@@ -1790,194 +1766,99 @@ const DashboardAdmin = () => {
                   {/* Chat*/}
                   <div className="card">
                     <div className="card-body p-0">
-                      <div className="p-3">
-                        <div className="card-widgets">
-                          <a href="javascript:;" data-bs-toggle="reload">
-                            <i className="ri-refresh-line" />
-                          </a>
-                          <a
-                            data-bs-toggle="collapse"
-                            href="https://techzaa.in/velonic/layouts/index.html#yearly-sales-collapse"
-                            role="button"
-                            aria-expanded="false"
-                            aria-controls="yearly-sales-collapse"
-                          >
-                            <i className="ri-subtract-line" />
-                          </a>
-                          <a
-                            href="https://techzaa.in/velonic/layouts/index.html#"
-                            data-bs-toggle="remove"
-                          >
-                            <i className="ri-close-line" />
-                          </a>
-                        </div>
-                        <h5 className="header-title mb-0">Chat</h5>
+                      <div className="p-3 d-flex justify-content-between align-items-center">
+                        <button
+                          className="btn btn-sm btn-primary"
+                          onClick={handlePrevMonth}
+                        >
+                          Anterior
+                        </button>
+                        <h5 className="header-title mb-0 text-center">
+                          Calendario {currentMonth + 1}/{currentYear}
+                        </h5>
+                        <button
+                          className="btn btn-sm btn-primary"
+                          onClick={handleNextMonth}
+                        >
+                          Siguiente
+                        </button>
                       </div>
-                      <div id="yearly-sales-collapse" className="collapse show">
-                        <div className="chat-conversation mt-2">
-                          <div
-                            className="card-body py-0 mb-3"
-                            data-simplebar="init"
-                            style={{ height: 322 }}
-                          >
-                            <div
-                              className="simplebar-wrapper"
-                              style={{ margin: "0px -24px" }}
-                            >
-                              <div className="simplebar-height-auto-observer-wrapper">
-                                <div className="simplebar-height-auto-observer" />
-                              </div>
-                              <div className="simplebar-mask">
-                                <div
-                                  className="simplebar-offset"
-                                  style={{ right: 0, bottom: 0 }}
-                                >
-                                  <div
-                                    className="simplebar-content-wrapper"
-                                    tabIndex={0}
-                                    role="region"
-                                    aria-label="scrollable content"
-                                    style={{
-                                      height: "100%",
-                                      overflow: "hidden scroll",
-                                    }}
-                                  >
-                                    <div
-                                      className="simplebar-content"
-                                      style={{ padding: "0px 24px" }}
+                      <div className="table-responsive mx-2">
+                        <table className="table table-bordered text-center align-middle">
+                          <thead>
+                            <tr className="bg-primary text-white">
+                              {["L", "M", "X", "J", "V", "S", "D"].map(
+                                (day, i) => (
+                                  <th key={i} className="text-white">
+                                    {day}
+                                  </th>
+                                )
+                              )}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Array.from({ length: 6 }, (_, rowIndex) => (
+                              <tr key={rowIndex}>
+                                {Array.from({ length: 7 }, (_, colIndex) => {
+                                  const dayIndex = rowIndex * 7 + colIndex;
+                                  const day =
+                                    dayIndex < daysInMonth.length
+                                      ? daysInMonth[dayIndex]
+                                      : "";
+
+                                  const dayKey = `${currentYear}-${
+                                    currentMonth + 1
+                                  }-${day}`;
+                                  const dayEvents = eventos[dayKey] || [];
+
+                                  return (
+                                    <td
+                                      key={colIndex}
+                                      style={{
+                                        verticalAlign: "top",
+                                        padding: "4px",
+                                        minWidth: "35px",
+                                        maxWidth: "40px",
+                                        height: "60px",
+                                        overflow: "hidden",
+                                      }}
                                     >
-                                      <ul className="conversation-list">
-                                        <li className="clearfix">
-                                          <div className="chat-avatar">
-                                            <img
-                                              src="./administracion_files/avatar-5.jpg"
-                                              alt="male"
-                                            />
-                                            <i>10:00</i>
+                                      <div
+                                        style={{
+                                          fontSize: "0.8rem",
+                                          lineHeight: "1.2",
+                                          overflow: "hidden",
+                                          textOverflow: "ellipsis",
+                                        }}
+                                        title={dayEvents.join(", ")}
+                                      >
+                                        <strong>{day}</strong>
+                                        {dayEvents.map((eventText, i) => (
+                                          <div
+                                            key={i}
+                                            style={{
+                                              color: "red",
+                                              fontSize: "0.7rem",
+                                              whiteSpace: "nowrap",
+                                              overflow: "hidden",
+                                              textOverflow: "ellipsis",
+                                            }}
+                                          >
+                                            {eventText}
                                           </div>
-                                          <div className="conversation-text">
-                                            <div className="ctext-wrap">
-                                              <i>Geneva</i>
-                                              <p>Hello!</p>
-                                            </div>
-                                          </div>
-                                        </li>
-                                        <li className="clearfix odd">
-                                          <div className="chat-avatar">
-                                            <img
-                                              src="./administracion_files/avatar-1.jpg"
-                                              alt="Female"
-                                            />
-                                            <i>10:01</i>
-                                          </div>
-                                          <div className="conversation-text">
-                                            <div className="ctext-wrap">
-                                              <i>Thomson</i>
-                                              <p>
-                                                Hi, How are you? What about our
-                                                next meeting?
-                                              </p>
-                                            </div>
-                                          </div>
-                                        </li>
-                                        <li className="clearfix">
-                                          <div className="chat-avatar">
-                                            <img
-                                              src="./administracion_files/avatar-5.jpg"
-                                              alt="male"
-                                            />
-                                            <i>10:01</i>
-                                          </div>
-                                          <div className="conversation-text">
-                                            <div className="ctext-wrap">
-                                              <i>Geneva</i>
-                                              <p>Yeah everything is fine</p>
-                                            </div>
-                                          </div>
-                                        </li>
-                                        <li className="clearfix odd">
-                                          <div className="chat-avatar">
-                                            <img
-                                              src="./administracion_files/avatar-1.jpg"
-                                              alt="male"
-                                            />
-                                            <i>10:02</i>
-                                          </div>
-                                          <div className="conversation-text">
-                                            <div className="ctext-wrap">
-                                              <i>Thomson</i>
-                                              <p>Wow that's great</p>
-                                            </div>
-                                          </div>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div
-                                className="simplebar-placeholder"
-                                style={{ width: "auto", height: 344 }}
-                              />
-                            </div>
-                            <div
-                              className="simplebar-track simplebar-horizontal"
-                              style={{ visibility: "hidden" }}
-                            >
-                              <div
-                                className="simplebar-scrollbar"
-                                style={{ width: 0, display: "none" }}
-                              />
-                            </div>
-                            <div
-                              className="simplebar-track simplebar-vertical"
-                              style={{ visibility: "visible" }}
-                            >
-                              <div
-                                className="simplebar-scrollbar"
-                                style={{
-                                  height: 301,
-                                  transform: "translate3d(0px, 0px, 0px)",
-                                  display: "block",
-                                }}
-                              />
-                            </div>
-                          </div>
-                          <div className="card-body pt-0">
-                            <form
-                              className="needs-validation"
-                              noValidate=""
-                              name="chat-form"
-                              id="chat-form"
-                            >
-                              <div className="row align-items-start">
-                                <div className="col">
-                                  <input
-                                    type="text"
-                                    className="form-control chat-input"
-                                    placeholder="Enter your text"
-                                    required=""
-                                  />
-                                  <div className="invalid-feedback">
-                                    Please enter your messsage
-                                  </div>
-                                </div>
-                                <div className="col-auto d-grid">
-                                  <button
-                                    type="submit"
-                                    className="btn btn-danger chat-send waves-effect waves-light"
-                                  >
-                                    Send
-                                  </button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>{" "}
-                        {/* end .chat-conversation*/}
+                                        ))}
+                                      </div>
+                                    </td>
+                                  );
+                                })}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
                       </div>
                     </div>
-                  </div>{" "}
+                  </div>
+
                   {/* end card*/}
                 </div>{" "}
                 {/* end col*/}

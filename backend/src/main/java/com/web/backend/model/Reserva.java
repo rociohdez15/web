@@ -1,5 +1,7 @@
 package com.web.backend.model;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +16,8 @@ public class Reserva {
     private Long id;
 
     private double total_precio;
+
+    private Date fecha_pago;
 
     private String estado;
 
@@ -35,5 +39,12 @@ public class Reserva {
     }
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+    
+    public Date getFechaPago() {
+        return fecha_pago;
+    }
+    public void setFechaPAgo(Date fecha_pago) {
+        this.fecha_pago = fecha_pago;
     }
 }
