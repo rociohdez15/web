@@ -441,6 +441,40 @@ const DashboardAdmin = () => {
     return eventosDelDia;
   };
 
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/admin/obtener-form-contactos"
+        );
+        setMessages(response.data); // Asegúrate de que la estructura de datos sea la esperada
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessages();
+  }, []);
+
+  // Contar mensajes no leídos
+  const unreadCount = messages.filter((message) => !message.read).length;
+
+  const clearAllMessages = () => {
+    // Vaciar el array de mensajes solo en el frontend
+    setMessages([]);
+  };
+
+  const [showAll, setShowAll] = useState(false); // Para controlar la visualización de todos los mensajes
+
+  // Controlar si se deben mostrar todos los mensajes o solo los primeros 4
+  const displayedMessages = showAll ? messages : messages.slice(0, 4);
+
   return (
     <>
       <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -583,233 +617,107 @@ const DashboardAdmin = () => {
                 >
                   <i className="ri-mail-line fs-22" />
                   <span className="noti-icon-badge badge text-bg-purple">
-                    4
+                    {unreadCount}
                   </span>
                 </a>
                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
                   <div className="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
                     <div className="row align-items-center">
                       <div className="col">
-                        <h6 className="m-0 fs-16 fw-semibold"> Messages</h6>
+                        <h6 className="m-0 fs-16 fw-semibold">Mensajes</h6>
                       </div>
                       <div className="col-auto">
-                        <a
-                          href="javascript: void(0);"
+                        <button
+                          onClick={clearAllMessages}
                           className="text-dark text-decoration-underline"
+                          style={{ background: "none", border: "none" }}
                         >
-                          <small>Clear All</small>
-                        </a>
+                          <small>Limpiar Todo</small>
+                        </button>
                       </div>
                     </div>
                   </div>
                   <div style={{ maxHeight: 300 }} data-simplebar="init">
-                    <div className="simplebar-wrapper" style={{ margin: 0 }}>
-                      <div className="simplebar-height-auto-observer-wrapper">
-                        <div className="simplebar-height-auto-observer" />
-                      </div>
-                      <div className="simplebar-mask">
-                        <div
-                          className="simplebar-offset"
-                          style={{ right: 0, bottom: 0 }}
-                        >
-                          <div
-                            className="simplebar-content-wrapper"
-                            tabIndex={0}
-                            role="region"
-                            aria-label="scrollable content"
-                            style={{ height: "auto", overflow: "hidden" }}
+                    <div className="simplebar-content">
+                      {loading ? (
+                        <div className="text-center text-muted">
+                          Cargando mensajes...
+                        </div>
+                      ) : error ? (
+                        <div className="text-center text-danger">{error}</div>
+                      ) : messages.length > 0 ? (
+                        displayedMessages.map((message) => (
+                          <a
+                            key={message.id}
+                            href="javascript:void(0);"
+                            className={`dropdown-item p-0 notify-item read-noti card m-0 shadow-none ${
+                              !message.read ? "new-message" : ""
+                            }`} // Aplica la clase "new-message" si el mensaje no ha sido leído
+                            style={{
+                              backgroundColor: !message.read
+                                ? "#f0f0f0"
+                                : "transparent", // Gris claro para mensajes no leídos
+                              boxShadow: !message.read
+                                ? "0 0 10px rgba(0, 0, 0, 0.1)"
+                                : "none", // Sombra sutil
+                              position: "relative", // Necesario para posicionar el punto
+                              paddingLeft: "25px", // Añadido espacio para el punto
+                            }}
                           >
                             <div
-                              className="simplebar-content"
-                              style={{ padding: 0 }}
-                            >
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                              >
-                                <div className="card-body">
-                                  <div className="d-flex align-items-center">
-                                    <div className="flex-shrink-0">
-                                      <div className="notify-icon">
-                                        <img
-                                          src="./administracion_files/avatar-1.jpg"
-                                          className="img-fluid rounded-circle"
-                                          alt=""
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="flex-grow-1 text-truncate ms-2">
-                                      <h5 className="noti-item-title fw-semibold fs-14">
-                                        Cristina Pride{" "}
-                                        <small className="fw-normal text-muted float-end ms-1">
-                                          1 day ago
-                                        </small>
-                                      </h5>
-                                      <small className="noti-item-subtitle text-muted">
-                                        Hi, How are you? What about our next
-                                        meeting
-                                      </small>
-                                    </div>
-                                  </div>
+                              style={{
+                                position: "absolute", // Para posicionar el punto
+                                left: "10px", // Distancia desde la izquierda
+                                top: "50%", // Centrar el punto verticalmente
+                                transform: "translateY(-50%)", // Ajustar para centrar exactamente
+                                width: "8px", // Tamaño del punto
+                                height: "8px", // Tamaño del punto
+                                backgroundColor: !message.read
+                                  ? "#007bff"
+                                  : "#ccc", // Color según si está leído
+                                borderRadius: "50%", // Hacerlo redondo
+                              }}
+                            />
+                            <div className="card-body">
+                              <div className="d-flex align-items-center">
+                                <div className="flex-grow-1 text-truncate ms-2">
+                                  <h5 className="noti-item-title fw-semibold fs-14">
+                                    {message.nombre}{" "}
+                                    <small className="fw-normal text-muted float-end ms-1">
+                                      {new Date(
+                                        message.fecha[0],
+                                        message.fecha[1] - 1,
+                                        message.fecha[2]
+                                      ).toLocaleDateString()}
+                                    </small>
+                                  </h5>
+                                  <small className="noti-item-subtitle text-muted">
+                                    {message.mensaje}
+                                  </small>
                                 </div>
-                              </a>
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                              >
-                                <div className="card-body">
-                                  <div className="d-flex align-items-center">
-                                    <div className="flex-shrink-0">
-                                      <div className="notify-icon">
-                                        <img
-                                          src="./administracion_files/avatar-2.jpg"
-                                          className="img-fluid rounded-circle"
-                                          alt=""
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="flex-grow-1 text-truncate ms-2">
-                                      <h5 className="noti-item-title fw-semibold fs-14">
-                                        Sam Garret{" "}
-                                        <small className="fw-normal text-muted float-end ms-1">
-                                          2 day ago
-                                        </small>
-                                      </h5>
-                                      <small className="noti-item-subtitle text-muted">
-                                        Yeah everything is fine
-                                      </small>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                              >
-                                <div className="card-body">
-                                  <div className="d-flex align-items-center">
-                                    <div className="flex-shrink-0">
-                                      <div className="notify-icon">
-                                        <img
-                                          src="./administracion_files/avatar-3.jpg"
-                                          className="img-fluid rounded-circle"
-                                          alt=""
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="flex-grow-1 text-truncate ms-2">
-                                      <h5 className="noti-item-title fw-semibold fs-14">
-                                        Karen Robinson{" "}
-                                        <small className="fw-normal text-muted float-end ms-1">
-                                          2 day ago
-                                        </small>
-                                      </h5>
-                                      <small className="noti-item-subtitle text-muted">
-                                        Wow that's great
-                                      </small>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                              >
-                                <div className="card-body">
-                                  <div className="d-flex align-items-center">
-                                    <div className="flex-shrink-0">
-                                      <div className="notify-icon">
-                                        <img
-                                          src="./administracion_files/avatar-4.jpg"
-                                          className="img-fluid rounded-circle"
-                                          alt=""
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="flex-grow-1 text-truncate ms-2">
-                                      <h5 className="noti-item-title fw-semibold fs-14">
-                                        Sherry Marshall{" "}
-                                        <small className="fw-normal text-muted float-end ms-1">
-                                          3 day ago
-                                        </small>
-                                      </h5>
-                                      <small className="noti-item-subtitle text-muted">
-                                        Hi, How are you? What about our next
-                                        meeting
-                                      </small>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item p-0 notify-item read-noti card m-0 shadow-none"
-                              >
-                                <div className="card-body">
-                                  <div className="d-flex align-items-center">
-                                    <div className="flex-shrink-0">
-                                      <div className="notify-icon">
-                                        <img
-                                          src="./administracion_files/avatar-5.jpg"
-                                          className="img-fluid rounded-circle"
-                                          alt=""
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="flex-grow-1 text-truncate ms-2">
-                                      <h5 className="noti-item-title fw-semibold fs-14">
-                                        Shawn Millard{" "}
-                                        <small className="fw-normal text-muted float-end ms-1">
-                                          4 day ago
-                                        </small>
-                                      </h5>
-                                      <small className="noti-item-subtitle text-muted">
-                                        Yeah everything is fine
-                                      </small>
-                                    </div>
-                                  </div>
-                                </div>
-                              </a>
+                              </div>
                             </div>
-                          </div>
+                          </a>
+                        ))
+                      ) : (
+                        <div className="text-center text-muted">
+                          No hay mensajes
                         </div>
-                      </div>
-                      <div
-                        className="simplebar-placeholder"
-                        style={{ width: 0, height: 0 }}
-                      />
-                    </div>
-                    <div
-                      className="simplebar-track simplebar-horizontal"
-                      style={{ visibility: "hidden" }}
-                    >
-                      <div
-                        className="simplebar-scrollbar"
-                        style={{ width: 0, display: "none" }}
-                      />
-                    </div>
-                    <div
-                      className="simplebar-track simplebar-vertical"
-                      style={{ visibility: "hidden" }}
-                    >
-                      <div
-                        className="simplebar-scrollbar"
-                        style={{ height: 0, display: "none" }}
-                      />
+                      )}
                     </div>
                   </div>
-                  {/* All*/}
-                  <a
-                    href="javascript:void(0);"
-                    className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
-                  >
-                    View All
-                  </a>
+                  {messages.length > 4 && !showAll && (
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowAll(true); // Mostrar todos los mensajes
+                      }}
+                      className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
+                    >
+                      Ver Todos
+                    </a>
+                  )}
                 </div>
               </li>
               <li className="dropdown notification-list">
@@ -831,12 +739,13 @@ const DashboardAdmin = () => {
                         <h6 className="m-0 fs-16 fw-semibold"> Notification</h6>
                       </div>
                       <div className="col-auto">
-                        <a
-                          href="javascript: void(0);"
+                        <button
+                          onClick={clearAllMessages}
                           className="text-dark text-decoration-underline"
+                          style={{ background: "none", border: "none" }}
                         >
-                          <small>Clear All</small>
-                        </a>
+                          <small>Limpiar Todo</small>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -1096,9 +1005,6 @@ const DashboardAdmin = () => {
                             className="side-nav-link active"
                           >
                             <i className="ri-dashboard-3-line" />
-                            <span className="badge bg-success float-end">
-                              9+
-                            </span>
                             <span> Dashboard </span>
                           </a>
                         </li>
@@ -1264,252 +1170,6 @@ const DashboardAdmin = () => {
                               </li>
                               <li>
                                 <a href="#">Agregar eventos</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="side-nav-item">
-                          <a
-                            data-bs-toggle="collapse"
-                            href="https://techzaa.in/velonic/layouts/index.html#sidebarCharts"
-                            aria-expanded="false"
-                            aria-controls="sidebarCharts"
-                            className="side-nav-link"
-                          >
-                            <i className="ri-donut-chart-fill" />
-                            <span> Charts </span>
-                            <span className="menu-arrow" />
-                          </a>
-                          <div className="collapse" id="sidebarCharts">
-                            <ul className="side-nav-second-level">
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/charts-apex.html">
-                                  Apex Charts
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/charts-chartjs.html">
-                                  Chartjs
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/charts-sparklines.html">
-                                  Sparkline Charts
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="side-nav-item">
-                          <a
-                            data-bs-toggle="collapse"
-                            href="https://techzaa.in/velonic/layouts/index.html#sidebarForms"
-                            aria-expanded="false"
-                            aria-controls="sidebarForms"
-                            className="side-nav-link"
-                          >
-                            <i className="ri-survey-line" />
-                            <span> Forms </span>
-                            <span className="menu-arrow" />
-                          </a>
-                          <div className="collapse" id="sidebarForms">
-                            <ul className="side-nav-second-level">
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/form-elements.html">
-                                  Basic Elements
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/form-advanced.html">
-                                  Form Advanced
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/form-validation.html">
-                                  Form Validation
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/form-wizard.html">
-                                  Form Wizard
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/form-fileuploads.html">
-                                  File Uploads
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/form-editors.html">
-                                  Form Editors
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/form-image-crop.html">
-                                  Image Crop
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/form-x-editable.html">
-                                  X Editable
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="side-nav-item">
-                          <a
-                            data-bs-toggle="collapse"
-                            href="https://techzaa.in/velonic/layouts/index.html#sidebarTables"
-                            aria-expanded="false"
-                            aria-controls="sidebarTables"
-                            className="side-nav-link"
-                          >
-                            <i className="ri-table-line" />
-                            <span> Tables </span>
-                            <span className="menu-arrow" />
-                          </a>
-                          <div className="collapse" id="sidebarTables">
-                            <ul className="side-nav-second-level">
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/tables-basic.html">
-                                  Basic Tables
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/tables-datatable.html">
-                                  Data Tables
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/tables-editable.html">
-                                  Editable Tables
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/tables-responsive.html">
-                                  Responsive Table
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="side-nav-item">
-                          <a
-                            data-bs-toggle="collapse"
-                            href="https://techzaa.in/velonic/layouts/index.html#sidebarMaps"
-                            aria-expanded="false"
-                            aria-controls="sidebarMaps"
-                            className="side-nav-link"
-                          >
-                            <i className="ri-map-pin-line" />
-                            <span> Maps </span>
-                            <span className="menu-arrow" />
-                          </a>
-                          <div className="collapse" id="sidebarMaps">
-                            <ul className="side-nav-second-level">
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/maps-google.html">
-                                  Google Maps
-                                </a>
-                              </li>
-                              <li>
-                                <a href="https://techzaa.in/velonic/layouts/maps-vector.html">
-                                  Vector Maps
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        </li>
-                        <li className="side-nav-item">
-                          <a
-                            data-bs-toggle="collapse"
-                            href="https://techzaa.in/velonic/layouts/index.html#sidebarMultiLevel"
-                            aria-expanded="false"
-                            aria-controls="sidebarMultiLevel"
-                            className="side-nav-link"
-                          >
-                            <i className="ri-share-line" />
-                            <span> Multi Level </span>
-                            <span className="menu-arrow" />
-                          </a>
-                          <div className="collapse" id="sidebarMultiLevel">
-                            <ul className="side-nav-second-level">
-                              <li>
-                                <a href="javascript: void(0);">Level 1.1</a>
-                              </li>
-                              <li className="side-nav-item">
-                                <a
-                                  data-bs-toggle="collapse"
-                                  href="https://techzaa.in/velonic/layouts/index.html#sidebarSecondLevel"
-                                  aria-expanded="false"
-                                  aria-controls="sidebarSecondLevel"
-                                >
-                                  <span> Level 1.2 </span>
-                                  <span className="menu-arrow" />
-                                </a>
-                                <div
-                                  className="collapse"
-                                  id="sidebarSecondLevel"
-                                >
-                                  <ul className="side-nav-third-level">
-                                    <li>
-                                      <a href="javascript: void(0);">Item 1</a>
-                                    </li>
-                                    <li>
-                                      <a href="javascript: void(0);">Item 2</a>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </li>
-                              <li className="side-nav-item">
-                                <a
-                                  data-bs-toggle="collapse"
-                                  href="https://techzaa.in/velonic/layouts/index.html#sidebarThirdLevel"
-                                  aria-expanded="false"
-                                  aria-controls="sidebarThirdLevel"
-                                >
-                                  <span> Level 1.3 </span>
-                                  <span className="menu-arrow" />
-                                </a>
-                                <div
-                                  className="collapse"
-                                  id="sidebarThirdLevel"
-                                >
-                                  <ul className="side-nav-third-level">
-                                    <li>
-                                      <a href="javascript: void(0);">Item 1</a>
-                                    </li>
-                                    <li className="side-nav-item">
-                                      <a
-                                        data-bs-toggle="collapse"
-                                        href="https://techzaa.in/velonic/layouts/index.html#sidebarFourthLevel"
-                                        aria-expanded="false"
-                                        aria-controls="sidebarFourthLevel"
-                                      >
-                                        <span> Item 2 </span>
-                                        <span className="menu-arrow" />
-                                      </a>
-                                      <div
-                                        className="collapse"
-                                        id="sidebarFourthLevel"
-                                      >
-                                        <ul className="side-nav-forth-level">
-                                          <li>
-                                            <a href="javascript: void(0);">
-                                              Item 2.1
-                                            </a>
-                                          </li>
-                                          <li>
-                                            <a href="javascript: void(0);">
-                                              Item 2.2
-                                            </a>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                    </li>
-                                  </ul>
-                                </div>
                               </li>
                             </ul>
                           </div>
