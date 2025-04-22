@@ -230,6 +230,11 @@ const DashboardAdmin = () => {
         endingShape: "rounded", // Forma redondeada en los extremos
       },
     },
+    stroke: {
+      show: true,
+      width: 3,
+      colors: ["transparent"],
+    },
     xaxis: {
       categories: [
         "Lunes",
@@ -322,6 +327,40 @@ const DashboardAdmin = () => {
       data: ventas,
     },
   ];
+
+  const getBadgeClass = (estado) => {
+    switch (estado) {
+      case "Completado":
+        return "bg-info-subtle text-info";
+      case "Pendiente":
+        return "bg-pink-subtle text-pink";
+      case "En Progreso":
+        return "bg-purple-subtle text-purple";
+      default:
+        return "bg-secondary-subtle text-secondary";
+    }
+  };
+
+  const [proyectos, setProyectos] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/api/admin/obtener-proyectos")
+      .then((res) => setProyectos(res.data))
+      .catch((err) => console.error("Error al obtener proyectos:", err));
+  }, []);
+
+  const formatearFecha = (fecha) => {
+    if (!fecha) return "";
+    const dateObj = new Date(fecha);
+    if (isNaN(dateObj)) return "";
+
+    const dia = String(dateObj.getDate()).padStart(2, "0");
+    const mes = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const anio = dateObj.getFullYear();
+
+    return `${dia}/${mes}/${anio}`;
+  };
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [daysInMonth, setDaysInMonth] = useState([]);
@@ -1887,106 +1926,42 @@ const DashboardAdmin = () => {
                             <i className="ri-close-line" />
                           </a>
                         </div>
-                        <h5 className="header-title mb-0">Projects</h5>
+                        <h5 className="header-title mb-0">Proyectos</h5>
                       </div>
                       <div id="yearly-sales-collapse" className="collapse show">
                         <div className="table-responsive">
                           <table className="table table-nowrap table-hover mb-0">
                             <thead>
                               <tr>
-                                <th>#</th>
-                                <th>Project Name</th>
-                                <th>Start Date</th>
-                                <th>Due Date</th>
-                                <th>Status</th>
-                                <th>Assign</th>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Estado</th>
+                                <th>Asignado</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td>Velonic Admin v1</td>
-                                <td>01/01/2015</td>
-                                <td>26/04/2015</td>
-                                <td>
-                                  <span className="badge bg-info-subtle text-info">
-                                    Released
-                                  </span>
-                                </td>
-                                <td>Techzaa Studio</td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>Velonic Frontend v1</td>
-                                <td>01/01/2015</td>
-                                <td>26/04/2015</td>
-                                <td>
-                                  <span className="badge bg-info-subtle text-info">
-                                    Released
-                                  </span>
-                                </td>
-                                <td>Techzaa Studio</td>
-                              </tr>
-                              <tr>
-                                <td>3</td>
-                                <td>Velonic Admin v1.1</td>
-                                <td>01/05/2015</td>
-                                <td>10/05/2015</td>
-                                <td>
-                                  <span className="badge bg-pink-subtle text-pink">
-                                    Pending
-                                  </span>
-                                </td>
-                                <td>Techzaa Studio</td>
-                              </tr>
-                              <tr>
-                                <td>4</td>
-                                <td>Velonic Frontend v1.1</td>
-                                <td>01/01/2015</td>
-                                <td>31/05/2015</td>
-                                <td>
-                                  <span className="badge bg-purple-subtle text-purple">
-                                    Work in Progress
-                                  </span>
-                                </td>
-                                <td>Techzaa Studio</td>
-                              </tr>
-                              <tr>
-                                <td>5</td>
-                                <td>Velonic Admin v1.3</td>
-                                <td>01/01/2015</td>
-                                <td>31/05/2015</td>
-                                <td>
-                                  <span className="badge bg-warning-subtle text-warning">
-                                    Coming soon
-                                  </span>
-                                </td>
-                                <td>Techzaa Studio</td>
-                              </tr>
-                              <tr>
-                                <td>6</td>
-                                <td>Velonic Admin v1.3</td>
-                                <td>01/01/2015</td>
-                                <td>31/05/2015</td>
-                                <td>
-                                  <span className="badge bg-primary-subtle text-primary">
-                                    Coming soon
-                                  </span>
-                                </td>
-                                <td>Techzaa Studio</td>
-                              </tr>
-                              <tr>
-                                <td>7</td>
-                                <td>Velonic Admin v1.3</td>
-                                <td>01/01/2015</td>
-                                <td>31/05/2015</td>
-                                <td>
-                                  <span className="badge bg-danger-subtle text-danger">
-                                    Cool
-                                  </span>
-                                </td>
-                                <td>Techzaa Studio</td>
-                              </tr>
+                              {proyectos.map((proyecto, index) => (
+                                <tr key={proyecto.id}>
+                                  <td>{index + 1}</td>
+                                  <td>{proyecto.nombre}</td>
+                                  <td>
+                                    {formatearFecha(proyecto.fechaInicio)}
+                                  </td>
+                                  <td>{formatearFecha(proyecto.fechaFin)}</td>
+                                  <td>
+                                    <span
+                                      className={`badge ${getBadgeClass(
+                                        proyecto.estado
+                                      )}`}
+                                    >
+                                      {proyecto.estado}
+                                    </span>
+                                  </td>
+                                  <td>{proyecto.asignado}</td>
+                                </tr>
+                              ))}
                             </tbody>
                           </table>
                         </div>
