@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.web.backend.dto.EventoRequestDto;
 import com.web.backend.dto.RegisterRequestDto;
 import com.web.backend.model.Evento;
+import com.web.backend.model.Proyecto;
 import com.web.backend.model.User;
 import com.web.backend.repository.EventoRepository;
+import com.web.backend.repository.ProyectoRepository;
 import com.web.backend.repository.ReservaRepository;
 import com.web.backend.repository.UserRepository;
 
@@ -40,6 +42,9 @@ public class AdminPanelService {
 
     @Autowired
     private EventoRepository eventoRepository;
+
+    @Autowired
+    private ProyectoRepository proyectoRepository;
 
     public Double getTotalIngresos() {
         // Sumar los valores de 'total_precio' de todas las reservas
@@ -185,5 +190,9 @@ public class AdminPanelService {
 
     public List<Evento> obtenerEventos() {
         return eventoRepository.findAll(); // Obtener todos los eventos
+    }
+
+    public List<Proyecto> obtenerProyectos() {
+        return proyectoRepository.findAll(); // Obtener todos los proyectos
     }
 }

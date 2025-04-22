@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web.backend.dto.EventoRequestDto;
 import com.web.backend.model.Evento;
+import com.web.backend.model.Proyecto;
 import com.web.backend.repository.EventoRepository;
 import com.web.backend.repository.ProveedorRepository;
 import com.web.backend.service.AdminPanelService;
@@ -139,4 +140,8 @@ public class AdminPanelController {
         return adminPanelService.obtenerEventos();
     }
 
+    @GetMapping("/obtener-proyectos")
+    public List<Proyecto> obtenerProyectos() {
+        return adminPanelService.obtenerProyectos();
+    }
 }
