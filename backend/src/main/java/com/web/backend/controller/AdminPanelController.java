@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.backend.dto.EventoRequestDto;
+import com.web.backend.model.Contacto;
 import com.web.backend.model.Evento;
 import com.web.backend.model.Proyecto;
 import com.web.backend.repository.EventoRepository;
@@ -143,5 +144,10 @@ public class AdminPanelController {
     @GetMapping("/obtener-proyectos")
     public List<Proyecto> obtenerProyectos() {
         return adminPanelService.obtenerProyectos();
+    }
+
+    @GetMapping("/obtener-form-contactos")
+    public List<Contacto> obtenerFormContacto() {
+        return adminPanelService.obtenerFormContacto();
     }
 }
