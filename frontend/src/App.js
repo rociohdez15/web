@@ -12,7 +12,6 @@ import Olvidaste from './Olvidaste';
 import Privacidad from './Privacidad';
 import Proyecto from './Proyecto';
 import Terminos from './Terminos';
-import Dashboard from './DashboardAdmin';
 import DashboardAdmin from './DashboardAdmin';
 
 
