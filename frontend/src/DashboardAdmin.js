@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ApexCharts from "react-apexcharts";
 import ReactApexChart2 from "react-apexcharts";
+import { Outlet } from 'react-router-dom';
 
 const DashboardAdmin = () => {
   /* Hacer una solicitud a la API para saber el número total de proveedores. */
@@ -475,11 +476,103 @@ const DashboardAdmin = () => {
   // Controlar si se deben mostrar todos los mensajes o solo los primeros 4
   const displayedMessages = showAll ? messages : messages.slice(0, 4);
 
+  const [notifications, setNotifications] = useState([]);
+  const [loadingNotificaciones, setLoadingNotificaciones] = useState(true);
+  const [errorNotificaciones, setErrorNotificaciones] = useState(null);
+  const [verTodasNotificaciones, setVerTodasNotificaciones] = useState(false);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/admin/obtener-notificaciones"
+        );
+        setNotifications(response.data);
+      } catch (err) {
+        setErrorNotificaciones(err.message);
+      } finally {
+        setLoadingNotificaciones(false);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+  const clearAllNotifications = () => {
+    setNotifications([]);
+  };
+
+  const getNotificationText = (noti) => {
+    const nombreCompleto = `${noti.nombreCompleto}`;
+    switch (noti.tipo) {
+      case "like":
+        return `${nombreCompleto} dio like`;
+      case "reseña":
+        return `${nombreCompleto} dejó una reseña`;
+      case "reserva":
+        return `${nombreCompleto} realizó una reserva`;
+      default:
+        return `${nombreCompleto} realizó una acción`;
+    }
+  };
+
+  const getNotificationIcon = (tipo) => {
+    switch (tipo) {
+      case "like":
+        return {
+          icon: "mdi-heart",
+          bg: "bg-danger-subtle",
+          color: "text-danger",
+        };
+      case "reseña":
+        return {
+          icon: "mdi-comment-account-outline",
+          bg: "bg-warning-subtle",
+          color: "text-warning",
+        };
+      case "reserva":
+        return {
+          icon: "mdi-calendar-check",
+          bg: "bg-success-subtle",
+          color: "text-success",
+        };
+      default:
+        return {
+          icon: "mdi-bell-outline",
+          bg: "bg-secondary-subtle",
+          color: "text-secondary",
+        };
+    }
+  };
+
+  const displayedNotifications = verTodasNotificaciones
+    ? notifications
+    : notifications.slice(0, 4);
+
+  // Contar mensajes no leídos
+  const unreadCountNoti = notifications.filter(
+    (notification) => !notification.read
+  ).length;
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Eliminar el token de localStorage o sessionStorage
+    localStorage.removeItem("token");  // Si usas localStorage para almacenar el token
+    // sessionStorage.removeItem("token");  // Si usas sessionStorage
+
+    // O también puedes eliminar cookies si las usas:
+    // document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+
+    // Redirigir al usuario a la página de inicio (u otra página de login)
+    navigate("/login");
+  };
+
   return (
     <>
       <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
       <title>
-        Dashboard | Velonic - Bootstrap 5 Admin &amp; Dashboard Template
+        Dashboard Admin | Atalanta
       </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta
@@ -730,17 +823,21 @@ const DashboardAdmin = () => {
                   aria-expanded="false"
                 >
                   <i className="ri-notification-3-line fs-22" />
-                  <span className="noti-icon-badge badge text-bg-pink">3</span>
+                  <span className="noti-icon-badge badge text-bg-pink">
+                    {unreadCountNoti}
+                  </span>
                 </a>
                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg py-0">
                   <div className="p-2 border-top-0 border-start-0 border-end-0 border-dashed border">
                     <div className="row align-items-center">
                       <div className="col">
-                        <h6 className="m-0 fs-16 fw-semibold"> Notification</h6>
+                        <h6 className="m-0 fs-16 fw-semibold">
+                          Notificaciones
+                        </h6>
                       </div>
                       <div className="col-auto">
                         <button
-                          onClick={clearAllMessages}
+                          onClick={clearAllNotifications}
                           className="text-dark text-decoration-underline"
                           style={{ background: "none", border: "none" }}
                         >
@@ -749,150 +846,78 @@ const DashboardAdmin = () => {
                       </div>
                     </div>
                   </div>
+
                   <div style={{ maxHeight: 300 }} data-simplebar="init">
-                    <div className="simplebar-wrapper" style={{ margin: 0 }}>
-                      <div className="simplebar-height-auto-observer-wrapper">
-                        <div className="simplebar-height-auto-observer" />
-                      </div>
-                      <div className="simplebar-mask">
-                        <div
-                          className="simplebar-offset"
-                          style={{ right: 0, bottom: 0 }}
-                        >
-                          <div
-                            className="simplebar-content-wrapper"
-                            tabIndex={0}
-                            role="region"
-                            aria-label="scrollable content"
-                            style={{ height: "auto", overflow: "hidden" }}
-                          >
-                            <div
-                              className="simplebar-content"
-                              style={{ padding: 0 }}
+                    <div className="simplebar-content" style={{ padding: 0 }}>
+                      {loadingNotificaciones ? (
+                        <p className="text-center my-3">Cargando...</p>
+                      ) : errorNotificaciones ? (
+                        <p className="text-danger text-center my-3">
+                          Error: {errorNotificaciones}
+                        </p>
+                      ) : (
+                        displayedNotifications.map((noti) => {
+                          const { icon, bg, color } = getNotificationIcon(
+                            noti.tipo
+                          );
+                          return (
+                            <a
+                              key={noti.id}
+                              href="#"
+                              className={`dropdown-item notify-item card m-0 shadow-none ${
+                                !noti.read ? "new-noti" : ""
+                              }`}
+                              style={{
+                                backgroundColor: !noti.read
+                                  ? "#f0f0f0"
+                                  : "transparent",
+                                boxShadow: !noti.read
+                                  ? "0 0 10px rgba(0, 0, 0, 0.1)"
+                                  : "none",
+                                position: "relative",
+                                paddingLeft: "25px",
+                              }}
                             >
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item notify-item"
-                              >
-                                <div className="notify-icon bg-primary-subtle">
-                                  <i className="mdi mdi-comment-account-outline text-primary" />
+                              {!noti.read && (
+                                <div
+                                  style={{
+                                    position: "absolute",
+                                    left: "10px",
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                    width: "8px",
+                                    height: "8px",
+                                    backgroundColor: "#007bff",
+                                    borderRadius: "50%",
+                                  }}
+                                />
+                              )}
+                              <div className="d-flex align-items-center">
+                                <div className={`notify-icon ${bg}`}>
+                                  <i className={`mdi ${icon} ${color}`}></i>
                                 </div>
-                                <p className="notify-details">
-                                  Caleb Flakelar commented on Admin
-                                  <small className="noti-time">1 min ago</small>
+                                <p className="notify-details mb-0 ms-2 d-flex flex-column justify-content-center">
+                                  {getNotificationText(noti)}
                                 </p>
-                              </a>
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item notify-item"
-                              >
-                                <div className="notify-icon bg-warning-subtle">
-                                  <i className="mdi mdi-account-plus text-warning" />
-                                </div>
-                                <p className="notify-details">
-                                  New user registered.
-                                  <small className="noti-time">
-                                    5 hours ago
-                                  </small>
-                                </p>
-                              </a>
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item notify-item"
-                              >
-                                <div className="notify-icon bg-danger-subtle">
-                                  <i className="mdi mdi-heart text-danger" />
-                                </div>
-                                <p className="notify-details">
-                                  Carlos Crouch liked
-                                  <small className="noti-time">
-                                    3 days ago
-                                  </small>
-                                </p>
-                              </a>
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item notify-item"
-                              >
-                                <div className="notify-icon bg-pink-subtle">
-                                  <i className="mdi mdi-comment-account-outline text-pink" />
-                                </div>
-                                <p className="notify-details">
-                                  Caleb Flakelar commented on Admi
-                                  <small className="noti-time">
-                                    4 days ago
-                                  </small>
-                                </p>
-                              </a>
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item notify-item"
-                              >
-                                <div className="notify-icon bg-purple-subtle">
-                                  <i className="mdi mdi-account-plus text-purple" />
-                                </div>
-                                <p className="notify-details">
-                                  New user registered.
-                                  <small className="noti-time">
-                                    7 days ago
-                                  </small>
-                                </p>
-                              </a>
-                              {/* item*/}
-                              <a
-                                href="javascript:void(0);"
-                                className="dropdown-item notify-item"
-                              >
-                                <div className="notify-icon bg-success-subtle">
-                                  <i className="mdi mdi-heart text-success" />
-                                </div>
-                                <p className="notify-details">
-                                  Carlos Crouch liked <b>Admin</b>.
-                                  <small className="noti-time">
-                                    Carlos Crouch liked
-                                  </small>
-                                </p>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="simplebar-placeholder"
-                        style={{ width: 0, height: 0 }}
-                      />
-                    </div>
-                    <div
-                      className="simplebar-track simplebar-horizontal"
-                      style={{ visibility: "hidden" }}
-                    >
-                      <div
-                        className="simplebar-scrollbar"
-                        style={{ width: 0, display: "none" }}
-                      />
-                    </div>
-                    <div
-                      className="simplebar-track simplebar-vertical"
-                      style={{ visibility: "hidden" }}
-                    >
-                      <div
-                        className="simplebar-scrollbar"
-                        style={{ height: 0, display: "none" }}
-                      />
+                              </div>
+                            </a>
+                          );
+                        })
+                      )}
                     </div>
                   </div>
-                  {/* All*/}
-                  <a
-                    href="javascript:void(0);"
-                    className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
-                  >
-                    View All
-                  </a>
+
+                  {notifications.length > 4 && (
+                    <a
+                      href="#"
+                      onClick={() =>
+                        setVerTodasNotificaciones(!verTodasNotificaciones)
+                      }
+                      className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
+                    >
+                      {verTodasNotificaciones ? "Mostrar Menos" : "Ver Todas"}
+                    </a>
+                  )}
                 </div>
               </li>
               <li className="dropdown">
@@ -905,18 +930,8 @@ const DashboardAdmin = () => {
                   aria-expanded="false"
                 >
                   <span className="account-user-avatar">
-                    <img
-                      src="./administracion_files/avatar-1.jpg"
-                      alt="user-image"
-                      width={32}
-                      className="rounded-circle"
-                    />
-                  </span>
-                  <span className="d-lg-block d-none">
-                    <h5 className="my-0 fw-normal">
-                      Thomson{" "}
-                      <i className="ri-arrow-down-s-line d-none d-sm-inline-block align-middle" />
-                    </h5>
+                  <i className="ri-account-circle-line fs-24 align-middle me-1" />
+                  <i className="ri-arrow-down-s-line d-none d-sm-inline-block align-middle" />
                   </span>
                 </a>
                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
@@ -933,13 +948,11 @@ const DashboardAdmin = () => {
                     <span>My Account</span>
                   </a>
                   {/* item*/}
-                  <a
-                    href="https://techzaa.in/velonic/layouts/auth-logout-2.html"
-                    className="dropdown-item"
-                  >
-                    <i className="ri-logout-box-line fs-18 align-middle me-1" />
-                    <span>Logout</span>
-                  </a>
+                  
+                  <button onClick={handleLogout} className="dropdown-item">
+                  <i className="ri-logout-box-line fs-18 align-middle me-1" />
+                  <span>Logout</span>
+    </button>
                 </div>
               </li>
             </ul>
@@ -1000,13 +1013,13 @@ const DashboardAdmin = () => {
                       {/*- Sidemenu */}
                       <ul className="side-nav">
                         <li className="side-nav-item menuitem-active">
-                          <a
-                            href="https://techzaa.in/velonic/layouts/index.html"
+                          <Link
+                            to="/dashboard-admin"
                             className="side-nav-link active"
                           >
                             <i className="ri-dashboard-3-line" />
                             <span> Dashboard </span>
-                          </a>
+                          </Link>
                         </li>
                         <li className="side-nav-item">
                           <a
@@ -1174,6 +1187,47 @@ const DashboardAdmin = () => {
                             </ul>
                           </div>
                         </li>
+                        <li className="side-nav-item">
+                          <a
+                            data-bs-toggle="collapse"
+                            href="#sidebarMessages"
+                            aria-expanded="false"
+                            aria-controls="sidebarMessages"
+                            className="side-nav-link"
+                          >
+                            <i className="ri-message-3-line" />
+                            <span> Mensajes </span>
+                            <span className="menu-arrow" />
+                          </a>
+                          <div className="collapse" id="sidebarMessages">
+                            <ul className="side-nav-second-level">
+                              <li>
+                                <a href="#">Todos los mensajes</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </li>
+
+                        <li className="side-nav-item">
+                          <a
+                            data-bs-toggle="collapse"
+                            href="#sidebarNotifications"
+                            aria-expanded="false"
+                            aria-controls="sidebarNotifications"
+                            className="side-nav-link"
+                          >
+                            <i className="ri-notification-3-line" />
+                            <span> Notificaciones </span>
+                            <span className="menu-arrow" />
+                          </a>
+                          <div className="collapse" id="sidebarNotifications">
+                            <ul className="side-nav-second-level">
+                              <li>
+                                <a href="#">Todas las notificaciones</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </li>
                       </ul>
                       {/*- End Sidemenu */}
                       <div className="clearfix" />
@@ -1242,12 +1296,6 @@ const DashboardAdmin = () => {
                         Total Proveedores
                       </h6>
                       <h2 className="my-2">{totalProveedores}</h2>
-                      <p className="mb-0">
-                        <span className="badge bg-white bg-opacity-10 me-1">
-                          2.97%
-                        </span>
-                        <span className="text-nowrap">Since last month</span>
-                      </p>
                     </div>
                   </div>
                 </div>{" "}
@@ -1262,12 +1310,6 @@ const DashboardAdmin = () => {
                         Total Ingresos
                       </h6>
                       <h2 className="my-2">{totalIngresos} €</h2>
-                      <p className="mb-0">
-                        <span className="badge bg-white bg-opacity-10 me-1">
-                          18.25%
-                        </span>
-                        <span className="text-nowrap">Since last month</span>
-                      </p>
                     </div>
                   </div>
                 </div>{" "}
@@ -1282,12 +1324,6 @@ const DashboardAdmin = () => {
                         Total de Reservas
                       </h6>
                       <h2 className="my-2">{totalReservas}</h2>
-                      <p className="mb-0">
-                        <span className="badge bg-white bg-opacity-25 me-1">
-                          -5.75%
-                        </span>
-                        <span className="text-nowrap">Since last month</span>
-                      </p>
                     </div>
                   </div>
                 </div>{" "}
@@ -1302,12 +1338,6 @@ const DashboardAdmin = () => {
                         Total Usuarios
                       </h6>
                       <h2 className="my-2">{totalUsuarios}</h2>
-                      <p className="mb-0">
-                        <span className="badge bg-white bg-opacity-10 me-1">
-                          8.21%
-                        </span>
-                        <span className="text-nowrap">Since last month</span>
-                      </p>
                     </div>
                   </div>
                 </div>{" "}

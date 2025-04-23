@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Usamos Routes en lugar de Switch
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; // Usamos Routes en lugar de Switch
 import Home from './Home'; // Asegúrate de ajustar la ruta si es necesario
 import Login from './Login';
 import Register from './Register';
@@ -12,11 +12,13 @@ import Olvidaste from './Olvidaste';
 import Privacidad from './Privacidad';
 import Proyecto from './Proyecto';
 import Terminos from './Terminos';
-import Dashboard from './DashboardAdmin';
+import PrivateRoute from "./PrivateRoute";
 import DashboardAdmin from './DashboardAdmin';
 
 
 const App = () => {
+  const token = localStorage.getItem("token"); // Verificar si hay token
+  console.log(token);
   return (
     <Router>
       <Routes>
@@ -32,7 +34,15 @@ const App = () => {
         <Route path="/privacidad" element={<Privacidad />} />
         <Route path="/proyecto" element={<Proyecto />} />
         <Route path="/terminos" element={<Terminos />} />
-        <Route path="/dashboard-admin" element={<DashboardAdmin />} />
+        <Route
+  path="/dashboard-admin"
+  element={
+    <PrivateRoute>
+      <DashboardAdmin />
+    </PrivateRoute>
+  }
+/>
+
       </Routes>
     </Router>
   );
