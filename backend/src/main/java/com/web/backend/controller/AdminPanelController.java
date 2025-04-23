@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.backend.dto.EventoRequestDto;
+import com.web.backend.dto.NotificacionRequestDto;
 import com.web.backend.model.Contacto;
 import com.web.backend.model.Evento;
 import com.web.backend.model.Proyecto;
@@ -149,5 +150,10 @@ public class AdminPanelController {
     @GetMapping("/obtener-form-contactos")
     public List<Contacto> obtenerFormContacto() {
         return adminPanelService.obtenerFormContacto();
+    }
+
+    @GetMapping("/obtener-notificaciones")
+    public ResponseEntity<List<NotificacionRequestDto>> getAll() {
+        return ResponseEntity.ok(adminPanelService.obtenerNotificaciones());
     }
 }
