@@ -507,6 +507,7 @@ const DashboardAdmin = () => {
     switch (noti.tipo) {
       case "like":
         return `${nombreCompleto} dio like`;
+
       case "reseña":
         return `${nombreCompleto} dejó una reseña`;
       case "reserva":
@@ -529,6 +530,7 @@ const DashboardAdmin = () => {
           icon: "mdi-comment-account-outline",
           bg: "bg-warning-subtle",
           color: "text-warning",
+
         };
       case "reserva":
         return {
@@ -567,6 +569,7 @@ const DashboardAdmin = () => {
     // Redirigir al usuario a la página de inicio (u otra página de login)
     navigate("/login");
   };
+
 
   return (
     <>
