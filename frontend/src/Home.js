@@ -26,6 +26,9 @@ const Home = () => {
       <title>Atalanta | Inicio</title>
       <link rel="stylesheet" href="nicepage.css" media="screen" />
       <link rel="stylesheet" href="index.css" media="screen" />
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Sansita:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
       <meta name="generator" content="Nicepage 7.6.4, nicepage.com" />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -79,12 +82,12 @@ const Home = () => {
               <ul className="navbar-nav w-100 d-flex justify-content-center">
                 {" "}
                 {/* Centrado del menú */}
-                <li className="nav-item">
+                <li className="nav-item p-nosotros">
                   <Link to="/" className="nav-link" onClick={closeMenu}>
                     Inicio
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item p-nosotros">
                   <Link to="/contacto"
                     className="nav-link"
                     onClick={closeMenu}
@@ -92,7 +95,7 @@ const Home = () => {
                     Contacto
                   </Link>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item p-nosotros">
                   <Link to="/proyecto"
                     className="nav-link"
                     onClick={closeMenu}
@@ -104,7 +107,7 @@ const Home = () => {
             </div>
           </nav>
 
-          <Link to="/login" className="btn btn-primary me-5 rounded-pill">
+          <Link to="/login" className="btn btn-primary me-5 rounded-pill p-nosotros">
             Iniciar Sesión
           </Link>
         </div>
@@ -119,7 +122,7 @@ const Home = () => {
         <div className="container-fluid d-flex justify-content-center align-items-center u-clearfix u-sheet u-valign-middle">
           <div className="text-center">
             <h1
-              className="u-text u-text-default u-text-1"
+              className="u-text u-text-default u-text-1 titulo-nosotros"
               data-animation-name="customAnimationIn"
               data-animation-duration={1500}
               data-animation-delay={250}
@@ -127,7 +130,7 @@ const Home = () => {
               Haz de cada aventura, una historia que contar
             </h1>
             <p
-              className="u-large-text u-text u-text-variant u-text-2"
+              className="u-large-text u-text u-text-variant u-text-2 p-nosotros"
               data-animation-name="customAnimationIn"
               data-animation-duration={1500}
               data-animation-delay={250}
@@ -136,7 +139,7 @@ const Home = () => {
               Viaja con la seguridad de quienes conocen el camino&nbsp;
             </p>
             <p
-              className="u-large-text u-text u-text-variant u-text-2"
+              className="u-large-text u-text u-text-variant u-text-2 p-nosotros"
               data-animation-name="customAnimationIn"
               data-animation-duration={1500}
               data-animation-delay={250}
@@ -155,7 +158,7 @@ const Home = () => {
                       <i className="fa-solid fa-users fa-2x"></i>
                     </span>
                     <a
-                      className="u-align-center u-custom-font u-text u-text-font u-text-5 mb-3"
+                      className="u-align-center u-custom-font u-text p-nosotros u-text-5 mb-3"
                     >
                       Nosotros
                     </a>
@@ -167,7 +170,7 @@ const Home = () => {
                       <i class="fa-solid fa-earth-americas fa-2x"></i>
                     </span>
                     <a
-                      className="u-align-center u-custom-font u-text u-text-font u-text-5 mb-3"
+                      className="u-align-center u-custom-font u-text p-nosotros u-text-5 mb-3"
                     >
                       Experiencias
                     </a>
@@ -179,7 +182,7 @@ const Home = () => {
                       <i class="fa-solid fa-pencil fa-2x"></i>
                     </span>
                     <a
-                      className="u-align-center u-custom-font u-text u-text-font u-text-5 mb-3"
+                      className="u-align-center u-custom-font u-text p-nosotros u-text-5 mb-3"
                     >
                       Blog
                     </a>
@@ -191,7 +194,7 @@ const Home = () => {
                     <i class="fa-solid fa-photo-film fa-2x"></i>
                     </span>
                     <a
-                      className="u-align-center u-custom-font u-text u-text-font u-text-5 mb-3"
+                      className="u-align-center u-custom-font u-text p-nosotros u-text-5 mb-3"
                     >
                       Galería
                     </a>
@@ -203,7 +206,7 @@ const Home = () => {
             <div className="d-flex justify-content-center gap-3 mt-4">
               <div>
                 <Link to="/experiencias"
-                  className="u-active-white u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2"
+                  className="u-active-white p-nosotros u-border-2 u-border-white u-btn u-btn-round u-button-style u-hover-white u-none u-radius-50 u-text-active-black u-text-hover-black u-btn-2"
                 >
                   Reservar Ahora
                 </Link>
@@ -236,8 +239,8 @@ const Home = () => {
 
             {/* Texto */}
             <div className="col-12 col-md-6 text-center text-md-start">
-              <h2 className="u-text u-text-1 texto-1">Sobre Nosotros</h2>
-              <p className="u-text u-text-2">
+              <h2 className="u-text u-text-1 texto-1 titulo-nosotros">Sobre Nosotros</h2>
+              <p className="u-text u-text-2 p-nosotros">
                 En Atalanta creamos aventuras más allá de lo convencional.
                 Nuestros viajes tienen una conexión directa con el lugar y con
                 su gente. Valoramos la dedicación al 100% y hacemos que cada
@@ -247,7 +250,7 @@ const Home = () => {
                 ATREVES A VIVIRLO?
               </p>
               <br></br>
-              <Link to="/nosotros" className="btn btn-primary rounded-pill">
+              <Link to="/nosotros" className="btn btn-primary rounded-pill p-nosotros">
                 Saber Más
               </Link>
             </div>
@@ -261,7 +264,7 @@ const Home = () => {
       >
         <div className="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-sheet-1">
           <h2
-            className="text-center u-text u-text-default u-text-1"
+            className="text-center u-text u-text-default u-text-1 titulo-nosotros"
             data-animation-name="customAnimationIn"
             data-animation-duration={1500}
             data-animation-delay={0}
@@ -269,7 +272,7 @@ const Home = () => {
             Find your next getaway
           </h2>
           <p
-            className="text-center u-text texto2"
+            className="text-center u-text texto2 p-nosotros"
             data-animation-name="customAnimationIn"
             data-animation-duration={1500}
             data-animation-delay={250}
@@ -297,8 +300,8 @@ const Home = () => {
                         right: 0,
                       }}
                     >
-                      <h5 className="card-title">Best RV camping</h5>
-                      <p className="card-text">
+                      <h5 className="card-title titulo-nosotros2">Best RV camping</h5>
+                      <p className="card-text p-nosotros">
                         Sample text. Click to select the Text Element.
                       </p>
                     </div>
@@ -323,8 +326,8 @@ const Home = () => {
                         right: 0,
                       }}
                     >
-                      <h5 className="card-title">Lake camping</h5>
-                      <p className="card-text">
+                      <h5 className="card-title titulo-nosotros2">Lake camping</h5>
+                      <p className="card-text p-nosotros">
                         Sample text. Click to select the Text Element.
                       </p>
                     </div>
@@ -349,8 +352,8 @@ const Home = () => {
                         right: 0,
                       }}
                     >
-                      <h5 className="card-title">Beach stays</h5>
-                      <p className="card-text">
+                      <h5 className="card-title titulo-nosotros2">Beach stays</h5>
+                      <p className="card-text p-nosotros">
                         Sample text. Click to select the Text Element.
                       </p>
                     </div>
@@ -369,7 +372,7 @@ const Home = () => {
       >
         <div className="u-clearfix u-sheet u-valign-middle u-sheet-1">
           <h2
-            className="u-align-left u-text u-text-default u-text-1"
+            className="u-align-left u-text u-text-default u-text-1 titulo-nosotros"
             data-animation-name="customAnimationIn"
             data-animation-duration={1500}
             data-animation-delay={500}
@@ -382,7 +385,7 @@ const Home = () => {
             data-animation-duration={1250}
             data-animation-delay={500}
           >
-            <li style={{ paddingLeft: "11px" }}>
+            <li style={{ paddingLeft: "11px" }} className="p-nosotros">
               <div className="u-list-icon u-text-palette-2-base">
                 <svg
                   className="u-svg-content"
@@ -398,7 +401,7 @@ const Home = () => {
               </div>
               Lorem ipsum dolor sit amet
             </li>
-            <li style={{ paddingLeft: "11px" }}>
+            <li style={{ paddingLeft: "11px" }} className="p-nosotros">
               <div className="u-list-icon u-text-palette-2-base">
                 <svg
                   className="u-svg-content"
@@ -414,7 +417,7 @@ const Home = () => {
               </div>
               Ut enim ad minim veniam
             </li>
-            <li style={{ paddingLeft: "11px" }}>
+            <li style={{ paddingLeft: "11px" }} className="p-nosotros">
               <div className="u-list-icon u-text-palette-2-base">
                 <svg
                   className="u-svg-content"
@@ -432,7 +435,7 @@ const Home = () => {
             </li>
           </ul>
           <Link to="/experiencias"
-            className="u-align-left u-border-2 u-border-palette-2-base u-btn u-btn-round u-button-style u-palette-2-base u-radius-50 u-btn-2"
+            className="u-align-left u-border-2 p-nosotros u-border-palette-2-base u-btn u-btn-round u-button-style u-palette-2-base u-radius-50 u-btn-2"
             data-animation-name="customAnimationIn"
             data-animation-duration={1500}
             data-animation-delay={500}
@@ -447,7 +450,7 @@ const Home = () => {
       >
         <div className="u-clearfix u-sheet u-valign-middle-lg u-valign-middle-md u-valign-middle-sm u-valign-middle-xs u-sheet-1">
           <h2
-            className="u-align-center u-text u-text-1"
+            className="u-align-center u-text u-text-1 titulo-nosotros"
             data-animation-name="customAnimationIn"
             data-animation-duration={1500}
             data-animation-delay={250}
@@ -478,10 +481,10 @@ const Home = () => {
                       data-animation-direction
                     >
                       <div className="u-container-layout u-valign-middle u-container-layout-2">
-                        <h5 className="u-align-left u-text u-text-2">
+                        <h5 className="u-align-left u-text u-text-2 titulo-nosotros2">
                           Know Your Limits
-                        </h5>
-                        <p className="u-align-left u-text u-text-3">
+                         </h5>
+                        <p className="u-align-left u-text u-text-3 p-nosotros">
                           Sample text. Lorem ipsum dolor sit amet, consectetur
                           adipiscing elit nullam nunc justo sagittis suscipit
                           ultrices.
@@ -513,10 +516,10 @@ const Home = () => {
                       data-animation-direction
                     >
                       <div className="u-container-layout u-valign-middle u-container-layout-4">
-                        <h5 className="u-align-left u-text u-text-4">
+                        <h5 className="u-align-left u-text u-text-4 titulo-nosotros2">
                           Prepare – Gear Up!
                         </h5>
-                        <p className="u-align-left u-text u-text-5">
+                        <p className="u-align-left u-text u-text-5 p-nosotros">
                           Sample text. Lorem ipsum dolor sit amet, consectetur
                           adipiscing elit nullam nunc justo sagittis suscipit
                           ultrices.
@@ -533,10 +536,10 @@ const Home = () => {
                       data-animation-duration={1500}
                     >
                       <div className="u-container-layout u-valign-middle u-container-layout-5">
-                        <h5 className="u-align-left u-text u-text-6">
+                        <h5 className="u-align-left u-text u-text-6 titulo-nosotros2">
                           Plan Your Trip
                         </h5>
-                        <p className="u-align-left u-text u-text-7">
+                        <p className="u-align-left u-text u-text-7 p-nosotros">
                           Sample text. Lorem ipsum dolor sit amet, consectetur
                           adipiscing elit nullam nunc justo sagittis suscipit
                           ultrices.
@@ -568,10 +571,10 @@ const Home = () => {
                       data-animation-direction
                     >
                       <div className="u-container-layout u-valign-middle u-container-layout-7">
-                        <h5 className="u-align-left u-text u-text-8">
+                        <h5 className="u-align-left u-text u-text-8 titulo-nosotros2">
                           In Case of Emergency
                         </h5>
-                        <p className="u-align-left u-text u-text-9">
+                        <p className="u-align-left u-text u-text-9 p-nosotros">
                           Sample text. Lorem ipsum dolor sit amet, consectetur
                           adipiscing elit nullam nunc justo sagittis suscipit
                           ultrices.
