@@ -175,6 +175,9 @@ const Register = () => {
       <title>Atalanta | Login</title>
       <link rel="stylesheet" href="nicepage.css" media="screen" />
       <link rel="stylesheet" href="index.css" media="screen" />
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Sansita:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
       <meta name="generator" content="Nicepage 7.6.4, nicepage.com" />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -229,17 +232,17 @@ const Register = () => {
                 {" "}
                 {/* Centrado del menú */}
                 <li className="nav-item">
-                  <Link to="/" className="nav-link" onClick={closeMenu}>
+                  <Link to="/" className="nav-link p-nosotros" onClick={closeMenu}>
                     Inicio
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/contacto" className="nav-link" onClick={closeMenu}>
+                  <Link to="/contacto" className="nav-link p-nosotros" onClick={closeMenu}>
                     Contacto
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/proyecto" className="nav-link" onClick={closeMenu}>
+                  <Link to="/proyecto" className="nav-link p-nosotros" onClick={closeMenu}>
                     Proyecto
                   </Link>
                 </li>
@@ -247,7 +250,7 @@ const Register = () => {
             </div>
           </nav>
 
-          <Link to="/login" className="btn btn-primary me-5 rounded-pill">
+          <Link to="/login" className="btn btn-primary me-5 rounded-pill p-nosotros">
             Iniciar Sesión
           </Link>
         </div>
@@ -267,15 +270,15 @@ const Register = () => {
       >
         <div className="position-relative d-flex flex-column flex-md-row justify-content-between align-items-center w-100 h-100 p-5">
           <div className="text-white col-md-6 text-center text-md-start">
-            <h1 className="display-4 fw-bold mb-4">Join Us Today</h1>
-            <p className="lead mb-4">
-              Sign up to enjoy our amazing services and start your journey.
+            <h1 className="display-4 fw-bold mb-4 titulo-nosotros">Únete hoy a nosotros</h1>
+            <p className="lead mb-4 p-nosotros">
+            Regístrate para disfrutar de nuestros increíbles servicios y comenzar tu viaje.
             </p>
           </div>
 
           {/* Formulario de registro */}
           <div className="bg-white p-4 rounded-5 shadow-lg col-12 col-md-8 col-lg-6 mt-5 mt-md-0">
-            <h4 className="mb-4 text-center">Registrarse</h4>
+            <h4 className="h4 mb-4 text-center titulo-nosotros">Registrarse</h4>
             {error && (
               <div className="alert alert-danger" role="alert">
                 {error}
@@ -283,7 +286,7 @@ const Register = () => {
             )}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label htmlFor="name" className="form-label">
+                <label htmlFor="name" className="form-label p-nosotros">
                   Nombre
                 </label>
                 <input
@@ -298,7 +301,7 @@ const Register = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="lastName" className="form-label">
+                <label htmlFor="lastName" className="form-label p-nosotros">
                   Apellidos
                 </label>
                 <input
@@ -313,7 +316,7 @@ const Register = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="dni" className="form-label">
+                <label htmlFor="dni" className="form-label p-nosotros">
                   DNI
                 </label>
                 <input
@@ -328,7 +331,7 @@ const Register = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="address" className="form-label">
+                <label htmlFor="address" className="form-label p-nosotros">
                   Dirección
                 </label>
                 <input
@@ -343,7 +346,7 @@ const Register = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="phone" className="form-label">
+                <label htmlFor="phone" className="form-label p-nosotros">
                   Teléfono
                 </label>
                 <input
@@ -358,7 +361,7 @@ const Register = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="birthdate" className="form-label">
+                <label htmlFor="birthdate" className="form-label p-nosotros">
                   Fecha de nacimiento
                 </label>
                 <input
@@ -373,7 +376,7 @@ const Register = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="email" className="form-label">
+                <label htmlFor="email" className="form-label p-nosotros">
                   Correo electrónico
                 </label>
                 <input
@@ -388,7 +391,7 @@ const Register = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="password" className="form-label">
+                <label htmlFor="password" className="form-label p-nosotros">
                   Contraseña
                 </label>
                 <input
@@ -403,7 +406,7 @@ const Register = () => {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="confirmPassword" className="form-label">
+                <label htmlFor="confirmPassword" className="form-label p-nosotros">
                   Confirmar contraseña
                 </label>
                 <input
@@ -418,14 +421,14 @@ const Register = () => {
               </div>
               <div className="d-flex align-items-center">
                 <button
-                  className="btn btn-primary w-auto text-white me-3"
+                  className="btn btn-primary w-auto text-white me-3 p-nosotros"
                   type="submit"
                 >
                   Registrar
                 </button>
                 <a href="/login">
                   <button
-                    className="btn btn-success w-auto text-white"
+                    className="btn btn-success w-auto text-white p-nosotros"
                     type="button"
                   >
                     Ya tengo una cuenta

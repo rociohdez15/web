@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ApexCharts from "react-apexcharts";
 import ReactApexChart2 from "react-apexcharts";
-import { Outlet } from 'react-router-dom';
+import { Outlet } from "react-router-dom";
 
 const DashboardAdmin = () => {
   /* Hacer una solicitud a la API para saber el número total de proveedores. */
@@ -318,7 +318,7 @@ const DashboardAdmin = () => {
     },
     title: {
       text: "Ventas Anuales",
-      align: "center",
+      align: "left",
     },
   };
 
@@ -506,14 +506,14 @@ const DashboardAdmin = () => {
     const nombreCompleto = `${noti.nombreCompleto}`;
     switch (noti.tipo) {
       case "like":
-        return `${nombreCompleto} dio like`;
+        return `${nombreCompleto} ha dado like`;
 
       case "reseña":
-        return `${nombreCompleto} dejó una reseña`;
+        return `${nombreCompleto} ha dejado una reseña`;
       case "reserva":
-        return `${nombreCompleto} realizó una reserva`;
+        return `${nombreCompleto} ha realizado una reserva`;
       default:
-        return `${nombreCompleto} realizó una acción`;
+        return `${nombreCompleto} ha realizado una acción`;
     }
   };
 
@@ -530,7 +530,6 @@ const DashboardAdmin = () => {
           icon: "mdi-comment-account-outline",
           bg: "bg-warning-subtle",
           color: "text-warning",
-
         };
       case "reserva":
         return {
@@ -560,7 +559,7 @@ const DashboardAdmin = () => {
 
   const handleLogout = () => {
     // Eliminar el token de localStorage o sessionStorage
-    localStorage.removeItem("token");  // Si usas localStorage para almacenar el token
+    localStorage.removeItem("token"); // Si usas localStorage para almacenar el token
     // sessionStorage.removeItem("token");  // Si usas sessionStorage
 
     // O también puedes eliminar cookies si las usas:
@@ -570,13 +569,12 @@ const DashboardAdmin = () => {
     navigate("/login");
   };
 
+  const [verTodos, setVerTodos] = useState(false);
 
   return (
     <>
       <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
-      <title>
-        Dashboard Admin | Atalanta
-      </title>
+      <title>Dashboard Admin | Atalanta</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta
         content="A fully responsive admin theme which can be used to build CRM, CMS,ERP etc."
@@ -899,7 +897,15 @@ const DashboardAdmin = () => {
                                 <div className={`notify-icon ${bg}`}>
                                   <i className={`mdi ${icon} ${color}`}></i>
                                 </div>
-                                <p className="notify-details mb-0 ms-2 d-flex flex-column justify-content-center">
+                                <p
+                                  className="notify-details mb-0 ms-2"
+                                  style={{
+                                    whiteSpace: "normal",
+                                    wordBreak: "break-word",
+                                    lineHeight: "1.3",
+                                    marginBottom: 0,
+                                  }}
+                                >
                                   {getNotificationText(noti)}
                                 </p>
                               </div>
@@ -933,8 +939,8 @@ const DashboardAdmin = () => {
                   aria-expanded="false"
                 >
                   <span className="account-user-avatar">
-                  <i className="ri-account-circle-line fs-24 align-middle me-1" />
-                  <i className="ri-arrow-down-s-line d-none d-sm-inline-block align-middle" />
+                    <i className="ri-account-circle-line fs-24 align-middle me-1" />
+                    <i className="ri-arrow-down-s-line d-none d-sm-inline-block align-middle" />
                   </span>
                 </a>
                 <div className="dropdown-menu dropdown-menu-end dropdown-menu-animated profile-dropdown">
@@ -951,11 +957,11 @@ const DashboardAdmin = () => {
                     <span>My Account</span>
                   </a>
                   {/* item*/}
-                  
+
                   <button onClick={handleLogout} className="dropdown-item">
-                  <i className="ri-logout-box-line fs-18 align-middle me-1" />
-                  <span>Logout</span>
-    </button>
+                    <i className="ri-logout-box-line fs-18 align-middle me-1" />
+                    <span>Logout</span>
+                  </button>
                 </div>
               </li>
             </ul>
@@ -1635,7 +1641,10 @@ const DashboardAdmin = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {proyectos.map((proyecto, index) => (
+                              {(verTodos
+                                ? proyectos
+                                : proyectos.slice(0, 10)
+                              ).map((proyecto, index) => (
                                 <tr key={proyecto.id}>
                                   <td>{index + 1}</td>
                                   <td>{proyecto.nombre}</td>
@@ -1657,6 +1666,16 @@ const DashboardAdmin = () => {
                               ))}
                             </tbody>
                           </table>
+                          {proyectos.length > 10 && (
+                            <div className="text-center mt-2">
+                              <a
+                                href="/proyectos" // o la ruta donde muestres todos los proyectos
+                                className="text-primary fw-bold text-decoration-underline"
+                              >
+                                Ver más
+                              </a>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

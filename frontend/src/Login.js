@@ -119,6 +119,9 @@ const Login = () => {
       <title>Atalanta | Login</title>
       <link rel="stylesheet" href="nicepage.css" media="screen" />
       <link rel="stylesheet" href="index.css" media="screen" />
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Sansita:ital,wght@0,400;0,700;0,800;0,900;1,400;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
       <meta name="generator" content="Nicepage 7.6.4, nicepage.com" />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
@@ -173,17 +176,17 @@ const Login = () => {
                 {" "}
                 {/* Centrado del menú */}
                 <li className="nav-item">
-                  <Link to="/" className="nav-link" onClick={closeMenu}>
+                  <Link to="/" className="nav-link p-nosotros" onClick={closeMenu}>
                     Inicio
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/contacto" className="nav-link" onClick={closeMenu}>
+                  <Link to="/contacto" className="nav-link p-nosotros" onClick={closeMenu}>
                     Contacto
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/proyecto" className="nav-link" onClick={closeMenu}>
+                  <Link to="/proyecto" className="nav-link p-nosotros" onClick={closeMenu}>
                     Proyecto
                   </Link>
                 </li>
@@ -191,7 +194,7 @@ const Login = () => {
             </div>
           </nav>
 
-          <Link to="/login" className="btn btn-primary me-5 rounded-pill">
+          <Link to="/login" className="btn btn-primary me-5 rounded-pill p-nosotros">
             Iniciar Sesión
           </Link>
         </div>
@@ -211,9 +214,9 @@ const Login = () => {
         {/* Contenedor principal */}
         <div className="position-relative d-flex flex-column flex-md-row justify-content-between align-items-center w-100 h-100 p-5">
           <div className="text-white col-md-6 text-center text-md-start">
-            <h1 className="display-4 fw-bold mb-4">Welcome Back</h1>
-            <p className="lead mb-4">
-              It's great to see you again! Please sign in to continue.
+            <h1 className="display-4 fw-bold mb-4 titulo-nosotros">Bienvenido de nuevo</h1>
+            <p className="lead mb-4 p-nosotros">
+            ¡Qué bueno verte de nuevo! Inicia sesión para continuar.
             </p>
             <div className="d-flex justify-content-center justify-content-md-start">
               <a className="text-white me-3 fs-3" href="#">
@@ -233,12 +236,12 @@ const Login = () => {
 
           {/* Formulario de login */}
           <div className="bg-white p-5 rounded-5 shadow-lg col-12 col-md-6 col-lg-4 mt-5 mt-md-0">
-            <h4 className="h4 mb-4 text-center">Sign in</h4>
-            {error && <div className="alert alert-danger">{error}</div>}
+            <h4 className="h4 mb-4 text-center titulo-nosotros">Iniciar Sesión</h4>
+            {error && <div className="alert alert-danger p-nosotros">{error}</div>}
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
-                <label className="form-label" htmlFor="email">
-                  Email Address
+                <label className="form-label p-nosotros" htmlFor="email">
+                  Correo electrónico
                 </label>
                 <input
                   className="form-control"
@@ -250,7 +253,7 @@ const Login = () => {
                 />
               </div>
               <div className="mb-3">
-                <label className="form-label" htmlFor="password">
+                <label className="form-label p-nosotros" htmlFor="password">
                   Password
                 </label>
                 <input
@@ -270,38 +273,38 @@ const Login = () => {
                   checked={rememberMe}
                   onChange={handleRememberChange} // Agregar el manejador para el checkbox
                 />
-                <label className="form-check-label" htmlFor="remember">
-                  Remember Me
+                <label className="form-check-label p-nosotros" htmlFor="remember">
+                  Recordarme
                 </label>
               </div>
               <div className="d-flex align-items-center">
                 <button
-                  className="btn btn-warning w-auto text-white me-3"
+                  className="btn btn-warning w-auto text-white me-3 p-nosotros"
                   type="submit"
                 >
-                  Sign in now
+                  Iniciar sesión ahora
                 </button>
                 <a href="/register">
                   <button
-                    className="btn btn-secondary w-auto text-white"
+                    className="btn btn-secondary w-auto text-white p-nosotros"
                     type="button"
                   >
-                    Register
+                    Registrar
                   </button>
                 </a>
               </div>
             </form>
 
             <div className="d-flex justify-content-start mt-3">
-              <Link to="/olvidaste" className="text-dark">
-                Lost your password?
+              <Link to="/olvidaste" className="text-dark p-nosotros">
+                ¿Olvidaste tu contraseña?
               </Link>
             </div>
 
-            <div className="text-center mt-4 small">
-              By clicking "Sign in now" you agree to our
-              <Link to="/terminos"> Terms of Service</Link> and
-              <Link to="/privacidad"> Privacy Policy</Link>.
+            <div className="text-center mt-4 small p-nosotros">
+            Al hacer clic en "Iniciar sesión ahora", acepta nuestros
+              <Link to="/terminos"> Términos de servicios</Link> y
+              <Link to="/privacidad"> Política de privacidad</Link>.
             </div>
           </div>
         </div>
