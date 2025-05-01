@@ -33,3 +33,50 @@ code {
   color: #00cfe8 !important;
 }
 
+ /* Alternate row background color */
+ tbody tr:nth-child(odd) {
+  background-color: #f7fcfb;
+}
+/* Smaller font size for the entire page */
+body {
+  font-size: 0.875rem;
+  color: #4a5568; /* gray-700 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+}
+/* Sort icon color */
+th i {
+  color: #a0aec0; /* gray-400 */
+  margin-left: 0.25rem;
+}
+/* Pagination circle style */
+.page-link {
+  border-radius: 50% !important;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+}
+.page-item.active .page-link {
+  background-color: #38b2ac !important; /* teal-400 */
+  border-color: #38b2ac !important;
+  color: white !important;
+}
+/* Smaller input/select */
+.form-select,
+.form-control {
+  font-size: 0.875rem;
+  height: 1.75rem;
+  padding: 0 0.5rem;
+}
+/* Label and text smaller */
+label,
+.form-label,
+.form-text {
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
