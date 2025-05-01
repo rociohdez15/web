@@ -25,5 +25,10 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query("SELECT COUNT(*) FROM User WHERE rol = 'USER'")
             String numTotalUsuarios();
+
+    @Query("SELECT u FROM User u WHERE u.rol = 'ADMIN'")
+            String infoAdmins();
+    
+    Optional<User> findById(Long id);
 }
 

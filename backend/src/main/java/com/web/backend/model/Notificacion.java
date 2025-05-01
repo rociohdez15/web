@@ -23,6 +23,7 @@ public class Notificacion {
     @JoinColumn(name = "cliente_id")
     private Client cliente;
     private LocalDateTime fecha;
+    private boolean isRead;
 
     
     public Client getCliente() {
@@ -48,5 +49,11 @@ public class Notificacion {
     }
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+    public boolean isRead() {
+        return isRead;
+    }
+    public void setRead(boolean isRead) {
+        this.isRead = isRead;
     }
 }
