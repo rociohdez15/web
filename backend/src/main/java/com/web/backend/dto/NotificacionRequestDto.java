@@ -10,12 +10,14 @@ public class NotificacionRequestDto {
     private String tipo;
     private String nombreCompleto;
     private LocalDateTime fecha;
+    private boolean isRead;
 
     public NotificacionRequestDto(Notificacion n) {
         this.id = n.getId();
         this.tipo = n.getTipo();
         this.nombreCompleto = n.getCliente().getNombre() + " " + n.getCliente().getApellidos();
         this.fecha = n.getFecha();
+        this.isRead = n.isRead();
     }
 
     // Getters y Setters
@@ -42,6 +44,12 @@ public class NotificacionRequestDto {
     }
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+    public boolean isRead() {
+        return isRead;
+    }
+    public void setRead(boolean isRead) {
+        this.isRead = isRead;
     }
 }
 
