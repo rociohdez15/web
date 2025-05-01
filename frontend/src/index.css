@@ -24,3 +24,12 @@ code {
   font-weight: 700;
   font-style: normal;
 }
+
+.active-link {
+  background-color: #00cfe8 !important;
+  color: #ffffff !important;
+}
+.active-link2 {
+  color: #00cfe8 !important;
+}
+

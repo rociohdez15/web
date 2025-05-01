@@ -1168,15 +1168,15 @@ const DashboardAdmin = () => {
                           <a
                             data-bs-toggle="collapse"
                             href="https://techzaa.in/velonic/layouts/index.html#sidebarExtendedUI"
-                            aria-expanded={isActive("/admin-todos")}
+                            aria-expanded={isActive("/admin-alta")}
                             aria-controls="sidebarExtendedUI"
-                            className={`side-nav-link ${isActive("/admin-todos") ? "active-link" : ""}`}
+                            className={`side-nav-link ${isActive("/admin-alta") ? "active-link" : ""}`}
                           >
                             <i className="ri-user-line" />
                             <span> Administradores </span>
                             <span className="menu-arrow" />
                           </a>
-                          <div className={`collapse ${isActive("/admin-todos") ? "show" : ""}`} id="sidebarExtendedUI">
+                          <div className={`collapse ${isActive("/admin-alta") ? "show" : ""}`} id="sidebarExtendedUI">
                             <ul className="side-nav-second-level">
                               <li>
                                 <a href="/admin-todos"

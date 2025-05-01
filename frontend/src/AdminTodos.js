@@ -5,7 +5,7 @@ import ApexCharts from "react-apexcharts";
 import ReactApexChart2 from "react-apexcharts";
 import { Outlet } from "react-router-dom";
 
-const DashboardAdmin = () => {
+const AdminTodos = () => {
   const location = useLocation();
 
   const isActive = (path) => location.pathname.startsWith(path);
@@ -1184,8 +1184,8 @@ const DashboardAdmin = () => {
                                 >Todos</a>
                               </li>
                               <li>
-                                <a href="/admin-alta"
-                                className={isActive("/admin-alta") ? "active-link2" : ""}
+                                <a href="#"
+                                className={isActive("/administradores/alta") ? "active-link2" : ""}
                                 >Alta Usuarios</a>
                               </li>
                             </ul>
@@ -2170,4 +2170,4 @@ const DashboardAdmin = () => {
     </>
   );
 };
-export default DashboardAdmin;
+export default AdminTodos;
