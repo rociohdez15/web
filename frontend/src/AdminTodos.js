@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import ApexCharts from "react-apexcharts";
-import ReactApexChart2 from "react-apexcharts";
-import { Outlet } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 const AdminTodos = () => {
   const location = useLocation();
@@ -195,14 +193,79 @@ const AdminTodos = () => {
   for (let i = 1; i <= Math.ceil(admins2.length / entriesPerPage); i++) {
     pageNumbers.push(i);
   }
-
-  const handleEdit = (id) => {
-    console.log("Editando admin con id:", id);
-    // Aquí podrías hacer algo como redirigir a una página de edición o abrir un formulario modal.
-    // Por ejemplo, si estás usando React Router:
-    // history.push(`/editar-admin/${id}`);
+  
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: '¿Eliminar administrador?',
+      text: 'Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:8080/api/rol-admin/eliminar/${id}`)
+          .then(() => {
+            setAdmins(prev => prev.filter(admin => admin.id !== id));
+            setAdmins2(prev => prev.filter(admin => admin.id !== id));
+  
+            Swal.fire(
+              'Eliminado',
+              'El administrador ha sido eliminado correctamente.',
+              'success'
+            );
+          })
+          .catch((err) => {
+            console.error("Error al eliminar:", err);
+            Swal.fire('Error', 'No se pudo eliminar el administrador.', 'error');
+          });
+      }
+    });
   };
   
+  const handleEdit = (adminId) => {
+    const admin = admins.find(a => a.id === adminId);
+    
+    Swal.fire({
+      title: 'Editar email del administrador',
+      input: 'email',
+      inputLabel: 'Nuevo email',
+      inputValue: admin.email,
+      showCancelButton: true,
+      confirmButtonText: 'Guardar',
+      cancelButtonText: 'Cancelar',
+      inputValidator: (value) => {
+        if (!value) {
+          return '¡El email no puede estar vacío!';
+        }
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const nuevoEmail = result.value;
+  
+        axios
+          .put(`http://localhost:8080/api/rol-admin/editar/${adminId}`, {
+            ...admin,
+            email: nuevoEmail
+          })
+          .then(() => {
+            setAdmins(prev =>
+              prev.map(a => (a.id === adminId ? { ...a, email: nuevoEmail } : a))
+            );
+            setAdmins2(prev =>
+              prev.map(a => (a.id === adminId ? { ...a, email: nuevoEmail } : a))
+            );
+            Swal.fire('Actualizado', 'El email ha sido actualizado.', 'success');
+          })
+          .catch(() =>
+            Swal.fire('Error', 'No se pudo actualizar el administrador.', 'error')
+          );
+      }
+    });
+  };
 
   return (
     <>
@@ -1137,7 +1200,7 @@ const AdminTodos = () => {
                               </button>
                               <button
                                 className="btn btn-success btn-sm"
-                                onClick={() => handleEdit(admin.id)}
+                                onClick={() => handleDelete(admin.id)}
                               >
                                 <i className="fas fa-trash-alt"></i>
                               </button>
