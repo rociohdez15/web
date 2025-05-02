@@ -30,5 +30,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
             String infoAdmins();
     
     Optional<User> findById(Long id);
+
+    
 }
 
