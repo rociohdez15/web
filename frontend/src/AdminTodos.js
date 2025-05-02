@@ -228,7 +228,7 @@ const AdminTodos = () => {
   
   const handleEdit = (adminId) => {
     const admin = admins.find(a => a.id === adminId);
-    
+  
     Swal.fire({
       title: 'Editar email del administrador',
       input: 'email',
@@ -241,16 +241,23 @@ const AdminTodos = () => {
         if (!value) {
           return '¡El email no puede estar vacío!';
         }
+        return null;  // Validación exitosa si el campo no está vacío
       }
     }).then((result) => {
       if (result.isConfirmed) {
         const nuevoEmail = result.value;
   
+        // Verificamos que el email no haya cambiado para evitar enviar la misma petición innecesariamente
+        if (nuevoEmail === admin.email) {
+          Swal.fire('Nada que cambiar', 'El email es el mismo que el anterior.', 'info');
+          return;
+        }
+  
+        console.log('Nuevo email:', nuevoEmail);  // Verifica que el nuevo email está correctamente definido
+  
+        // Realizamos la solicitud PUT con el email como parámetro en la URL
         axios
-          .put(`http://localhost:8080/api/rol-admin/editar/${adminId}`, {
-            ...admin,
-            email: nuevoEmail
-          })
+          .put(`http://localhost:8080/api/rol-admin/editar/${adminId}?email=${nuevoEmail}`)
           .then(() => {
             setAdmins(prev =>
               prev.map(a => (a.id === adminId ? { ...a, email: nuevoEmail } : a))
@@ -260,12 +267,15 @@ const AdminTodos = () => {
             );
             Swal.fire('Actualizado', 'El email ha sido actualizado.', 'success');
           })
-          .catch(() =>
-            Swal.fire('Error', 'No se pudo actualizar el administrador.', 'error')
-          );
+          .catch(() => {
+            Swal.fire('Error', 'No se pudo actualizar el administrador.', 'error');
+          });
       }
     });
   };
+  
+  
+  
 
   return (
     <>
