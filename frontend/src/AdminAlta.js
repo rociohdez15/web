@@ -1,450 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import ApexCharts from "react-apexcharts";
-import ReactApexChart2 from "react-apexcharts";
-import { Outlet } from "react-router-dom";
+import Swal from 'sweetalert2';
 
-const DashboardAdmin = () => {
+
+const AdminTodos = ({ onSubmitAlta }) => {
   const location = useLocation();
 
   const isActive = (path) => location.pathname.startsWith(path);
-  /* Hacer una solicitud a la API para saber el número total de proveedores. */
-  const [totalProveedores, setTotalProveedores] = useState(0);
 
-  useEffect(() => {
-    const fetchTotalProveedores = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/total-proveedores"
-        );
-        setTotalProveedores(response.data.totalProveedores ?? response.data); // Por si devuelves un JSON o solo el número
-      } catch (error) {
-        console.error("Error al obtener el total de proveedores:", error);
-      }
-    };
-
-    fetchTotalProveedores();
-  }, []);
-
-  /* Hacer una solicitud a la API para saber la cantidad de ingresos de esta semana. */
-  const [totalIngresosSemanaActual, setTotalIngresosSemanaActual] = useState(0);
-
-  useEffect(() => {
-    const fetchTotalIngresosSemanaActual = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/ingresos-semana-actual"
-        );
-        setTotalIngresosSemanaActual(
-          response.data.totalIngresosSemanaActual ?? response.data
-        ); // Por si devuelves un JSON o solo el número
-      } catch (error) {
-        console.error(
-          "Error al obtener el total de ingresos de la semana actual:",
-          error
-        );
-      }
-    };
-
-    fetchTotalIngresosSemanaActual();
-  }, []);
-
-  /* Hacer una solicitud a la API para saber la cantidad de ingresos de esta semana. */
-  const [totalIngresosSemanaAnterior, setTotalIngresosSemanaAnterior] =
-    useState(0);
-
-  useEffect(() => {
-    const fetchTotalIngresosSemanaAnterior = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/ingresos-semana-anterior"
-        );
-        setTotalIngresosSemanaAnterior(
-          response.data.totalIngresosSemanaAnterior ?? response.data
-        ); // Por si devuelves un JSON o solo el número
-      } catch (error) {
-        console.error(
-          "Error al obtener el total de ingresos de la semana anterior:",
-          error
-        );
-      }
-    };
-
-    fetchTotalIngresosSemanaAnterior();
-  }, []);
-  /* Hacer una solicitud a la API para calcular el total de ingresos. */
-  const [totalIngresos, setTotalIngresos] = useState(0);
-
-  useEffect(() => {
-    const fecthTotalIngresos = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/total-ingresos"
-        );
-        setTotalIngresos(response.data.totalIngresos ?? response.data); // Por si devuelves un JSON o solo el número
-      } catch (error) {
-        console.error("Error al obtener el total de ingresos:", error);
-      }
-    };
-
-    fecthTotalIngresos();
-  }, []);
-
-  /* Hacer una solicitud a la API para calcular el número total de reservas. */
-  const [totalReservas, setTotalReservas] = useState(0);
-
-  useEffect(() => {
-    const fecthTotalReservas = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/total-reservas"
-        );
-        setTotalReservas(response.data.totalReservas ?? response.data); // Por si devuelves un JSON o solo el número
-      } catch (error) {
-        console.error("Error al obtener el total de reservas:", error);
-      }
-    };
-
-    fecthTotalReservas();
-  }, []);
-
-  /* Hacer una solicitud a la API para calcular los ingresos del primer trimestre. */
-  const [totalPrimerTrimestre, setTotalPrimerTrismestre] = useState(0);
-
-  useEffect(() => {
-    const fecthTotalPrimerTrismestre = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/ingresos-primer-trimestre"
-        );
-        setTotalPrimerTrismestre(
-          response.data.totalPrimerTrismestre ?? response.data
-        ); // Por si devuelves un JSON o solo el número
-      } catch (error) {
-        console.error("Error al obtener el total de Primer Trismestre:", error);
-      }
-    };
-
-    fecthTotalPrimerTrismestre();
-  }, []);
-
-  /* Hacer una solicitud a la API para calcular los ingresos del segundo trimestre. */
-  const [totalSegundoTrimestre, setTotalSegundoTrismestre] = useState(0);
-
-  useEffect(() => {
-    const fecthTotalSegundoTrismestre = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/ingresos-segundo-trimestre"
-        );
-        setTotalSegundoTrismestre(
-          response.data.totalSegundoTrimestre ?? response.data
-        ); // Por si devuelves un JSON o solo el número
-      } catch (error) {
-        console.error(
-          "Error al obtener el total de Segundo Trismestre:",
-          error
-        );
-      }
-    };
-
-    fecthTotalSegundoTrismestre();
-  }, []);
-
-  /* Hacer una solicitud a la API para calcular los ingresos del tercer trimestre. */
-  const [totalTercerTrimestre, setTotalTercerTrismestre] = useState(0);
-
-  useEffect(() => {
-    const fecthTotalTercerTrismestre = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/ingresos-tercer-trimestre"
-        );
-        setTotalTercerTrismestre(
-          response.data.totalTercerTrimestre ?? response.data
-        ); // Por si devuelves un JSON o solo el número
-      } catch (error) {
-        console.error("Error al obtener el total de Tercer Trismestre:", error);
-      }
-    };
-
-    fecthTotalTercerTrismestre();
-  }, []);
-
-  /* Hacer una solicitud a la API para calcular el número total de usuarios. */
-  const [totalUsuarios, setTotalUsuarios] = useState(0);
-
-  useEffect(() => {
-    const fecthTotalUsuarios = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/total-usuarios"
-        );
-        setTotalUsuarios(response.data.totalUsuarios ?? response.data); // Por si devuelves un JSON o solo el número
-      } catch (error) {
-        console.error("Error al obtener el total de usuarios:", error);
-      }
-    };
-
-    fecthTotalUsuarios();
-  }, []);
-
-  /*Gráfico de ingresos por semana.*/
-  const [data, setData] = useState({ ingresos: [], ventas: [] });
-
-  useEffect(() => {
-    const fetchIngresosYReservas = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/ingresos-y-ventas-semana"
-        );
-        console.log(response.data); // Verifica que los datos lleguen correctamente
-
-        // Convertir las ventas de cadenas a números
-        const ingresos = response.data.ingresos;
-        const ventas = response.data.ventas.map((venta) => Number(venta)); // Convertir ventas a números
-
-        setData({
-          ingresos,
-          ventas,
-        });
-      } catch (error) {
-        console.error(
-          "Error al obtener los ingresos y reservas de la semana:",
-          error
-        );
-      }
-    };
-
-    fetchIngresosYReservas();
-  }, []);
-
-  // Configuración de los gráficos
-  const opciones = {
-    chart: {
-      id: "grafico-semana",
-      type: "bar",
-      height: 350,
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false, // Esto asegura que las barras sean verticales
-        columnWidth: "50%", // Ajusta el ancho de las barras
-        endingShape: "rounded", // Forma redondeada en los extremos
-      },
-    },
-    stroke: {
-      show: true,
-      width: 3,
-      colors: ["transparent"],
-    },
-    xaxis: {
-      categories: [
-        "Lunes",
-        "Martes",
-        "Miércoles",
-        "Jueves",
-        "Viernes",
-        "Sábado",
-        "Domingo",
-      ],
-    },
-    title: {
-      text: "Ingresos y Ventas por Día de la Semana",
-      align: "center",
-    },
-    yaxis: [
-      {
-        title: {
-          text: "Ingresos (€)",
-        },
-      },
-      {
-        opposite: true,
-        title: {
-          text: "Ventas",
-        },
-      },
-    ],
-    tooltip: {
-      shared: true, // Esto hace que el tooltip sea común para ambas barras
-      intersect: false,
-    },
-  };
-
-  const series = [
-    {
-      name: "Ingresos",
-      data: data.ingresos,
-    },
-    {
-      name: "Ventas",
-      data: data.ventas,
-    },
-  ];
-
-  const [ventas, setVentas] = useState([]);
-  const [meses, setMeses] = useState([]);
-
-  useEffect(() => {
-    const fetchVentas = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/api/admin/ventas-anuales"
-        );
-
-        const data = response.data;
-        const labels = Object.keys(data); // ["enero", "febrero", ...]
-        const valores = Object.values(data); // [10, 15, ...]
-
-        setMeses(labels);
-        setVentas(valores);
-      } catch (error) {
-        console.error("Error al obtener las ventas anuales:", error);
-      }
-    };
-
-    fetchVentas();
-  }, []);
-
-  const opciones2 = {
-    chart: {
-      type: "line",
-      height: 250,
-    },
-    xaxis: {
-      categories: meses,
-    },
-    stroke: {
-      curve: "smooth",
-    },
-    title: {
-      text: "Ventas Anuales",
-      align: "left",
-    },
-  };
-
-  const series2 = [
-    {
-      name: "Ventas",
-      data: ventas,
-    },
-  ];
-
-  const getBadgeClass = (estado) => {
-    switch (estado) {
-      case "Completado":
-        return "bg-info-subtle text-info";
-      case "Pendiente":
-        return "bg-pink-subtle text-pink";
-      case "En Progreso":
-        return "bg-purple-subtle text-purple";
-      default:
-        return "bg-secondary-subtle text-secondary";
-    }
-  };
-
-  const [proyectos, setProyectos] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/admin/obtener-proyectos")
-      .then((res) => setProyectos(res.data))
-      .catch((err) => console.error("Error al obtener proyectos:", err));
-  }, []);
-
-  const formatearFecha = (fecha) => {
-    if (!fecha) return "";
-    const dateObj = new Date(fecha);
-    if (isNaN(dateObj)) return "";
-
-    const dia = String(dateObj.getDate()).padStart(2, "0");
-    const mes = String(dateObj.getMonth() + 1).padStart(2, "0");
-    const anio = dateObj.getFullYear();
-
-    return `${dia}/${mes}/${anio}`;
-  };
-
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [daysInMonth, setDaysInMonth] = useState([]);
-  const [eventos, setEventos] = useState([]);
-
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
-
-  // Obtener eventos del backend
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/admin/obtener-eventos")
-      .then((response) => {
-        const data = response.data;
-
-        // Agrupar eventos por año-mes-dia
-        const grouped = {};
-
-        data.forEach((evento) => {
-          const [year, month, day] = evento.fecha;
-          const key = `${year}-${month}-${day}`;
-
-          if (!grouped[key]) {
-            grouped[key] = [];
-          }
-
-          grouped[key].push(evento.nombre);
-        });
-
-        setEventos(grouped); // esto será un objeto con claves tipo "2024-12-12": ["Evento1", "Evento2"]
-      })
-      .catch((error) => {
-        console.error("Error al obtener eventos", error);
-      });
-  }, []);
-
-  // Generar los días del mes para mostrar en el calendario
-  useEffect(() => {
-    const days = [];
-    const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
-    const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-    const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
-
-    for (let i = 0; i < adjustedFirstDay; i++) {
-      days.push("");
-    }
-
-    for (let i = 1; i <= totalDays; i++) {
-      days.push(i);
-    }
-
-    setDaysInMonth(days);
-  }, [currentMonth, currentYear]);
-
-  // Manejar el cambio de mes
-  const handlePrevMonth = () => {
-    const newDate = new Date(currentYear, currentMonth - 1, 1);
-    setCurrentDate(newDate);
-  };
-
-  const handleNextMonth = () => {
-    const newDate = new Date(currentYear, currentMonth + 1, 1);
-    setCurrentDate(newDate);
-  };
-
-  // Función para obtener los eventos de un día específico
-  const getEventosDelDia = (day) => {
-    const eventosDelDia = eventos.filter((evento) => {
-      const fechaEvento = new Date(
-        evento.fecha[0],
-        evento.fecha[1] - 1,
-        evento.fecha[2]
-      );
-      return (
-        fechaEvento.getDate() === day && fechaEvento.getMonth() === currentMonth
-      );
-    });
-    return eventosDelDia;
-  };
-
+  /* Botón de mensajes */
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -479,6 +44,7 @@ const DashboardAdmin = () => {
   // Controlar si se deben mostrar todos los mensajes o solo los primeros 4
   const displayedMessages = showAll ? messages : messages.slice(0, 4);
 
+  /* Botón de notificaciones */
   const [notifications, setNotifications] = useState([]);
   const [loadingNotificaciones, setLoadingNotificaciones] = useState(true);
   const [errorNotificaciones, setErrorNotificaciones] = useState(null);
@@ -572,8 +138,98 @@ const DashboardAdmin = () => {
     navigate("/login");
   };
 
-  const [verTodos, setVerTodos] = useState(false);
+  const [email, setEmail] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error2, setError2] = useState("");
+  
+  useEffect(() => {
+    // Generar contraseña aleatoria al cargar el componente
+    const generarPassword = () => {
+      const caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      return Array.from({ length: 12 }, () => caracteres[Math.floor(Math.random() * caracteres.length)]).join("");
+    };
+    setPassword(generarPassword());
+  }, []);
+  
+  // Verificar si el email ya existe al cambiar el valor del campo de email
+  const handleChangeEmail = async (e) => {
+    const value = e.target.value;
+    setEmail(value);
+  
+    // Validación por backend: comprobar si el email ya existe
+    if (value.includes("@")) {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/rol-admin/existe?email=${value}`);
+        const data = response.data; // Aquí obtienes los datos de la respuesta
+  
+        // Actualizar el estado de si el email ya está registrado
+        setEmailExists(data.exists);
+      } catch (error) {
+        console.error("Hubo un error al verificar el correo:", error);
+      }
+    }
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Verificar si el correo ya está registrado
+    if (emailExists) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'El correo ya está registrado',
+        confirmButtonColor: '#d33',
+      });
+      return; // Evitar que el formulario se envíe si el correo está registrado
+    }
+  
+    try {
+      // Construir la URL con los parámetros necesarios
+      const url = `http://localhost:8080/api/rol-admin/alta?email=${email}&password=${password}`;
+      
+      // Realizar la petición POST con los parámetros en la URL
+      const response = await axios.post(url);
+  
+      if (response.status === 200) {
+        // Si la creación del admin es exitosa, muestra un SweetAlert de éxito
+        Swal.fire({
+          icon: 'success',
+          title: 'Administrador creado con éxito',
+          text: `El administrador con el correo ${email} ha sido creado correctamente.`,
+          confirmButtonColor: '#28a745',
+        });
 
+        setEmail('');  // Vaciar el campo email
+      }
+    } catch (error) {
+      console.error("Error al crear el administrador:", error);
+  
+      // Mostrar un error específico si ocurre uno al crear el administrador
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Hubo un problema al dar de alta al administrador.',
+        confirmButtonColor: '#d33',
+      });
+    }
+  };
+  
+  
+  // Manejador de errores global, si existe algún error en el formulario
+  useEffect(() => {
+    if (error2) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error2,
+        confirmButtonColor: '#d33',
+      });
+    }
+  }, [error2]);
+  
   return (
     <>
       <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -1003,7 +659,7 @@ const DashboardAdmin = () => {
             className="h-100 show"
             id="leftside-menu-container"
             data-simplebar="init"
-            style={{ backgroundColor: "#143852" }}
+            style={{ backgroundColor: "#143852", height: "100%", overflowY: "auto"}}
           >
             <div className="simplebar-wrapper" style={{ margin: 0 }}>
               <div className="simplebar-height-auto-observer-wrapper">
@@ -1014,20 +670,16 @@ const DashboardAdmin = () => {
                   className="simplebar-offset"
                   style={{ right: 0, bottom: 0 }}
                 >
-                  <div
-                    className="simplebar-content-wrapper text-white"
-                    tabIndex={0}
-                    role="region"
-                    aria-label="scrollable content"
-                    style={{ height: "100%", overflow: "hidden" }}
-                  >
+                  <div className="simplebar-content-wrapper text-white" tabIndex={0} role="region" aria-label="scrollable content" style={{ height: '100%' }}>
                     <div className="simplebar-content" style={{ padding: 0 }}>
                       {/*- Sidemenu */}
                       <ul className="side-nav">
                         <li className="side-nav-item menuitem-active">
                           <Link
                             to="/dashboard-admin"
-                            className={`side-nav-link ${isActive("/dashboard-admin") ? "active-link" : ""}`}
+                            className={`side-nav-link ${
+                              isActive("/dashboard-admin") ? "active-link" : ""
+                            }`}
                           >
                             <i className="ri-dashboard-3-line" />
                             <span> Dashboard </span>
@@ -1039,26 +691,43 @@ const DashboardAdmin = () => {
                             href="https://techzaa.in/velonic/layouts/index.html#sidebarPages"
                             aria-expanded={isActive("/facturas")}
                             aria-controls="sidebarPages"
-                            className={`side-nav-link ${isActive("#") ? "active-link" : ""}`}
+                            className={`side-nav-link ${
+                              isActive("#") ? "active-link" : ""
+                            }`}
                           >
                             <i className="ri-pages-line" />
                             <span> Facturas </span>
                             <span className="menu-arrow" />
                           </a>
                           <div
-                            className={`collapse ${isActive("/facturas") ? "show" : ""}`} id="sidebarPages"
+                            className={`collapse ${
+                              isActive("/facturas") ? "show" : ""
+                            }`}
+                            id="sidebarPages"
                             style={{}}
                           >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/pages-starter.html"
-                                className={isActive("/facturas/clientes") ? "active-link2" : ""}>
+                                <a
+                                  href="https://techzaa.in/velonic/layouts/pages-starter.html"
+                                  className={
+                                    isActive("/facturas/clientes")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Facturas clientes
                                 </a>
                               </li>
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/pages-contact-list.html"
-                                className={isActive("/facturas/proveedores") ? "active-link2" : ""}>
+                                <a
+                                  href="https://techzaa.in/velonic/layouts/pages-contact-list.html"
+                                  className={
+                                    isActive("/facturas/proveedores")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Facturas proveedores
                                 </a>
                               </li>
@@ -1078,20 +747,34 @@ const DashboardAdmin = () => {
                             <span className="menu-arrow" />
                           </a>
                           <div
-                            className={`collapse ${isActive("/paquetes") ? "show" : ""}`}
+                            className={`collapse ${
+                              isActive("/paquetes") ? "show" : ""
+                            }`}
                             id="sidebarPagesAuth"
                             style={{}}
                           >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/auth-login.html"
-                                className={isActive("/paquetes/listado") ? "active-link2" : ""}>
+                                <a
+                                  href="https://techzaa.in/velonic/layouts/auth-login.html"
+                                  className={
+                                    isActive("/paquetes/listado")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Listado
                                 </a>
                               </li>
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/auth-login.html"
-                                className={isActive("/paquetes/agregar") ? "active-link2" : ""}>
+                                <a
+                                  href="https://techzaa.in/velonic/layouts/auth-login.html"
+                                  className={
+                                    isActive("/paquetes/agregar")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Agregar
                                 </a>
                               </li>
@@ -1111,17 +794,36 @@ const DashboardAdmin = () => {
                             <span className="menu-arrow" />
                           </a>
 
-                          <div className={`collapse ${isActive("/blog") ? "show" : ""}`} id="sidebarLayouts">
+                          <div
+                            className={`collapse ${
+                              isActive("/blog") ? "show" : ""
+                            }`}
+                            id="sidebarLayouts"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#" target="_blank"
-                                className={isActive("/blog/listado") ? "active-link2" : ""}>
+                                <a
+                                  href="#"
+                                  target="_blank"
+                                  className={
+                                    isActive("/blog/listado")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Listado
                                 </a>
                               </li>
                               <li>
-                                <a href="#" target="_blank"
-                                className={isActive("/blog/agregar") ? "active-link2" : ""}>
+                                <a
+                                  href="#"
+                                  target="_blank"
+                                  className={
+                                    isActive("/blog/agregar")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Agregar entradas
                                 </a>
                               </li>
@@ -1141,25 +843,48 @@ const DashboardAdmin = () => {
                             <span className="menu-arrow" />
                           </a>
                           <div
-                            className={`collapse ${isActive("/reservas") ? "show" : ""}`}
+                            className={`collapse ${
+                              isActive("/reservas") ? "show" : ""
+                            }`}
                             id="sidebarBaseUI"
                             style={{}}
                           >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#"
-                                className={isActive("/reservas/confirmadas") ? "active-link2" : ""}
-                                >Confirmadas</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/reservas/confirmadas")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Confirmadas
+                                </a>
                               </li>
                               <li>
-                                <a href="#"
-                                className={isActive("/reservas/en-proceso") ? "active-link2" : ""}
-                                >En Proceso</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/reservas/en-proceso")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  En Proceso
+                                </a>
                               </li>
                               <li>
-                                <a href="#"
-                                className={isActive("/reservas/canceladas") ? "active-link2" : ""}
-                                >Canceladas</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/reservas/canceladas")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Canceladas
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1170,23 +895,44 @@ const DashboardAdmin = () => {
                             href="https://techzaa.in/velonic/layouts/index.html#sidebarExtendedUI"
                             aria-expanded={isActive("/admin-alta")}
                             aria-controls="sidebarExtendedUI"
-                            className={`side-nav-link ${isActive("/admin-alta") ? "active-link" : ""}`}
+                            className={`side-nav-link ${
+                              isActive("/admin-alta") ? "active-link" : ""
+                            }`}
                           >
                             <i className="ri-user-line" />
                             <span> Administradores </span>
                             <span className="menu-arrow" />
                           </a>
-                          <div className={`collapse ${isActive("/admin-alta") ? "show" : ""}`} id="sidebarExtendedUI">
+                          <div
+                            className={`collapse ${
+                              isActive("/admin-alta") ? "show" : ""
+                            }`}
+                            id="sidebarExtendedUI"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="/admin-todos"
-                                className={`${isActive("/admin-todos") ? "active-link2" : ""}`}
-                                >Todos</a>
+                                <a
+                                  href="/admin-todos"
+                                  className={`${
+                                    isActive("/admin-todos")
+                                      ? "active-link2"
+                                      : ""
+                                  }`}
+                                >
+                                  Todos
+                                </a>
                               </li>
                               <li>
-                                <a href="/admin-alta"
-                                className={isActive("/admin-alta") ? "active-link2" : ""}
-                                >Alta Usuarios</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/admin-alta")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Alta Usuarios
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1203,17 +949,36 @@ const DashboardAdmin = () => {
                             <span> Eventos </span>
                             <span className="menu-arrow" />
                           </a>
-                          <div className={`collapse ${isActive("/eventos") ? "show" : ""}`} id="sidebarIcons">
+                          <div
+                            className={`collapse ${
+                              isActive("/eventos") ? "show" : ""
+                            }`}
+                            id="sidebarIcons"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#"
-                                className={isActive("/eventos/listado") ? "active-link2" : ""}
-                                >Listado</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/eventos/listado")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Listado
+                                </a>
                               </li>
                               <li>
-                                <a href="#"
-                                className={isActive("/eventos/agregar") ? "active-link2" : ""}
-                                >Agregar eventos</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/eventos/agregar")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Agregar eventos
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1230,12 +995,22 @@ const DashboardAdmin = () => {
                             <span> Mensajes </span>
                             <span className="menu-arrow" />
                           </a>
-                          <div className={`collapse ${isActive("/mensajes") ? "show" : ""}`} id="sidebarMessages">
+                          <div
+                            className={`collapse ${
+                              isActive("/mensajes") ? "show" : ""
+                            }`}
+                            id="sidebarMessages"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#"
-                                className={isActive("/mensajes") ? "active-link2" : ""}
-                                >Todos los mensajes</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/mensajes") ? "active-link2" : ""
+                                  }
+                                >
+                                  Todos los mensajes
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1253,12 +1028,24 @@ const DashboardAdmin = () => {
                             <span> Notificaciones </span>
                             <span className="menu-arrow" />
                           </a>
-                          <div className={`collapse ${isActive("/notificaciones") ? "show" : ""}`}  id="sidebarNotifications">
+                          <div
+                            className={`collapse ${
+                              isActive("/notificaciones") ? "show" : ""
+                            }`}
+                            id="sidebarNotifications"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#"
-                                className={isActive("/notificaciones") ? "active-link2" : ""}
-                                >Todas las notificaciones</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/notificaciones")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Todas las notificaciones
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1315,402 +1102,58 @@ const DashboardAdmin = () => {
               <div className="row">
                 <div className="col-12">
                   <div className="page-title-box">
-                    <h4 className="page-title">¡Bienvenido!</h4>
+                    <h4 className="page-title text-center">
+                      Alta de Administradores
+                    </h4>
                   </div>
                 </div>
               </div>
-              {/* end page title */}
-              <div className="row">
-                <div className="col-xxl-3 col-sm-6">
-                  <div className="card widget-flat text-bg-pink">
-                    <div className="card-body">
-                      <div className="float-end">
-                        <i className="ri-store-2-line widget-icon" />
-                      </div>
-                      <h6 className="text-uppercase mt-0" title="Customers">
-                        Total Proveedores
-                      </h6>
-                      <h2 className="my-2">{totalProveedores}</h2>
-                    </div>
-                  </div>
-                </div>{" "}
-                {/* end col*/}
-                <div className="col-xxl-3 col-sm-6">
-                  <div className="card widget-flat text-bg-purple">
-                    <div className="card-body">
-                      <div className="float-end">
-                        <i className="ri-wallet-2-line widget-icon" />
-                      </div>
-                      <h6 className="text-uppercase mt-0" title="Customers">
-                        Total Ingresos
-                      </h6>
-                      <h2 className="my-2">{totalIngresos} €</h2>
-                    </div>
-                  </div>
-                </div>{" "}
-                {/* end col*/}
-                <div className="col-xxl-3 col-sm-6">
-                  <div className="card widget-flat text-bg-info">
-                    <div className="card-body">
-                      <div className="float-end">
-                        <i className="ri-shopping-basket-line widget-icon" />
-                      </div>
-                      <h6 className="text-uppercase mt-0" title="Customers">
-                        Total de Reservas
-                      </h6>
-                      <h2 className="my-2">{totalReservas}</h2>
-                    </div>
-                  </div>
-                </div>{" "}
-                {/* end col*/}
-                <div className="col-xxl-3 col-sm-6">
-                  <div className="card widget-flat text-bg-primary">
-                    <div className="card-body">
-                      <div className="float-end">
-                        <i className="ri-group-2-line widget-icon" />
-                      </div>
-                      <h6 className="text-uppercase mt-0" title="Customers">
-                        Total Usuarios
-                      </h6>
-                      <h2 className="my-2">{totalUsuarios}</h2>
-                    </div>
-                  </div>
-                </div>{" "}
-                {/* end col*/}
-              </div>
-              <div className="row">
-                <div className="col-lg-8">
-                  <div className="card">
-                    <div className="card-body">
-                      <div className="card-widgets">
-                        <a href="javascript:;" data-bs-toggle="reload">
-                          <i className="ri-refresh-line" />
-                        </a>
-                        <a
-                          data-bs-toggle="collapse"
-                          href="https://techzaa.in/velonic/layouts/index.html#weeklysales-collapse"
-                          role="button"
-                          aria-expanded="false"
-                          aria-controls="weeklysales-collapse"
-                        >
-                          <i className="ri-subtract-line" />
-                        </a>
-                        <a
-                          href="https://techzaa.in/velonic/layouts/index.html#"
-                          data-bs-toggle="remove"
-                        >
-                          <i className="ri-close-line" />
-                        </a>
-                      </div>
-                      <h5 className="header-title mb-0">
-                        Informe semanal de ventas
-                      </h5>
-                      <div
-                        id="weeklysales-collapse"
-                        className="collapse pt-3 show"
-                      >
-                        <div dir="ltr">
-                          <div
-                            id="revenue-chart"
-                            className="apex-charts"
-                            style={{ minHeight: 377 }}
-                          >
-                            <ApexCharts
-                              options={opciones}
-                              series={series}
-                              type="bar"
-                              height={350}
-                            />
-                          </div>
-                        </div>
-                        <div className="row text-center">
-                          <div className="col">
-                            <p className="text-muted mt-3">Semana Actual</p>
-                            <h3 className=" mb-0">
-                              <span>{totalIngresosSemanaActual} €</span>
-                            </h3>
-                          </div>
-                          <div className="col">
-                            <p className="text-muted mt-3">Semana Anterior</p>
-                            <h3 className=" mb-0">
-                              <span>{totalIngresosSemanaAnterior} € </span>
-                            </h3>
-                          </div>
-                          <div className="col">
-                            <p className="text-muted mt-3">Clientes</p>
-                            <h3 className=" mb-0">
-                              <span>{totalUsuarios}</span>
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-                    </div>{" "}
-                    {/* end card-body*/}
-                  </div>{" "}
-                  {/* end card*/}
-                </div>{" "}
-                {/* end col*/}
-                <div className="col-lg-4">
-                  <div className="card">
-                    <div className="card-body">
-                      <div className="card-widgets">
-                        <a href="javascript:;" data-bs-toggle="reload">
-                          <i className="ri-refresh-line" />
-                        </a>
-                        <a
-                          data-bs-toggle="collapse"
-                          href="https://techzaa.in/velonic/layouts/index.html#yearly-sales-collapse"
-                          role="button"
-                          aria-expanded="false"
-                          aria-controls="yearly-sales-collapse"
-                        >
-                          <i className="ri-subtract-line" />
-                        </a>
-                        <a
-                          href="https://techzaa.in/velonic/layouts/index.html#"
-                          data-bs-toggle="remove"
-                        >
-                          <i className="ri-close-line" />
-                        </a>
-                      </div>
-                      <h5 className="header-title mb-0">
-                        Informe de ventas anual
-                      </h5>
-                      <div
-                        id="yearly-sales-collapse"
-                        className="collapse pt-3 show"
-                      >
-                        <div dir="ltr">
-                          <div
-                            id="yearly-sales-chart"
-                            className="apex-charts"
-                            data-colors="#3bc0c3"
-                            style={{ minHeight: 250 }}
-                          >
-                            <ReactApexChart2
-                              options={opciones2}
-                              series={series2}
-                              type="line"
-                              height={250}
-                            />
-                          </div>
-                        </div>
-                        <div className="row text-center">
-                          <div className="col">
-                            <p className="text-muted mt-3 mb-2">
-                              Cuatrimestre 1
-                            </p>
-                            <h4 className="mb-0">{totalPrimerTrimestre}€</h4>
-                          </div>
-                          <div className="col">
-                            <p className="text-muted mt-3 mb-2">
-                              Cuatrimestre 2
-                            </p>
-                            <h4 className="mb-0">{totalSegundoTrimestre}€</h4>
-                          </div>
-                          <div className="col">
-                            <p className="text-muted mt-3 mb-2">
-                              Cuatrimestre 3
-                            </p>
-                            <h4 className="mb-0">{totalTercerTrimestre}€</h4>
-                          </div>
-                        </div>
-                      </div>
-                    </div>{" "}
-                    {/* end card-body*/}
-                  </div>{" "}
-                  {/* end card*/}
-                  <div className="card"></div> {/* end card*/}
-                </div>{" "}
-                {/* end col*/}
-              </div>
-              {/* end row */}
-              <div className="row">
-                <div className="col-xl-4">
-                  {/* Chat*/}
-                  <div className="card">
-                    <div className="card-body p-0">
-                      <div className="p-3 d-flex justify-content-between align-items-center">
-                        <button
-                          className="btn btn-sm btn-primary"
-                          onClick={handlePrevMonth}
-                        >
-                          Anterior
-                        </button>
-                        <h5 className="header-title mb-0 text-center">
-                          Calendario {currentMonth + 1}/{currentYear}
-                        </h5>
-                        <button
-                          className="btn btn-sm btn-primary"
-                          onClick={handleNextMonth}
-                        >
-                          Siguiente
-                        </button>
-                      </div>
-                      <div className="table-responsive mx-2">
-                        <table className="table table-bordered text-center align-middle">
-                          <thead>
-                            <tr className="bg-primary text-white">
-                              {["L", "M", "X", "J", "V", "S", "D"].map(
-                                (day, i) => (
-                                  <th key={i} className="text-white">
-                                    {day}
-                                  </th>
-                                )
-                              )}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {Array.from({ length: 6 }, (_, rowIndex) => (
-                              <tr key={rowIndex}>
-                                {Array.from({ length: 7 }, (_, colIndex) => {
-                                  const dayIndex = rowIndex * 7 + colIndex;
-                                  const day =
-                                    dayIndex < daysInMonth.length
-                                      ? daysInMonth[dayIndex]
-                                      : "";
 
-                                  const dayKey = `${currentYear}-${
-                                    currentMonth + 1
-                                  }-${day}`;
-                                  const dayEvents = eventos[dayKey] || [];
+              {/* Tabla */}
+              
+              <div className="bg-white p-5 rounded-5 shadow-lg col-12 col-md-8 col-lg-6 mx-auto">
 
-                                  return (
-                                    <td
-                                      key={colIndex}
-                                      style={{
-                                        verticalAlign: "top",
-                                        padding: "4px",
-                                        minWidth: "35px",
-                                        maxWidth: "40px",
-                                        height: "60px",
-                                        overflow: "hidden",
-                                      }}
-                                    >
-                                      <div
-                                        style={{
-                                          fontSize: "0.8rem",
-                                          lineHeight: "1.2",
-                                          overflow: "hidden",
-                                          textOverflow: "ellipsis",
-                                        }}
-                                        title={dayEvents.join(", ")}
-                                      >
-                                        <strong>{day}</strong>
-                                        {dayEvents.map((eventText, i) => (
-                                          <div
-                                            key={i}
-                                            style={{
-                                              color: "red",
-                                              fontSize: "0.7rem",
-                                              whiteSpace: "nowrap",
-                                              overflow: "hidden",
-                                              textOverflow: "ellipsis",
-                                            }}
-                                          >
-                                            {eventText}
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </td>
-                                  );
-                                })}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
+              {error2 && <div className="alert alert-danger p-nosotros">{error2}</div>}
 
-                  {/* end card*/}
-                </div>{" "}
-                {/* end col*/}
-                <div className="col-xl-8">
-                  {/* Todo*/}
-                  <div className="card">
-                    <div className="card-body p-0">
-                      <div className="p-3">
-                        <div className="card-widgets">
-                          <a href="javascript:;" data-bs-toggle="reload">
-                            <i className="ri-refresh-line" />
-                          </a>
-                          <a
-                            data-bs-toggle="collapse"
-                            href="https://techzaa.in/velonic/layouts/index.html#yearly-sales-collapse"
-                            role="button"
-                            aria-expanded="false"
-                            aria-controls="yearly-sales-collapse"
-                          >
-                            <i className="ri-subtract-line" />
-                          </a>
-                          <a
-                            href="https://techzaa.in/velonic/layouts/index.html#"
-                            data-bs-toggle="remove"
-                          >
-                            <i className="ri-close-line" />
-                          </a>
-                        </div>
-                        <h5 className="header-title mb-0">Proyectos</h5>
-                      </div>
-                      <div id="yearly-sales-collapse" className="collapse show">
-                        <div className="table-responsive">
-                          <table className="table table-nowrap table-hover mb-0">
-                            <thead>
-                              <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Fecha Inicio</th>
-                                <th>Fecha Fin</th>
-                                <th>Estado</th>
-                                <th>Asignado</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {(verTodos
-                                ? proyectos
-                                : proyectos.slice(0, 10)
-                              ).map((proyecto, index) => (
-                                <tr key={proyecto.id}>
-                                  <td>{index + 1}</td>
-                                  <td>{proyecto.nombre}</td>
-                                  <td>
-                                    {formatearFecha(proyecto.fechaInicio)}
-                                  </td>
-                                  <td>{formatearFecha(proyecto.fechaFin)}</td>
-                                  <td>
-                                    <span
-                                      className={`badge ${getBadgeClass(
-                                        proyecto.estado
-                                      )}`}
-                                    >
-                                      {proyecto.estado}
-                                    </span>
-                                  </td>
-                                  <td>{proyecto.asignado}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                          {proyectos.length > 10 && (
-                            <div className="text-center mt-2">
-                              <a
-                                href="/proyectos" // o la ruta donde muestres todos los proyectos
-                                className="text-primary fw-bold text-decoration-underline"
-                              >
-                                Ver más
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>{" "}
-                  {/* end card*/}
-                </div>{" "}
-                {/* end col*/}
-              </div>
-              {/* end row */}
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label p-nosotros" htmlFor="email">Correo electrónico</label>
+          <input
+            className={`form-control ${emailExists ? "is-invalid" : ""}`}
+            id="email"
+            type="email"
+            value={email}
+            onChange={handleChangeEmail}
+            required
+          />
+          {emailExists && (
+            <div className="invalid-feedback">Este correo ya está registrado.</div>
+          )}
+        </div>
+        <div className="mb-3">
+          <label className="form-label p-nosotros" htmlFor="password">Contraseña generada</label>
+          <div className="input-group">
+            <input
+              className="form-control"
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              readOnly
+            />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "Ocultar" : "Mostrar"}
+            </button>
+          </div>
+        </div>
+        <button className="btn btn-success w-100 p-nosotros mt-3" type="submit">
+          Dar de alta
+        </button>
+      </form>
+    </div>
             </div>
             {/* container */}
           </div>
@@ -2170,4 +1613,4 @@ const DashboardAdmin = () => {
     </>
   );
 };
-export default DashboardAdmin;
+export default AdminTodos;

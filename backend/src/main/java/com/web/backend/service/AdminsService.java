@@ -30,5 +30,8 @@ public class AdminsService {
         }
     }
     
+    public boolean emailYaExiste(String email) {
+        return usuarioRepository.existsByEmail(email);
+    }
     
 }

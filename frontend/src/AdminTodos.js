@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Swal from 'sweetalert2';
 
+
 const AdminTodos = () => {
   const location = useLocation();
 
@@ -706,7 +707,7 @@ const AdminTodos = () => {
             className="h-100 show"
             id="leftside-menu-container"
             data-simplebar="init"
-            style={{ backgroundColor: "#143852" }}
+            style={{ backgroundColor: "#143852", height: "100%", overflowY: "auto"}}
           >
             <div className="simplebar-wrapper" style={{ margin: 0 }}>
               <div className="simplebar-height-auto-observer-wrapper">
@@ -717,13 +718,7 @@ const AdminTodos = () => {
                   className="simplebar-offset"
                   style={{ right: 0, bottom: 0 }}
                 >
-                  <div
-                    className="simplebar-content-wrapper text-white"
-                    tabIndex={0}
-                    role="region"
-                    aria-label="scrollable content"
-                    style={{ height: "100%", overflow: "hidden" }}
-                  >
+                  <div className="simplebar-content-wrapper text-white" tabIndex={0} role="region" aria-label="scrollable content" style={{ height: '100%' }}>
                     <div className="simplebar-content" style={{ padding: 0 }}>
                       {/*- Sidemenu */}
                       <ul className="side-nav">
@@ -977,7 +972,7 @@ const AdminTodos = () => {
                               </li>
                               <li>
                                 <a
-                                  href="#"
+                                  href="/admin-alta"
                                   className={
                                     isActive("/administradores/alta")
                                       ? "active-link2"
