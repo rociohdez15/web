@@ -24,6 +24,7 @@ import com.web.backend.model.Evento;
 import com.web.backend.model.User;
 import com.web.backend.repository.EventoRepository;
 import com.web.backend.service.AdminPanelService;
+import com.web.backend.service.EventoService;
 
 @RestController
 @RequestMapping("/api/eventos")
@@ -34,6 +35,9 @@ public class EventosController {
 
     @Autowired
     private AdminPanelService adminPanelService;
+
+    @Autowired
+    private EventoService eventoService;
 
     @PostMapping("/crear-evento")
     public ResponseEntity<String> crearEventoTest(@RequestParam String nombre, @RequestParam String fecha,
@@ -105,4 +109,16 @@ public class EventosController {
         }
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<?> buscarEventoPorIdONombre(@RequestParam String input) {
+        Optional<Evento> evento = eventoService.buscarPorIdONombre(input);
+    
+        if (evento.isPresent()) {
+            return ResponseEntity.ok(evento.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("No se encontraron resultados.");
+        }
+    }
+    
 }
