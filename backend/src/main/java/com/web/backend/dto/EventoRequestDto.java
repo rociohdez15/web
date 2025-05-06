@@ -15,7 +15,7 @@ public class EventoRequestDto {
     private LocalDate fecha;
     
     @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
-    @JsonFormat(pattern = "HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime hora;
     
 
