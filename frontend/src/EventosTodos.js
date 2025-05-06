@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import Swal from 'sweetalert2';
-
+import Swal from "sweetalert2";
 
 const AdminTodos = () => {
   const location = useLocation();
@@ -194,93 +193,111 @@ const AdminTodos = () => {
   for (let i = 1; i <= Math.ceil(eventos2.length / entriesPerPage); i++) {
     pageNumbers.push(i);
   }
-  
+
   const handleDelete = (id) => {
     Swal.fire({
-      title: '¿Eliminar evento?',
-      text: 'Esta acción no se puede deshacer.',
-      icon: 'warning',
+      title: "¿Eliminar evento?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
         axios
           .delete(`http://localhost:8080/api/eventos/eliminar/${id}`)
           .then(() => {
-            setEventos(prev => prev.filter(evento => evento.id !== id));
-            setEventos2(prev => prev.filter(evento => evento.id !== id));
-  
+            setEventos((prev) => prev.filter((evento) => evento.id !== id));
+            setEventos2((prev) => prev.filter((evento) => evento.id !== id));
+
             Swal.fire(
-              'Eliminado',
-              'El evento ha sido eliminado correctamente.',
-              'success'
+              "Eliminado",
+              "El evento ha sido eliminado correctamente.",
+              "success"
             );
           })
           .catch((err) => {
             console.error("Error al eliminar:", err);
-            Swal.fire('Error', 'No se pudo eliminar el evento.', 'error');
+            Swal.fire("Error", "No se pudo eliminar el evento.", "error");
           });
       }
     });
   };
-  
+
   const handleEdit = (eventoId) => {
-    const evento = eventos.find(e => e.id === eventoId);
+    const evento = eventos.find(a => a.id === eventoId);
   
     Swal.fire({
       title: 'Editar evento',
       html:
-        `<input type="text" id="nombre" class="swal2-input" placeholder="Nombre" value="${evento.nombre}">` +
-        `<input type="date" id="fecha" class="swal2-input" value="${evento.fecha}">` +
-        `<input type="time" id="hora" class="swal2-input" value="${evento.hora}">`,
+        `<input id="nombre" class="swal2-input" placeholder="Nombre" value="${evento.nombre}">` +
+        `<input id="fecha" type="date" class="swal2-input" value="${evento.fecha}">` +
+        `<input id="hora" type="time" class="swal2-input" value="${evento.hora}">`,
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: 'Guardar',
       cancelButtonText: 'Cancelar',
       preConfirm: () => {
-        const nombre = document.getElementById('nombre').value;
-        const fecha = document.getElementById('fecha').value;
-        const hora = document.getElementById('hora').value;
+        const nuevoNombre = document.getElementById('nombre').value;
+        const nuevaFecha = document.getElementById('fecha').value;
+        const nuevaHora = document.getElementById('hora').value;
   
-        if (!nombre || !fecha || !hora) {
+        if (!nuevoNombre || !nuevaFecha || !nuevaHora) {
           Swal.showValidationMessage('Todos los campos son obligatorios');
-          return;
+          return false;
         }
   
-        return { nombre, fecha, hora };
+        return { nuevoNombre, nuevaFecha, nuevaHora };
       }
-    }).then(result => {
+    }).then((result) => {
       if (result.isConfirmed) {
-        const { nombre, fecha, hora } = result.value;
-  
-        axios.put(`http://localhost:8080/api/eventos/editar/${eventoId}`, {
-          id: eventoId,
-          nombre,
-          fecha,
-          hora
-        })
+        const { nuevoNombre, nuevaFecha, nuevaHora } = result.value;
+
+        axios
+          .put(
+            `http://localhost:8080/api/eventos/editar/${eventoId}?nombre=${
+              nuevoNombre
+            }&fecha=${nuevaFecha}&hora=${nuevaHora}`
+          )
           .then(() => {
-            setEventos(prev =>
-              prev.map(e => e.id === eventoId ? { ...e, nombre, fecha, hora } : e)
+            setEventos((prev) =>
+              prev.map((a) =>
+                a.id === eventoId
+                  ? {
+                      ...a,
+                      nombre: nuevoNombre,
+                      fecha: nuevaFecha,
+                      hora: nuevaHora,
+                    }
+                  : a
+              )
             );
-            setEventos2(prev =>
-              prev.map(e => e.id === eventoId ? { ...e, nombre, fecha, hora } : e)
+            setEventos2((prev) =>
+              prev.map((a) =>
+                a.id === eventoId
+                  ? {
+                      ...a,
+                      nombre: nuevoNombre,
+                      fecha: nuevaFecha,
+                      hora: nuevaHora,
+                    }
+                  : a
+              )
             );
-            Swal.fire('Actualizado', 'El evento ha sido actualizado.', 'success');
+            Swal.fire(
+              "Actualizado",
+              "El evento ha sido actualizado.",
+              "success"
+            );
           })
           .catch(() => {
-            Swal.fire('Error', 'No se pudo actualizar el evento.', 'error');
+            Swal.fire("Error", "No se pudo actualizar el evento.", "error");
           });
       }
     });
   };
-  
-  
-  
-  
 
   return (
     <>
@@ -711,7 +728,11 @@ const AdminTodos = () => {
             className="h-100 show"
             id="leftside-menu-container"
             data-simplebar="init"
-            style={{ backgroundColor: "#143852", height: "100%", overflowY: "auto"}}
+            style={{
+              backgroundColor: "#143852",
+              height: "100%",
+              overflowY: "auto",
+            }}
           >
             <div className="simplebar-wrapper" style={{ margin: 0 }}>
               <div className="simplebar-height-auto-observer-wrapper">
@@ -722,7 +743,13 @@ const AdminTodos = () => {
                   className="simplebar-offset"
                   style={{ right: 0, bottom: 0 }}
                 >
-                  <div className="simplebar-content-wrapper text-white" tabIndex={0} role="region" aria-label="scrollable content" style={{ height: '100%' }}>
+                  <div
+                    className="simplebar-content-wrapper text-white"
+                    tabIndex={0}
+                    role="region"
+                    aria-label="scrollable content"
+                    style={{ height: "100%" }}
+                  >
                     <div className="simplebar-content" style={{ padding: 0 }}>
                       {/*- Sidemenu */}
                       <ul className="side-nav">
@@ -996,8 +1023,8 @@ const AdminTodos = () => {
                             aria-expanded={isActive("/eventos")}
                             aria-controls="sidebarIcons"
                             className={`side-nav-link ${
-                                isActive("/eventos-todos") ? "active-link" : ""
-                              }`}
+                              isActive("/eventos-todos") ? "active-link" : ""
+                            }`}
                           >
                             <i className="ri-pencil-ruler-2-line" />
                             <span> Eventos </span>

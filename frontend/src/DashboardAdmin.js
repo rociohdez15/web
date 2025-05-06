@@ -379,22 +379,20 @@ const DashboardAdmin = () => {
       .get("http://localhost:8080/api/admin/obtener-eventos")
       .then((response) => {
         const data = response.data;
-
-        // Agrupar eventos por año-mes-dia
         const grouped = {};
 
         data.forEach((evento) => {
-          const [year, month, day] = evento.fecha;
-          const key = `${year}-${month}-${day}`;
+          const key = evento.fecha; // fecha ya viene como 'YYYY-MM-DD'
 
           if (!grouped[key]) {
             grouped[key] = [];
           }
 
-          grouped[key].push(evento.nombre);
+          grouped[key].push(`${evento.nombre} - ${evento.hora}`);
+
         });
 
-        setEventos(grouped); // esto será un objeto con claves tipo "2024-12-12": ["Evento1", "Evento2"]
+        setEventos(grouped); // Ej: { "2025-04-12": ["Reunión con cliente"] }
       })
       .catch((error) => {
         console.error("Error al obtener eventos", error);
@@ -432,17 +430,11 @@ const DashboardAdmin = () => {
 
   // Función para obtener los eventos de un día específico
   const getEventosDelDia = (day) => {
-    const eventosDelDia = eventos.filter((evento) => {
-      const fechaEvento = new Date(
-        evento.fecha[0],
-        evento.fecha[1] - 1,
-        evento.fecha[2]
-      );
-      return (
-        fechaEvento.getDate() === day && fechaEvento.getMonth() === currentMonth
-      );
-    });
-    return eventosDelDia;
+    const key = `${currentYear}-${String(currentMonth + 1).padStart(
+      2,
+      "0"
+    )}-${String(day).padStart(2, "0")}`;
+    return eventos[key] || [];
   };
 
   const [messages, setMessages] = useState([]);
@@ -1027,7 +1019,9 @@ const DashboardAdmin = () => {
                         <li className="side-nav-item menuitem-active">
                           <Link
                             to="/dashboard-admin"
-                            className={`side-nav-link ${isActive("/dashboard-admin") ? "active-link" : ""}`}
+                            className={`side-nav-link ${
+                              isActive("/dashboard-admin") ? "active-link" : ""
+                            }`}
                           >
                             <i className="ri-dashboard-3-line" />
                             <span> Dashboard </span>
@@ -1039,26 +1033,43 @@ const DashboardAdmin = () => {
                             href="https://techzaa.in/velonic/layouts/index.html#sidebarPages"
                             aria-expanded={isActive("/facturas")}
                             aria-controls="sidebarPages"
-                            className={`side-nav-link ${isActive("#") ? "active-link" : ""}`}
+                            className={`side-nav-link ${
+                              isActive("#") ? "active-link" : ""
+                            }`}
                           >
                             <i className="ri-pages-line" />
                             <span> Facturas </span>
                             <span className="menu-arrow" />
                           </a>
                           <div
-                            className={`collapse ${isActive("/facturas") ? "show" : ""}`} id="sidebarPages"
+                            className={`collapse ${
+                              isActive("/facturas") ? "show" : ""
+                            }`}
+                            id="sidebarPages"
                             style={{}}
                           >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/pages-starter.html"
-                                className={isActive("/facturas/clientes") ? "active-link2" : ""}>
+                                <a
+                                  href="https://techzaa.in/velonic/layouts/pages-starter.html"
+                                  className={
+                                    isActive("/facturas/clientes")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Facturas clientes
                                 </a>
                               </li>
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/pages-contact-list.html"
-                                className={isActive("/facturas/proveedores") ? "active-link2" : ""}>
+                                <a
+                                  href="https://techzaa.in/velonic/layouts/pages-contact-list.html"
+                                  className={
+                                    isActive("/facturas/proveedores")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Facturas proveedores
                                 </a>
                               </li>
@@ -1078,20 +1089,34 @@ const DashboardAdmin = () => {
                             <span className="menu-arrow" />
                           </a>
                           <div
-                            className={`collapse ${isActive("/paquetes") ? "show" : ""}`}
+                            className={`collapse ${
+                              isActive("/paquetes") ? "show" : ""
+                            }`}
                             id="sidebarPagesAuth"
                             style={{}}
                           >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/auth-login.html"
-                                className={isActive("/paquetes/listado") ? "active-link2" : ""}>
+                                <a
+                                  href="https://techzaa.in/velonic/layouts/auth-login.html"
+                                  className={
+                                    isActive("/paquetes/listado")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Listado
                                 </a>
                               </li>
                               <li>
-                                <a href="https://techzaa.in/velonic/layouts/auth-login.html"
-                                className={isActive("/paquetes/agregar") ? "active-link2" : ""}>
+                                <a
+                                  href="https://techzaa.in/velonic/layouts/auth-login.html"
+                                  className={
+                                    isActive("/paquetes/agregar")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Agregar
                                 </a>
                               </li>
@@ -1111,17 +1136,36 @@ const DashboardAdmin = () => {
                             <span className="menu-arrow" />
                           </a>
 
-                          <div className={`collapse ${isActive("/blog") ? "show" : ""}`} id="sidebarLayouts">
+                          <div
+                            className={`collapse ${
+                              isActive("/blog") ? "show" : ""
+                            }`}
+                            id="sidebarLayouts"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#" target="_blank"
-                                className={isActive("/blog/listado") ? "active-link2" : ""}>
+                                <a
+                                  href="#"
+                                  target="_blank"
+                                  className={
+                                    isActive("/blog/listado")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Listado
                                 </a>
                               </li>
                               <li>
-                                <a href="#" target="_blank"
-                                className={isActive("/blog/agregar") ? "active-link2" : ""}>
+                                <a
+                                  href="#"
+                                  target="_blank"
+                                  className={
+                                    isActive("/blog/agregar")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
                                   Agregar entradas
                                 </a>
                               </li>
@@ -1141,25 +1185,48 @@ const DashboardAdmin = () => {
                             <span className="menu-arrow" />
                           </a>
                           <div
-                            className={`collapse ${isActive("/reservas") ? "show" : ""}`}
+                            className={`collapse ${
+                              isActive("/reservas") ? "show" : ""
+                            }`}
                             id="sidebarBaseUI"
                             style={{}}
                           >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#"
-                                className={isActive("/reservas/confirmadas") ? "active-link2" : ""}
-                                >Confirmadas</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/reservas/confirmadas")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Confirmadas
+                                </a>
                               </li>
                               <li>
-                                <a href="#"
-                                className={isActive("/reservas/en-proceso") ? "active-link2" : ""}
-                                >En Proceso</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/reservas/en-proceso")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  En Proceso
+                                </a>
                               </li>
                               <li>
-                                <a href="#"
-                                className={isActive("/reservas/canceladas") ? "active-link2" : ""}
-                                >Canceladas</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/reservas/canceladas")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Canceladas
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1170,23 +1237,44 @@ const DashboardAdmin = () => {
                             href="https://techzaa.in/velonic/layouts/index.html#sidebarExtendedUI"
                             aria-expanded={isActive("/admin-todos")}
                             aria-controls="sidebarExtendedUI"
-                            className={`side-nav-link ${isActive("/admin-todos") ? "active-link" : ""}`}
+                            className={`side-nav-link ${
+                              isActive("/admin-todos") ? "active-link" : ""
+                            }`}
                           >
                             <i className="ri-user-line" />
                             <span> Administradores </span>
                             <span className="menu-arrow" />
                           </a>
-                          <div className={`collapse ${isActive("/admin-todos") ? "show" : ""}`} id="sidebarExtendedUI">
+                          <div
+                            className={`collapse ${
+                              isActive("/admin-todos") ? "show" : ""
+                            }`}
+                            id="sidebarExtendedUI"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="/admin-todos"
-                                className={`${isActive("/admin-todos") ? "active-link2" : ""}`}
-                                >Todos</a>
+                                <a
+                                  href="/admin-todos"
+                                  className={`${
+                                    isActive("/admin-todos")
+                                      ? "active-link2"
+                                      : ""
+                                  }`}
+                                >
+                                  Todos
+                                </a>
                               </li>
                               <li>
-                                <a href="/admin-alta"
-                                className={isActive("/admin-alta") ? "active-link2" : ""}
-                                >Alta Usuarios</a>
+                                <a
+                                  href="/admin-alta"
+                                  className={
+                                    isActive("/admin-alta")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Alta Usuarios
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1197,23 +1285,44 @@ const DashboardAdmin = () => {
                             href="https://techzaa.in/velonic/layouts/index.html#sidebarIcons"
                             aria-expanded={isActive("/eventos")}
                             aria-controls="sidebarIcons"
-                            className="side-nav-link"
+                            className={`side-nav-link ${
+                              isActive("/eventos-todos") ? "active-link" : ""
+                            }`}
                           >
                             <i className="ri-pencil-ruler-2-line" />
                             <span> Eventos </span>
                             <span className="menu-arrow" />
                           </a>
-                          <div className={`collapse ${isActive("/eventos") ? "show" : ""}`} id="sidebarIcons">
+                          <div
+                            className={`collapse ${
+                              isActive("/eventos-todos") ? "show" : ""
+                            }`}
+                            id="sidebarIcons"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#"
-                                className={isActive("/eventos/listado") ? "active-link2" : ""}
-                                >Listado</a>
+                                <a
+                                  href="/eventos-todos"
+                                  className={
+                                    isActive("/eventos-todos")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Listado
+                                </a>
                               </li>
                               <li>
-                                <a href="#"
-                                className={isActive("/eventos/agregar") ? "active-link2" : ""}
-                                >Agregar eventos</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/eventos/agregar")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Agregar eventos
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1230,12 +1339,22 @@ const DashboardAdmin = () => {
                             <span> Mensajes </span>
                             <span className="menu-arrow" />
                           </a>
-                          <div className={`collapse ${isActive("/mensajes") ? "show" : ""}`} id="sidebarMessages">
+                          <div
+                            className={`collapse ${
+                              isActive("/mensajes") ? "show" : ""
+                            }`}
+                            id="sidebarMessages"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#"
-                                className={isActive("/mensajes") ? "active-link2" : ""}
-                                >Todos los mensajes</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/mensajes") ? "active-link2" : ""
+                                  }
+                                >
+                                  Todos los mensajes
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1253,12 +1372,24 @@ const DashboardAdmin = () => {
                             <span> Notificaciones </span>
                             <span className="menu-arrow" />
                           </a>
-                          <div className={`collapse ${isActive("/notificaciones") ? "show" : ""}`}  id="sidebarNotifications">
+                          <div
+                            className={`collapse ${
+                              isActive("/notificaciones") ? "show" : ""
+                            }`}
+                            id="sidebarNotifications"
+                          >
                             <ul className="side-nav-second-level">
                               <li>
-                                <a href="#"
-                                className={isActive("/notificaciones") ? "active-link2" : ""}
-                                >Todas las notificaciones</a>
+                                <a
+                                  href="#"
+                                  className={
+                                    isActive("/notificaciones")
+                                      ? "active-link2"
+                                      : ""
+                                  }
+                                >
+                                  Todas las notificaciones
+                                </a>
                               </li>
                             </ul>
                           </div>
@@ -1570,9 +1701,13 @@ const DashboardAdmin = () => {
                                       ? daysInMonth[dayIndex]
                                       : "";
 
-                                  const dayKey = `${currentYear}-${
+                                  const dayKey = `${currentYear}-${String(
                                     currentMonth + 1
-                                  }-${day}`;
+                                  ).padStart(2, "0")}-${String(day).padStart(
+                                    2,
+                                    "0"
+                                  )}`;
+
                                   const dayEvents = eventos[dayKey] || [];
 
                                   return (
@@ -1597,20 +1732,22 @@ const DashboardAdmin = () => {
                                         title={dayEvents.join(", ")}
                                       >
                                         <strong>{day}</strong>
-                                        {dayEvents.map((eventText, i) => (
-                                          <div
-                                            key={i}
-                                            style={{
-                                              color: "red",
-                                              fontSize: "0.7rem",
-                                              whiteSpace: "nowrap",
-                                              overflow: "hidden",
-                                              textOverflow: "ellipsis",
-                                            }}
-                                          >
-                                            {eventText}
-                                          </div>
-                                        ))}
+                                        {getEventosDelDia(day).map(
+                                          (eventText, i) => (
+                                            <div
+                                              key={i}
+                                              style={{
+                                                color: "red",
+                                                fontSize: "0.7rem",
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                              }}
+                                            >
+                                              {eventText}
+                                            </div>
+                                          )
+                                        )}
                                       </div>
                                     </td>
                                   );
