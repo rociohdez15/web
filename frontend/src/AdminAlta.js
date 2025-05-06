@@ -960,7 +960,7 @@ const AdminTodos = ({ onSubmitAlta }) => {
                             <ul className="side-nav-second-level">
                               <li>
                                 <a
-                                  href="#"
+                                  href="/eventos-todos"
                                   className={
                                     isActive("/eventos-todos")
                                       ? "active-link2"

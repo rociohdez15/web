@@ -1184,7 +1184,7 @@ const AdminTodos = () => {
                 <div className="col-12">
                   <div className="page-title-box">
                     <h4 className="page-title text-center">
-                      Listado de Administradores
+                      Listado de Eventos
                     </h4>
                   </div>
                 </div>
