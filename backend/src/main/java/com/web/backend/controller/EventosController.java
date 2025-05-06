@@ -110,15 +110,12 @@ public class EventosController {
     }
 
     @GetMapping("/buscar")
-    public ResponseEntity<?> buscarEventoPorIdONombre(@RequestParam String input) {
-        Optional<Evento> evento = eventoService.buscarPorIdONombre(input);
-    
-        if (evento.isPresent()) {
-            return ResponseEntity.ok(evento.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body("No se encontraron resultados.");
+    public ResponseEntity<?> buscarPorIdONombre(@RequestParam String input) {
+        List<Evento> resultados = eventoService.buscarPorIdONombre(input);
+        if (resultados.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron resultados.");
         }
+        return ResponseEntity.ok(resultados);
     }
     
 }

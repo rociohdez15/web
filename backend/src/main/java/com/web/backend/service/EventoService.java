@@ -1,5 +1,6 @@
 package com.web.backend.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,14 @@ public class EventoService {
     @Autowired
     private EventoRepository eventoRepository;
 
-       public Optional<Evento> buscarPorIdONombre(String input) {
+    public List<Evento> buscarPorIdONombre(String input) {
         try {
             Long id = Long.parseLong(input);
-            return eventoRepository.findById(id);
+            return eventoRepository.findById(id)
+                                   .map(List::of)
+                                   .orElse(List.of());
         } catch (NumberFormatException e) {
-            String nombre = input;
-            return eventoRepository.findByNombre(nombre);
+            return eventoRepository.findByNombre(input);
         }
     }
 }
