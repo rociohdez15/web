@@ -21,6 +21,7 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardAdmin from "./DashboardAdmin";
 import AdminTodos from "./AdminTodos";
 import AdminAlta from "./AdminAlta";
+import EventosTodos from "./EventosTodos";
 
 const App = () => {
   const token = localStorage.getItem("token"); // Verificar si hay token
@@ -62,6 +63,14 @@ const App = () => {
           element={
             <PrivateRoute>
               <AdminAlta/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/eventos-todos"
+          element={
+            <PrivateRoute>
+              <EventosTodos/>
             </PrivateRoute>
           }
         />

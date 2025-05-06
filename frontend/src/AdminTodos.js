@@ -991,7 +991,9 @@ const AdminTodos = () => {
                             href="https://techzaa.in/velonic/layouts/index.html#sidebarIcons"
                             aria-expanded={isActive("/eventos")}
                             aria-controls="sidebarIcons"
-                            className="side-nav-link"
+                            className={`side-nav-link ${
+                                isActive("/eventos-todos") ? "active-link" : ""
+                              }`}
                           >
                             <i className="ri-pencil-ruler-2-line" />
                             <span> Eventos </span>
@@ -999,16 +1001,16 @@ const AdminTodos = () => {
                           </a>
                           <div
                             className={`collapse ${
-                              isActive("/eventos") ? "show" : ""
+                              isActive("/eventos-todos") ? "show" : ""
                             }`}
                             id="sidebarIcons"
                           >
                             <ul className="side-nav-second-level">
                               <li>
                                 <a
-                                  href="#"
+                                  href="/eventos-todos"
                                   className={
-                                    isActive("/eventos/listado")
+                                    isActive("/eventos-todos")
                                       ? "active-link2"
                                       : ""
                                   }
