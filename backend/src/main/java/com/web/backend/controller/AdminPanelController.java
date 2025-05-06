@@ -112,31 +112,6 @@ public class AdminPanelController {
         return ResponseEntity.ok(ingresos != null ? ingresos : BigDecimal.ZERO);
     }
 
-    @PostMapping("/crear-evento-test")
-    public ResponseEntity<String> crearEventoTest(@RequestParam String nombre, @RequestParam String fecha, @RequestParam String hora) {
-        System.out.println("Nombre recibido: " + nombre);
-        System.out.println("Fecha recibida: " + fecha);
-        System.out.println("Hora recibida: " + hora);
-    
-        // Parsear la fecha y hora recibidas
-        DateTimeFormatter fechaFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter horaFormatter = DateTimeFormatter.ofPattern("HH:mm");
-    
-        LocalDate fechaParsed = LocalDate.parse(fecha, fechaFormatter);
-        LocalTime horaParsed = LocalTime.parse(hora, horaFormatter);
-    
-        // Crear un nuevo evento
-        Evento evento = new Evento();
-        evento.setNombre(nombre);
-        evento.setFecha(fechaParsed);  // Establecer la fecha
-        evento.setHora(horaParsed);    // Establecer la hora
-    
-        // Guardar el evento en la base de datos
-        eventoRepository.save(evento);
-    
-        return ResponseEntity.ok("Evento creado");
-    }
-
     @GetMapping("/obtener-eventos")
     public List<Evento> obtenerEventos() {
         return adminPanelService.obtenerEventos();
