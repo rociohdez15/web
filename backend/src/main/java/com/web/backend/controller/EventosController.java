@@ -53,6 +53,22 @@ public class EventosController {
         LocalDate fechaParsed = LocalDate.parse(fecha, fechaFormatter);
         LocalTime horaParsed = LocalTime.parse(hora, horaFormatter);
 
+        // Verificar duplicado exacto
+        Optional<Evento> duplicadoExacto = eventoRepository.findByNombreAndFechaAndHora(nombre, fechaParsed,
+                horaParsed);
+        if (duplicadoExacto.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Ya existe un evento con el mismo nombre, fecha y hora.");
+        }
+
+        // Verificar conflicto de horario (fecha y hora repetidas, aunque con nombre
+        // distinto)
+        Optional<Evento> conflictoHorario = eventoRepository.findByFechaAndHora(fechaParsed, horaParsed);
+        if (conflictoHorario.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Ya hay otro evento programado para la misma fecha y hora.");
+        }
+
         // Crear un nuevo evento
         Evento evento = new Evento();
         evento.setNombre(nombre);
@@ -117,5 +133,5 @@ public class EventosController {
         }
         return ResponseEntity.ok(resultados);
     }
-    
+
 }
