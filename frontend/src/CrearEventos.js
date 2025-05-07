@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const AdminTodos = ({ onSubmitAlta }) => {
+const CrearTodos = ({ onSubmitAlta }) => {
   const location = useLocation();
 
   const isActive = (path) => location.pathname.startsWith(path);
@@ -1610,4 +1610,4 @@ const AdminTodos = ({ onSubmitAlta }) => {
     </>
   );
 };
-export default AdminTodos;
+export default CrearTodos;
