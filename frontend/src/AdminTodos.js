@@ -1020,9 +1020,9 @@ const AdminTodos = () => {
                               </li>
                               <li>
                                 <a
-                                  href="#"
+                                  href="/crear-eventos"
                                   className={
-                                    isActive("/eventos/agregar")
+                                    isActive("/crear-eventos")
                                       ? "active-link2"
                                       : ""
                                   }
@@ -1165,7 +1165,7 @@ const AdminTodos = () => {
                   <div className="d-flex align-items-center mb-2 mb-md-0"></div>
                   <div className="d-flex align-items-center">
                     <label htmlFor="searchInput" className="me-2 mb-0">
-                      Search:
+                      Buscar:
                     </label>
                     <input
                       id="searchInput"

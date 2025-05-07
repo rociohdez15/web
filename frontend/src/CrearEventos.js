@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import Swal from 'sweetalert2';
-
+import Swal from "sweetalert2";
 
 const AdminTodos = ({ onSubmitAlta }) => {
   const location = useLocation();
@@ -138,97 +137,70 @@ const AdminTodos = ({ onSubmitAlta }) => {
     navigate("/login");
   };
 
-  const [email, setEmail] = useState("");
-  const [emailExists, setEmailExists] = useState(false);
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [nombre, setNombre] = useState("");
+  const [fecha, setFecha] = useState("");
+  const [hora, setHora] = useState("");
   const [error2, setError2] = useState("");
-  
-  useEffect(() => {
-    // Generar contraseña aleatoria al cargar el componente
-    const generarPassword = () => {
-      const caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      return Array.from({ length: 12 }, () => caracteres[Math.floor(Math.random() * caracteres.length)]).join("");
-    };
-    setPassword(generarPassword());
-  }, []);
-  
-  // Verificar si el email ya existe al cambiar el valor del campo de email
-  const handleChangeEmail = async (e) => {
-    const value = e.target.value;
-    setEmail(value);
-  
-    // Validación por backend: comprobar si el email ya existe
-    if (value.includes("@")) {
-      try {
-        const response = await axios.get(`http://localhost:8080/api/rol-admin/existe?email=${value}`);
-        const data = response.data; // Aquí obtienes los datos de la respuesta
-  
-        // Actualizar el estado de si el email ya está registrado
-        setEmailExists(data.exists);
-      } catch (error) {
-        console.error("Hubo un error al verificar el correo:", error);
-      }
-    }
-  };
   
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    // Verificar si el correo ya está registrado
-    if (emailExists) {
+    // Validación básica
+    if (!nombre || !fecha || !hora) {
       Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'El correo ya está registrado',
-        confirmButtonColor: '#d33',
+        icon: "error",
+        title: "Campos requeridos",
+        text: "Por favor, completa todos los campos.",
+        confirmButtonColor: "#d33",
       });
-      return; // Evitar que el formulario se envíe si el correo está registrado
+      return;
     }
+  
+    const params = new URLSearchParams();
+    params.append("nombre", nombre);
+    params.append("fecha", fecha);
+    params.append("hora", hora);
   
     try {
-      // Construir la URL con los parámetros necesarios
-      const url = `http://localhost:8080/api/rol-admin/alta?email=${email}&password=${password}`;
-      
-      // Realizar la petición POST con los parámetros en la URL
-      const response = await axios.post(url);
+      const response = await axios.post(
+        "http://localhost:8080/api/eventos/crear-evento",
+        params,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
   
-      if (response.status === 200) {
-        // Si la creación del admin es exitosa, muestra un SweetAlert de éxito
+      if (response.status === 200 || response.status === 201) {
         Swal.fire({
-          icon: 'success',
-          title: 'Administrador creado con éxito',
-          text: `El administrador con el correo ${email} ha sido creado correctamente.`,
-          confirmButtonColor: '#28a745',
+          icon: "success",
+          title: "Evento creado",
+          text: `El evento "${nombre}" fue creado correctamente.`,
+          confirmButtonColor: "#28a745",
         });
-
-        setEmail('');  // Vaciar el campo email
+  
+        // Limpiar campos
+        setNombre("");
+        setFecha("");
+        setHora("");
       }
-    } catch (error) {
-      console.error("Error al crear el administrador:", error);
-  
-      // Mostrar un error específico si ocurre uno al crear el administrador
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Hubo un problema al dar de alta al administrador.',
-        confirmButtonColor: '#d33',
-      });
-    }
+    } catch (err) {
+        console.error("Error al crear el evento:", err);
+        let mensaje = "Hubo un problema al crear el evento.";
+      
+        if (err.response?.status === 409) {
+          mensaje = err.response.data;
+        }
+      
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: mensaje,
+          confirmButtonColor: "#d33",
+        });
+      }
   };
-  
-  
-  // Manejador de errores global, si existe algún error en el formulario
-  useEffect(() => {
-    if (error2) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error2,
-        confirmButtonColor: '#d33',
-      });
-    }
-  }, [error2]);
   
   return (
     <>
@@ -659,7 +631,11 @@ const AdminTodos = ({ onSubmitAlta }) => {
             className="h-100 show"
             id="leftside-menu-container"
             data-simplebar="init"
-            style={{ backgroundColor: "#143852", height: "100%", overflowY: "auto"}}
+            style={{
+              backgroundColor: "#143852",
+              height: "100%",
+              overflowY: "auto",
+            }}
           >
             <div className="simplebar-wrapper" style={{ margin: 0 }}>
               <div className="simplebar-height-auto-observer-wrapper">
@@ -670,7 +646,13 @@ const AdminTodos = ({ onSubmitAlta }) => {
                   className="simplebar-offset"
                   style={{ right: 0, bottom: 0 }}
                 >
-                  <div className="simplebar-content-wrapper text-white" tabIndex={0} role="region" aria-label="scrollable content" style={{ height: '100%' }}>
+                  <div
+                    className="simplebar-content-wrapper text-white"
+                    tabIndex={0}
+                    role="region"
+                    aria-label="scrollable content"
+                    style={{ height: "100%" }}
+                  >
                     <div className="simplebar-content" style={{ padding: 0 }}>
                       {/*- Sidemenu */}
                       <ul className="side-nav">
@@ -944,7 +926,7 @@ const AdminTodos = ({ onSubmitAlta }) => {
                             aria-expanded={isActive("/eventos")}
                             aria-controls="sidebarIcons"
                             className={`side-nav-link ${
-                              isActive("/eventos-todos") ? "active-link" : ""
+                              isActive("/crear-eventos") ? "active-link" : ""
                             }`}
                           >
                             <i className="ri-pencil-ruler-2-line" />
@@ -953,7 +935,7 @@ const AdminTodos = ({ onSubmitAlta }) => {
                           </a>
                           <div
                             className={`collapse ${
-                              isActive("/eventos-todos") ? "show" : ""
+                              isActive("/crear-eventos") ? "show" : ""
                             }`}
                             id="sidebarIcons"
                           >
@@ -1105,57 +1087,70 @@ const AdminTodos = ({ onSubmitAlta }) => {
                 <div className="col-12">
                   <div className="page-title-box">
                     <h4 className="page-title text-center">
-                      Alta de Administradores
+                      Crear Evento
                     </h4>
                   </div>
                 </div>
               </div>
 
               {/* Tabla */}
-              
+
               <div className="bg-white p-5 rounded-5 shadow-lg col-12 col-md-8 col-lg-6 mx-auto">
+                {error2 && (
+                  <div className="alert alert-danger p-nosotros">{error2}</div>
+                )}
 
-              {error2 && <div className="alert alert-danger p-nosotros">{error2}</div>}
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label className="form-label p-nosotros" htmlFor="nombre">
+                      Nombre del evento
+                    </label>
+                    <input
+                      className="form-control"
+                      id="nombre"
+                      type="text"
+                      value={nombre}
+                      onChange={(e) => setNombre(e.target.value)}
+                      required
+                    />
+                  </div>
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label p-nosotros" htmlFor="email">Correo electrónico</label>
-          <input
-            className={`form-control ${emailExists ? "is-invalid" : ""}`}
-            id="email"
-            type="email"
-            value={email}
-            onChange={handleChangeEmail}
-            required
-          />
-          {emailExists && (
-            <div className="invalid-feedback">Este correo ya está registrado.</div>
-          )}
-        </div>
-        <div className="mb-3">
-          <label className="form-label p-nosotros" htmlFor="password">Contraseña generada</label>
-          <div className="input-group">
-            <input
-              className="form-control"
-              id="password"
-              type={showPassword ? "text" : "password"}
-              value={password}
-              readOnly
-            />
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? "Ocultar" : "Mostrar"}
-            </button>
-          </div>
-        </div>
-        <button className="btn btn-success w-100 p-nosotros mt-3" type="submit">
-          Dar de alta
-        </button>
-      </form>
-    </div>
+                  <div className="mb-3">
+                    <label className="form-label p-nosotros" htmlFor="fecha">
+                      Fecha
+                    </label>
+                    <input
+                      className="form-control"
+                      id="fecha"
+                      type="date"
+                      value={fecha}
+                      onChange={(e) => setFecha(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label p-nosotros" htmlFor="hora">
+                      Hora
+                    </label>
+                    <input
+                      className="form-control"
+                      id="hora"
+                      type="time"
+                      value={hora}
+                      onChange={(e) => setHora(e.target.value)}
+                      required
+                    />
+                  </div>
+
+                  <button
+                    className="btn btn-success w-100 p-nosotros mt-3"
+                    type="submit"
+                  >
+                    Crear evento
+                  </button>
+                </form>
+              </div>
             </div>
             {/* container */}
           </div>
