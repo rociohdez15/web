@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const AdminTodos = () => {
+const EventosTodos = () => {
   const location = useLocation();
 
   const isActive = (path) => location.pathname.startsWith(path);
@@ -1768,4 +1768,4 @@ const AdminTodos = () => {
     </>
   );
 };
-export default AdminTodos;
+export default EventosTodos;

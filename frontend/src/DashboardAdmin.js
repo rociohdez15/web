@@ -1314,9 +1314,9 @@ const DashboardAdmin = () => {
                               </li>
                               <li>
                                 <a
-                                  href="#"
+                                  href="/crear-eventos"
                                   className={
-                                    isActive("/eventos/agregar")
+                                    isActive("/crear-eventos")
                                       ? "active-link2"
                                       : ""
                                   }
