@@ -27,6 +27,7 @@ public class SecurityConfig {
                     "/auth/register",
                     "/api/admin/**",
                     "/api/**",
+                    "/images/**",
                     "/api/rol-admin/**",
                     "/swagger-ui/**", 
                     "/v3/api-docs/**", 

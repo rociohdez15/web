@@ -21,6 +21,7 @@ public class GaleriaService {
                     dto.setTitulo(img.getTitulo());
                     dto.setFecha(img.getFecha().toString());
                     dto.setUbicacion(img.getUbicacion());
+                    dto.setMapa(img.getMapa());
                     return dto;
                 });
     }
