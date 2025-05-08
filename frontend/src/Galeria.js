@@ -155,18 +155,18 @@ const Home = () => {
                 }}
               >
                 <img
-                  src={img.src}
+                  src={`http://localhost:8080/images/${img.imagen}`} 
                   alt={img.titulo}
                   className="img-fluid rounded-3 mb-3"
                   style={{ height: "200px", objectFit: "cover", width: "100%" }}
                 />
-                <p className="fw-bold mb-1" style={{ fontSize: "20px" }}>{img.titulo}</p>
-                <p className="mb-1" style={{ fontSize: "15px" }}>{img.fecha}</p>
-                <p className="mb-1" style={{ fontSize: "15px" }}>{img.ubicacion}</p>
+                <p className="fw-bold mb-1 titulo-nosotros" style={{ fontSize: "20px" }}>{img.titulo}</p>
+                <p className="mb-1 p-nosotros" style={{ fontSize: "15px" }}>{img.fecha}</p>
+                <p className="mb-1 p-nosotros" style={{ fontSize: "15px" }}>{img.ubicacion}</p>
                 <div className="d-flex justify-content-center">
                   <div style={{ width: "170px", height: "170px" }}>
                     <iframe
-                      src={`https://www.google.com/maps?q=${encodeURIComponent(img.ubicacion)}&output=embed`}
+                      src={`https://www.google.com/maps?q=${encodeURIComponent(img.mapa)}&output=embed`}
                       width="100%"
                       height="100%"
                       style={{ border: 0 }}
