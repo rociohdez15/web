@@ -5,6 +5,7 @@ public class GaleriaDto {
     private String titulo;
     private String fecha;
     private String ubicacion;
+    private String mapa;
 
     // Getters y Setters
     public String getFecha() {
@@ -30,6 +31,13 @@ public class GaleriaDto {
     }
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
+    }
+
+    public String getMapa() {
+        return mapa;
+    }
+    public void setMapa(String mapa) {
+        this.mapa = mapa;
     }
 }
 

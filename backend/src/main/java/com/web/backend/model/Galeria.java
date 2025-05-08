@@ -14,6 +14,7 @@ public class Galeria {
     private String titulo;
     private LocalDate fecha;
     private String ubicacion;
+    private String mapa;
 
     // Getters y Setters
     public LocalDate getFecha() {
@@ -45,5 +46,11 @@ public class Galeria {
     }
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
+    }
+    public String getMapa() {
+        return mapa;
+    }
+    public void setMapa(String mapa) {
+        this.mapa = mapa;
     }
 }
