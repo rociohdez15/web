@@ -1,6 +1,5 @@
 package com.web.backend.dto;
 
-
 public class GaleriaDto {
     private String imagen;
     private String titulo;

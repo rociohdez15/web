@@ -23,4 +23,3 @@ public class GaleriaController {
         return imagenService.obtenerPaginadas(pageable);
     }
 }
-
