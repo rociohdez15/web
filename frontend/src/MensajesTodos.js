@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+
 const MensajesTodos = () => {
   const handleRowClick = (id) => {
     navigate(`/mensaje/${id}`);
@@ -139,49 +140,46 @@ const MensajesTodos = () => {
     // Redirigir al usuario a la página de inicio (u otra página de login)
     navigate("/login");
   };
-
-  const [mensajes, setMensajes] = useState([]); // Lista completa de mensajes
-  const [mensajesFiltrados, setMensajesFiltrados] = useState([]); // Resultados de búsqueda (si aplicas búsqueda)
-  const [searchTerm, setSearchTerm] = useState(""); // Término de búsqueda
   const [currentPage, setCurrentPage] = useState(1); // Página actual
   const [entriesPerPage] = useState(10); // Número de registros por página
 
-  // Obtener mensajes desde la API (solo una vez al cargar la página)
-  useEffect(() => {
+  // Inicialización
+const [mensajes, setMensajes] = useState([]); // Lista original
+const [mensajesFiltrados, setMensajesFiltrados] = useState([]); // Lista visible (filtrada)
+const [searchTerm, setSearchTerm] = useState("");
+
+// Al cargar los mensajes
+useEffect(() => {
+  axios
+    .get("http://localhost:8080/api/mensajes/obtener-mensajes")
+    .then((res) => {
+      setMensajes(res.data);             // Guardamos todos los mensajes originales
+      setMensajesFiltrados(res.data);    // Mostramos todos al principio
+    })
+    .catch((err) => {
+      console.error("Error al obtener los mensajes", err);
+    });
+}, []);
+
+// Efecto de búsqueda
+useEffect(() => {
+  const delayDebounce = setTimeout(() => {
+    if (searchTerm.trim() === "") {
+      setMensajesFiltrados(mensajes); // Restaurar todos los mensajes
+      return;
+    }
+
     axios
-      .get("http://localhost:8080/api/mensajes/obtener-mensajes") // Ajusta esta URL si tu endpoint es distinto
+      .get(`http://localhost:8080/api/mensajes/mensajes/buscar?input=${searchTerm}`)
       .then((res) => {
-        setMensajes(res.data); // Guardamos todos los mensajes
-        setMensajesFiltrados(res.data); // Inicializamos la lista filtrada con todos los mensajes
+        const data = Array.isArray(res.data) ? res.data : [res.data];
+        setMensajesFiltrados(data); // Actualizar la lista visible
       })
-      .catch((err) => {
-        console.error("Error al obtener los mensajes", err);
-      });
-  }, []);
+      .catch((err) => console.error(err));
+  }, 300);
 
-  // Filtrar por searchTerm usando debounce
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      console.log("Buscando:", searchTerm); // Agrega esta línea para verificar el término de búsqueda
-
-      if (searchTerm.trim() === "") {
-        setMensajes(mensajes); // Si no hay búsqueda, mostramos todos los admins
-        return;
-      }
-
-      axios
-        .get(`http://localhost:8080/api/rol-admin/buscar?input=${searchTerm}`)
-        .then((res) => {
-          console.log("Resultados de la búsqueda:", res.data); // Agrega esta línea para verificar los resultados de la búsqueda
-          // Asegúrate de que res.data sea un array
-          const data = Array.isArray(res.data) ? res.data : [res.data]; // Si es un solo objeto, lo convertimos en un array
-          setMensajes(data); // Actualizamos admins2 con los resultados de búsqueda
-        })
-        .catch((err) => console.error(err));
-    }, 300); // Espera 300ms tras el último cambio
-
-    return () => clearTimeout(delayDebounce);
-  }, [searchTerm, mensajesFiltrados]); // Dependemos de `admins` solo cuando se inicializa, no en cada búsqueda
+  return () => clearTimeout(delayDebounce);
+}, [searchTerm, mensajes]); // Asegúrate de tener mensajes como dependencia por si cambia
 
   // Cálculo de los registros para mostrar según la página actual
   const indexOfLastAdmin = currentPage * entriesPerPage;
@@ -206,7 +204,7 @@ const MensajesTodos = () => {
 
   const handleDelete = (id) => {
     Swal.fire({
-      title: "¿Eliminar administrador?",
+      title: "¿Eliminar mensaje?",
       text: "Esta acción no se puede deshacer.",
       icon: "warning",
       showCancelButton: true,
@@ -217,7 +215,7 @@ const MensajesTodos = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:8080/api/rol-admin/eliminar/${id}`)
+          .delete(`http://localhost:8080/api/mensajes/eliminar/${id}`)
           .then(() => {
             setMensajes((prev) => prev.filter((admin) => admin.id !== id));
             setMensajesFiltrados((prev) =>
@@ -226,7 +224,7 @@ const MensajesTodos = () => {
 
             Swal.fire(
               "Eliminado",
-              "El administrador ha sido eliminado correctamente.",
+              "El mensaje ha sido eliminado correctamente.",
               "success"
             );
           })
@@ -234,7 +232,7 @@ const MensajesTodos = () => {
             console.error("Error al eliminar:", err);
             Swal.fire(
               "Error",
-              "No se pudo eliminar el administrador.",
+              "No se pudo eliminar el mensaje.",
               "error"
             );
           });
