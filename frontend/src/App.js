@@ -24,6 +24,7 @@ import AdminAlta from "./AdminAlta";
 import EventosTodos from "./EventosTodos";
 import CrearEventos from "./CrearEventos";
 import Mensajes from "./MensajesTodos";
+import MensajeSolo from "./MensajeSolo";
 
 const App = () => {
   const token = localStorage.getItem("token"); // Verificar si hay token
@@ -89,6 +90,14 @@ const App = () => {
           element={
             <PrivateRoute>
               <Mensajes/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/mensaje/:id"
+          element={
+            <PrivateRoute>
+              <MensajeSolo/>
             </PrivateRoute>
           }
         />

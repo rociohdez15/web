@@ -3,11 +3,45 @@ import { Link, useNavigate, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const MensajesTodos = () => {
+const MensajeSolo = () => {
   const handleRowClick = (id) => {
     navigate(`/mensaje/${id}`);
   };
-  
+
+  const { id } = useParams(); // obtenemos el ID del mensaje desde la URL
+  console.log("ID del mensaje:", id);
+  const [mensaje, setMensaje] = useState({}); // Inicializamos con un objeto vacío
+
+  useEffect(() => {
+    // Llamada a la API para obtener el mensaje
+    axios
+      .get(`http://localhost:8080/api/mensajes/mensaje/${id}`)
+      .then((res) => {
+        setMensaje(res.data); // Guardamos los datos en el estado
+        setLoading(false); // Los datos han sido cargados
+      })
+      .catch((err) => {
+        setError("Error al obtener el mensaje.");
+        setLoading(false); // Termina la carga aunque haya error
+        console.error("Error al obtener el mensaje:", err);
+      });
+  }, [id]); // El efecto se ejecuta cuando cambia 'id'
+
+  const marcarComoLeido = () => {
+    axios
+      .put(`http://localhost:8080/api/mensajes/mensajes/leido?id=${id}`)
+      .then(() => {
+        navigate("/mensajes"); // Redirige tras marcar como leído
+      })
+      .catch((err) => {
+        console.error("Error al marcar como leído:", err);
+      });
+  };
+
+  const volver = () => {
+    navigate("/mensajes");
+  };
+
   const location = useLocation();
 
   const isActive = (path) => location.pathname.startsWith(path);
@@ -243,31 +277,6 @@ const MensajesTodos = () => {
     });
   };
 
-  const { id } = useParams(); // obtenemos el ID del mensaje desde la URL
-  const [mensaje, setMensaje] = useState(null);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/mensaje/${id}`)
-      .then((res) => setMensaje(res.data))
-      .catch((err) =>
-        console.error("Error al obtener el mensaje:", err)
-      );
-  }, [id]);
-
-  const marcarComoLeido = () => {
-    axios
-      .put(`http://localhost:8080/api/mensajes/leido?id=${id}`)
-      .then(() => {
-        navigate("/mensajes"); // Redirige tras marcar como leído
-      })
-      .catch((err) => console.error("Error al marcar como leído:", err));
-  };
-
-  const volver = () => {
-    navigate("/admin/mensajes");
-  };
-  
   return (
     <>
       <meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -1163,85 +1172,64 @@ const MensajesTodos = () => {
 
               {/* Tabla */}
               <div className="container-fluid p-3">
-              <div
-      style={{
-        maxWidth: "700px",
-        margin: "2rem auto",
-        padding: "2rem",
-        backgroundColor: "#f8f9fa",
-        borderRadius: "10px",
-        boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-      }}
-    >
-      <h4 style={{ marginBottom: "1rem" }}>
-        <strong>{mensaje.nombre}</strong> {" "}
-        <span style={{ color: "#6c757d", fontSize: "0.9rem" }}>
-          &lt;{mensaje.email}&gt;
-        </span>
-      </h4>
-
-      <p style={{ whiteSpace: "pre-wrap", marginBottom: "2rem" }}>
-        {mensaje.mensaje}
-      </p>
-
-      <div style={{ display: "flex", gap: "1rem" }}>
-        {!mensaje.read && (
-          <button
-            className="btn btn-primary"
-            onClick={marcarComoLeido}
-          >
-            Marcar como leído
-          </button>
-        )}
-        <button className="btn btn-secondary" onClick={volver}>
-          Volver
-        </button>
-      </div>
-    </div>
                 <div
-                  className="d-flex justify-content-center align-items-center mt-3 text-secondary"
-                  style={{ fontSize: "0.75rem" }}
+                  style={{
+                    maxWidth: "700px",
+                    margin: "2rem auto",
+                    padding: "2rem",
+                    backgroundColor: "#f8f9fa",
+                    borderRadius: "10px",
+                    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+                  }}
                 >
-                  {/* Paginación */}
-                  <nav aria-label="Page navigation example">
-                    <ul className="pagination mb-0">
-                      <li className="page-item">
-                        <button
-                          className="page-link"
-                          aria-label="Previous"
-                          onClick={() => setCurrentPage(currentPage - 1)}
-                          disabled={currentPage === 1}
-                        >
-                          <i className="fas fa-chevron-left" />
-                        </button>
-                      </li>
-                      {pageNumbers.map((number) => (
-                        <li
-                          key={number}
-                          className={`page-item ${
-                            number === currentPage ? "active" : ""
-                          }`}
-                        >
-                          <button
-                            className="page-link"
-                            onClick={() => paginate(number)}
-                          >
-                            {number}
-                          </button>
-                        </li>
-                      ))}
-                      <li className="page-item">
-                        <button
-                          className="page-link"
-                          aria-label="Next"
-                          onClick={() => setCurrentPage(currentPage + 1)}
-                          disabled={currentPage === pageNumbers.length}
-                        >
-                          <i className="fas fa-chevron-right" />
-                        </button>
-                      </li>
-                    </ul>
-                  </nav>
+                  <h4
+                    style={{
+                      marginBottom: "1rem",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>
+                      <strong>{mensaje.nombre}</strong>{" "}
+                      <span style={{ color: "#6c757d", fontSize: "0.9rem" }}>
+                        &lt;{mensaje.email}&gt;
+                      </span>
+                    </div>
+                    <span
+                      style={{
+                        marginLeft: "auto",
+                        color: "#6c757d",
+                        fontSize: "0.9rem",
+                      }}
+                    >
+                      {mensaje.fecha}
+                    </span>
+                  </h4>
+
+                  <p
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      wordBreak: "break-word",
+                      overflowWrap: "break-word",
+                      marginBottom: "2rem",
+                    }}
+                  >
+                    {mensaje.mensaje}
+                  </p>
+
+                  <div style={{ display: "flex", gap: "1rem" }}>
+                    {!mensaje.read && (
+                      <button
+                        className="btn btn-primary"
+                        onClick={marcarComoLeido}
+                      >
+                        Marcar como leído
+                      </button>
+                    )}
+                    <button className="btn btn-secondary" onClick={volver}>
+                      Volver
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1703,4 +1691,4 @@ const MensajesTodos = () => {
     </>
   );
 };
-export default MensajesTodos;
+export default MensajeSolo;
