@@ -6,6 +6,7 @@ import ReactApexChart2 from "react-apexcharts";
 import { Outlet } from "react-router-dom";
 
 const DashboardAdmin = () => {
+  
   const location = useLocation();
 
   const isActive = (path) => location.pathname.startsWith(path);
@@ -618,46 +619,6 @@ const DashboardAdmin = () => {
         <div className="navbar-custom bg-white">
           <div className="topbar container-fluid">
             <div className="d-flex align-items-center gap-1">
-              {/* Topbar Brand Logo */}
-              <div className="logo-topbar">
-                {/* Logo light */}
-                <a
-                  href="https://techzaa.in/velonic/layouts/index.html"
-                  className="logo-light"
-                >
-                  <span className="logo-lg">
-                    <img src="./administracion_files/logo.png" alt="logo" />
-                  </span>
-                  <span className="logo-sm">
-                    <img
-                      src="./administracion_files/logo-sm.png"
-                      alt="small logo"
-                    />
-                  </span>
-                </a>
-                {/* Logo Dark */}
-                <a
-                  href="https://techzaa.in/velonic/layouts/index.html"
-                  className="logo-dark"
-                >
-                  <span className="logo-lg">
-                    <img
-                      src="./administracion_files/logo-dark.png"
-                      alt="dark logo"
-                    />
-                  </span>
-                  <span className="logo-sm">
-                    <img
-                      src="./administracion_files/logo-sm.png"
-                      alt="small logo"
-                    />
-                  </span>
-                </a>
-              </div>
-              {/* Sidebar Menu Toggle Button */}
-              <button className="button-toggle-menu">
-                <i className="ri-menu-line" />
-              </button>
               {/* Horizontal Menu Toggle Button */}
               <button
                 className="navbar-toggle"
@@ -1438,7 +1399,7 @@ const DashboardAdmin = () => {
         {/* ============================================================== */}
         {/* Start Page Content here */}
         {/* ============================================================== */}
-        <div className="content-page">
+        <div className="content-page flex-grow-1">
           <div className="content">
             {/* Start Content*/}
             <div className="container-fluid">
