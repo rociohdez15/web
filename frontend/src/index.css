@@ -80,3 +80,99 @@ label,
   color: #4a5568;
 }
 
+.u-section-4 .u-sheet-1 {
+  min-height: 618px !important;
+}
+
+#sec-4bf5 .u-sheet-1 {
+  margin-top: 0px !important; /* O ajusta al valor que necesites */
+}
+
+@media (max-width: 1199px) {
+  .u-section-4 .u-sheet-1 {
+    min-height: 510px !important;
+  }
+
+  .u-section-4 .u-text-1 {
+    font-size: 3rem !important;
+  }
+
+  .u-section-4 .u-text-2 {
+    margin-right: 358px !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .u-section-4 .u-sheet-1 {
+    min-height: 391px !important;
+  }
+
+  .u-section-4 .u-text-2 {
+    margin-right: 138px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-4 .u-sheet-1 {
+    min-height: 293px !important;
+  }
+
+  .u-section-4 .u-text-2 {
+    margin-right: 0 !important;
+  }
+
+  #sec-4bf5 .u-sheet-1 {
+    margin-top: 0px !important; /* O ajusta al valor que necesites */
+  }
+}
+
+@media (max-width: 575px) {
+  .u-section-4 .u-sheet-1 {
+    min-height: 184px !important;
+  }
+
+  .u-section-4 .u-text-1 {
+    font-size: 2.34375rem !important;
+  }
+
+  #sec-4bf5 .u-sheet-1 {
+    margin-top: 0px !important; /* O ajusta al valor que necesites */
+  }
+}
+
+@media (max-width: 767px) {
+  .u-section-3 .u-text-1 {
+      margin-top: 0 !important; /* o un valor más razonable */
+  }
+  .u-section-3 .u-sheet-1 {
+    padding-top: 100px !important; /* Elimina padding superior */
+    min-height: 100px !important; /* Asegúrate de que no haya una altura mínima que cause espacio */
+  }
+}
+
+
+.u-section-4 {
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)) !important;
+  background-position: 50% 50% !important;
+}
+
+.u-section-4 .u-btn-1 {
+  border-style: solid !important;
+  padding: 0 !important;
+}
+
+.u-section-4 .u-btn-2 {
+  border-style: solid !important;
+  background-image: none !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  font-size: 0.875rem !important;
+  --animation-custom_in-translate_x: 0px !important;
+  --animation-custom_in-translate_y: 300px !important;
+  --animation-custom_in-opacity: 0 !important;
+  --animation-custom_in-rotate: 0deg !important;
+  --animation-custom_in-scale: 1 !important;
+  margin: 27px auto 60px 0 !important;
+  padding: 13px 53px 14px 52px !important;
+}

@@ -6,6 +6,7 @@ import ReactApexChart2 from "react-apexcharts";
 import { Outlet } from "react-router-dom";
 
 const DashboardAdmin = () => {
+  
   const location = useLocation();
 
   const isActive = (path) => location.pathname.startsWith(path);
@@ -1398,7 +1399,7 @@ const DashboardAdmin = () => {
         {/* ============================================================== */}
         {/* Start Page Content here */}
         {/* ============================================================== */}
-        <div className="content-page">
+        <div className="content-page flex-grow-1">
           <div className="content">
             {/* Start Content*/}
             <div className="container-fluid">
