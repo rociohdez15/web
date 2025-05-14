@@ -12,7 +12,7 @@ import Blog from "./Blog";
 import Contacto from "./Contacto";
 import Experiencias from "./Experiencias";
 import Galeria from "./pages/clientes/Galeria";
-import Nosotros from "./Nosotros";
+import Nosotros from "./pages/clientes/Nosotros";
 import Olvidaste from "./Olvidaste";
 import Privacidad from "./Privacidad";
 import Proyecto from "./Proyecto";
