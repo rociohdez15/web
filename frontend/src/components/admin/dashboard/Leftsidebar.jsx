@@ -360,7 +360,9 @@ const Leftsidebar = () => {
                         href="#sidebarMessages"
                         aria-expanded={isActive("/mensajes")}
                         aria-controls="sidebarMessages"
-                        className="side-nav-link"
+                        className={`side-nav-link ${
+                          isActive("/mensajes") ? "active-link" : ""
+                        }`}
                       >
                         <i className="ri-message-3-line" />
                         <span> Mensajes </span>
