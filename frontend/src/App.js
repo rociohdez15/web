@@ -6,8 +6,8 @@ import {
   Navigate,
 } from "react-router-dom"; // Usamos Routes en lugar de Switch
 import Home from "./pages/clientes/Home"; // Asegúrate de ajustar la ruta si es necesario
-import Login from "./Login";
-import Register from "./Register";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import Blog from "./Blog";
 import Contacto from "./Contacto";
 import Experiencias from "./Experiencias";
