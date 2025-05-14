@@ -6,13 +6,13 @@ import {
   Navigate,
 } from "react-router-dom"; // Usamos Routes en lugar de Switch
 import Home from "./pages/clientes/Home"; // Asegúrate de ajustar la ruta si es necesario
-import Login from "./pages/auth/Login";
-import Register from "./pages/auth/Register";
+import Login from "./Login";
+import Register from "./Register";
 import Blog from "./Blog";
-import Contacto from "./pages/clientes/Contacto";
+import Contacto from "./Contacto";
 import Experiencias from "./Experiencias";
 import Galeria from "./pages/clientes/Galeria";
-import Nosotros from "./pages/clientes/Nosotros";
+import Nosotros from "./Nosotros";
 import Olvidaste from "./Olvidaste";
 import Privacidad from "./Privacidad";
 import Proyecto from "./Proyecto";
