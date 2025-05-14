@@ -5,14 +5,14 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom"; // Usamos Routes en lugar de Switch
-import Home from "./Home"; // Asegúrate de ajustar la ruta si es necesario
-import Login from "./Login";
-import Register from "./Register";
+import Home from "./pages/clientes/Home"; // Asegúrate de ajustar la ruta si es necesario
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import Blog from "./Blog";
-import Contacto from "./Contacto";
+import Contacto from "./pages/clientes/Contacto";
 import Experiencias from "./Experiencias";
-import Galeria from "./Galeria";
-import Nosotros from "./Nosotros";
+import Galeria from "./pages/clientes/Galeria";
+import Nosotros from "./pages/clientes/Nosotros";
 import Olvidaste from "./Olvidaste";
 import Privacidad from "./Privacidad";
 import Proyecto from "./Proyecto";
