@@ -23,8 +23,8 @@ import AdminTodos from "./pages/admin/administradores/AdminTodos";
 import AdminAlta from "./pages/admin/administradores/AdminAlta";
 import EventosTodos from "./pages/admin/eventos/EventosTodos";
 import CrearEventos from "./pages/admin/eventos/CrearEventos";
-import Mensajes from "./MensajesTodos";
-import MensajeSolo from "./MensajeSolo";
+import Mensajes from "./pages/admin/mensajes/MensajesTodos";
+import MensajeSolo from "./pages/admin/mensajes/MensajeSolo";
 
 const App = () => {
   const token = localStorage.getItem("token"); // Verificar si hay token
