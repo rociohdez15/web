@@ -21,8 +21,8 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardAdmin from "./pages/admin/dashboard/DashboardAdmin";
 import AdminTodos from "./AdminTodos";
 import AdminAlta from "./AdminAlta";
-import EventosTodos from "./EventosTodos";
-import CrearEventos from "./CrearEventos";
+import EventosTodos from "./pages/admin/eventos/EventosTodos";
+import CrearEventos from "./pages/admin/eventos/CrearEventos";
 import Mensajes from "./MensajesTodos";
 import MensajeSolo from "./MensajeSolo";
 
