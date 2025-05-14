@@ -18,7 +18,7 @@ import Privacidad from "./Privacidad";
 import Proyecto from "./Proyecto";
 import Terminos from "./Terminos";
 import PrivateRoute from "./PrivateRoute";
-import DashboardAdmin from "./DashboardAdmin";
+import DashboardAdmin from "./pages/admin/dashboard/DashboardAdmin";
 import AdminTodos from "./AdminTodos";
 import AdminAlta from "./AdminAlta";
 import EventosTodos from "./EventosTodos";
