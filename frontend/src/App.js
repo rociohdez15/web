@@ -27,6 +27,8 @@ import Mensajes from "./pages/admin/mensajes/MensajesTodos";
 import MensajeSolo from "./pages/admin/mensajes/MensajeSolo";
 import Notificaciones from "./pages/admin/notificaciones/NotificacionesTodas";
 import NotificacionSola from "./pages/admin/notificaciones/NotificacionSola";
+import GaleriaTodos from "./pages/admin/galeria/GaleriaTodos";
+import AgregarImagen from "./pages/admin/galeria/AgregarImagen";
 
 const App = () => {
   const token = localStorage.getItem("token"); // Verificar si hay token
@@ -116,6 +118,22 @@ const App = () => {
           element={
             <PrivateRoute>
               <NotificacionSola/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/galeria-listado"
+          element={
+            <PrivateRoute>
+              <GaleriaTodos/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/agregar-imagen"
+          element={
+            <PrivateRoute>
+              <AgregarImagen/>
             </PrivateRoute>
           }
         />
