@@ -25,6 +25,8 @@ import EventosTodos from "./pages/admin/eventos/EventosTodos";
 import CrearEventos from "./pages/admin/eventos/CrearEventos";
 import Mensajes from "./pages/admin/mensajes/MensajesTodos";
 import MensajeSolo from "./pages/admin/mensajes/MensajeSolo";
+import Notificaciones from "./pages/admin/notificaciones/NotificacionesTodas";
+import NotificacionSola from "./pages/admin/notificaciones/NotificacionSola";
 
 const App = () => {
   const token = localStorage.getItem("token"); // Verificar si hay token
@@ -98,6 +100,22 @@ const App = () => {
           element={
             <PrivateRoute>
               <MensajeSolo/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/notificaciones"
+          element={
+            <PrivateRoute>
+              <Notificaciones/>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/notificacion/:id"
+          element={
+            <PrivateRoute>
+              <NotificacionSola/>
             </PrivateRoute>
           }
         />

@@ -395,7 +395,9 @@ const Leftsidebar = () => {
                         href="#sidebarNotifications"
                         aria-expanded={isActive("/notificaciones")}
                         aria-controls="sidebarNotifications"
-                        className="side-nav-link"
+                        className={`side-nav-link ${
+                          isActive("/notificaciones") ? "active-link" : ""
+                        }`}
                       >
                         <i className="ri-notification-3-line" />
                         <span> Notificaciones </span>
@@ -410,7 +412,7 @@ const Leftsidebar = () => {
                         <ul className="side-nav-second-level">
                           <li>
                             <a
-                              href="#"
+                              href="/notificaciones"
                               className={
                                 isActive("/notificaciones")
                                   ? "active-link2"

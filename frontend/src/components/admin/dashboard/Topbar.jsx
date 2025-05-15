@@ -275,11 +275,7 @@ const Topbar = () => {
               </div>
               {messages.length > 4 && !showAll && (
                 <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setShowAll(true); // Mostrar todos los mensajes
-                  }}
+                  href="/mensajes"
                   className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
                 >
                   Ver Todos
@@ -389,10 +385,7 @@ const Topbar = () => {
 
               {notifications.length > 4 && (
                 <a
-                  href="#"
-                  onClick={() =>
-                    setVerTodasNotificaciones(!verTodasNotificaciones)
-                  }
+                  href="/notificaciones"
                   className="dropdown-item text-center text-primary text-decoration-underline fw-bold notify-item border-top border-light py-2"
                 >
                   {verTodasNotificaciones ? "Mostrar Menos" : "Ver Todas"}
