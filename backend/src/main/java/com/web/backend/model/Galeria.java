@@ -16,6 +16,19 @@ public class Galeria {
     private String ubicacion;
     private String mapa;
 
+    public Galeria() {
+        // constructor vacío obligatorio para Hibernate
+    }
+    
+    public Galeria(String imagen, String titulo, LocalDate fecha, String ubicacion, String mapa) {
+        this.imagen = imagen;
+        this.titulo = titulo;
+        this.fecha = fecha;
+        this.ubicacion = ubicacion;
+        this.mapa = mapa;
+    }
+
+    
     // Getters y Setters
     public LocalDate getFecha() {
         return fecha;
