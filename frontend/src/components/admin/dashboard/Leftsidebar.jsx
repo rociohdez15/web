@@ -269,11 +269,15 @@ const Leftsidebar = () => {
                     <li className="side-nav-item">
                       <a
                         data-bs-toggle="collapse"
-                        href="https://techzaa.in/velonic/layouts/index.html#sidebarExtendedUI"
-                        aria-expanded={isActive("/admin-todos")}
+                        href="#sidebarExtendedUI"
+                        aria-expanded={
+                          isActive("/admin") || isActive("/admin-alta")
+                        }
                         aria-controls="sidebarExtendedUI"
                         className={`side-nav-link ${
-                          isActive("/admin-todos") ? "active-link" : ""
+                          isActive("/admin") || isActive("/admin-alta")
+                            ? "active-link"
+                            : "collapsed"
                         }`}
                       >
                         <i className="ri-user-line" />
@@ -282,7 +286,9 @@ const Leftsidebar = () => {
                       </a>
                       <div
                         className={`collapse ${
-                          isActive("/admin-todos") ? "show" : ""
+                          isActive("/admin") || isActive("/admin-alta")
+                            ? "show"
+                            : ""
                         }`}
                         id="sidebarExtendedUI"
                       >
@@ -300,9 +306,9 @@ const Leftsidebar = () => {
                           <li>
                             <a
                               href="/admin-alta"
-                              className={
+                              className={`${
                                 isActive("/admin-alta") ? "active-link2" : ""
-                              }
+                              }`}
                             >
                               Alta Usuarios
                             </a>
@@ -310,14 +316,21 @@ const Leftsidebar = () => {
                         </ul>
                       </div>
                     </li>
+
                     <li className="side-nav-item">
                       <a
                         data-bs-toggle="collapse"
-                        href="https://techzaa.in/velonic/layouts/index.html#sidebarIcons"
-                        aria-expanded={isActive("/eventos")}
+                        href="#sidebarIcons"
+                        aria-expanded={
+                          isActive("/eventos-todos") ||
+                          isActive("/crear-eventos")
+                        }
                         aria-controls="sidebarIcons"
                         className={`side-nav-link ${
-                          isActive("/eventos-todos") ? "active-link" : ""
+                          isActive("/eventos-todos") ||
+                          isActive("/crear-eventos")
+                            ? "active-link"
+                            : "collapsed"
                         }`}
                       >
                         <i className="ri-pencil-ruler-2-line" />
@@ -326,7 +339,10 @@ const Leftsidebar = () => {
                       </a>
                       <div
                         className={`collapse ${
-                          isActive("/eventos-todos") ? "show" : ""
+                          isActive("/eventos-todos") ||
+                          isActive("/crear-eventos")
+                            ? "show"
+                            : ""
                         }`}
                         id="sidebarIcons"
                       >
@@ -354,6 +370,7 @@ const Leftsidebar = () => {
                         </ul>
                       </div>
                     </li>
+
                     <li className="side-nav-item">
                       <a
                         data-bs-toggle="collapse"
@@ -361,7 +378,7 @@ const Leftsidebar = () => {
                         aria-expanded={isActive("/mensajes")}
                         aria-controls="sidebarMessages"
                         className={`side-nav-link ${
-                          isActive("/mensajes") ? "active-link" : ""
+                          isActive("/mensajes") ? "active-link" : "collapsed"
                         }`}
                       >
                         <i className="ri-message-3-line" />
@@ -420,6 +437,57 @@ const Leftsidebar = () => {
                               }
                             >
                               Todas las notificaciones
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </li>
+
+                    <li className="side-nav-item">
+                      <a
+                        data-bs-toggle="collapse"
+                        href="#sidebarGaleria"
+                        aria-expanded={isActive("/galeria-listado")}
+                        aria-controls="sidebarGaleria"
+                        className={`side-nav-link ${
+                          isActive("/galeria-listado") || isActive("/agregar-imagen")
+                            ? "active-link"
+                            : "collapsed"
+                        }`}
+                      >
+                        <i className="ri-image-line" />
+                        <span> Galería </span>
+                        <span className="menu-arrow" />
+                      </a>
+                      <div
+                        className={`collapse ${
+                          isActive("/galeria-listado") || isActive("/agregar-imagen")
+                            ? "show"
+                            : ""
+                        }`}
+                        id="sidebarGaleria"
+                      >
+                        <ul className="side-nav-second-level">
+                          <li>
+                            <a
+                              href="/galeria-listado"
+                              className={
+                                isActive("/galeria-listado") ? "active-link2" : ""
+                              }
+                            >
+                              Listado de imágenes
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              href="/agregar-imagen"
+                              className={
+                                isActive("/agregar-imagen")
+                                  ? "active-link2"
+                                  : ""
+                              }
+                            >
+                              Agregar imagen
                             </a>
                           </li>
                         </ul>
